@@ -1,0 +1,74 @@
+---
+const currentPath = Astro.url.pathname;
+
+const links = [
+  { href: "/", label: "Anasayfa" },
+  { href: "/hizmetler", label: "Hizmetler" },
+  { href: "/galeri", label: "Galeri" },
+  { href: "/blog", label: "Blog" },
+  { href: "/iletisim", label: "İletişim" },
+];
+
+const isActive = (href: string) =>
+  href === "/" ? currentPath === "/" : currentPath.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
+    <a href="/" class="font-display text-xl tracking-tight text-neutral-900">
+      ÇİZGİ<span class="text-neutral-400">ARTİZM</span>
+    </a>
+
+    <nav class="hidden items-center gap-8 md:flex">
+      {links.map((l) => (
+        <a
+          href={l.href}
+          class:list={[
+            "text-sm font-medium transition-colors",
+            isActive(l.href)
+              ? "text-neutral-900 font-semibold underline underline-offset-4 decoration-2"
+              : "text-neutral-600 hover:text-neutral-900",
+          ]}
+        >
+          {l.label}
+        </a>
+      ))}
+      <a
+        href="/iletisim"
+        class="rounded-full bg-neutral-900 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-neutral-700"
+      >
+        Teklif Al
+      </a>
+    </nav>
+
+    <!-- Mobil menü -->
+    <details id="mobile-menu" class="md:hidden">
+      <summary class="cursor-pointer list-none p-2 text-neutral-900">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </summary>
+      <div class="absolute left-0 right-0 top-full border-b border-neutral-200 bg-white px-5 py-4 shadow-lg">
+        {links.map((l) => (
+          <a
+            href={l.href}
+            class:list={[
+              "block py-2 text-base font-medium",
+              isActive(l.href) ? "text-neutral-900 font-semibold" : "text-neutral-700",
+            ]}
+          >
+            {l.label}
+          </a>
+        ))}
+        <a href="/iletisim" class="mt-2 block rounded-full bg-neutral-900 px-5 py-2 text-center text-sm font-semibold text-white">Teklif Al</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<script>
+  const menu = document.getElementById("mobile-menu") as HTMLDetailsElement | null;
+  menu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => menu.removeAttribute("open"));
+  });
+</script>

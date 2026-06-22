@@ -1,0 +1,125 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { gallery } from "../data/gallery";
+
+const allImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{png,jpg,jpeg}",
+  { eager: true }
+);
+
+const getImg = (filename: string): ImageMetadata => {
+  const mod = allImages[`/src/assets/images/${filename}`];
+  if (!mod) throw new Error(`Galeri görseli bulunamadı: ${filename}`);
+  return mod.default;
+};
+---
+
+<Layout
+  title="Galeri — Çizgi Artizm | Duvar Resmi, Graffiti, Portre & Su Deposu"
+  description="Çizgi Artizm'in gerçekleştirdiği duvar resmi, graffiti, portre ve su deposu maskot projelerinden seçmeler. İzmir, Bursa, Çanakkale ve daha fazlası."
+>
+  <!-- Başlık -->
+  <section class="relative isolate overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white">
+    <Image src={getImg("su-altinda-kiz-yunus-gemi-duvar-resmi.jpg")} alt="" aria-hidden="true" loading="eager" class="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-50" />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-neutral-950/30"></div>
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="text-sm font-semibold uppercase tracking-widest text-neutral-400">Portföy</p>
+      <h1 class="mt-3 font-display text-4xl md:text-6xl drop-shadow">Galeri</h1>
+      <p class="mt-4 max-w-xl text-lg text-neutral-300 drop-shadow">
+        Bina cephelerinden iç mekanlara, portrelerden maskotlara — tamamladığımız
+        bazı projeler.
+      </p>
+    </div>
+  </section>
+
+  <!-- Galeri (tüm fotoğraflar, tek akış) -->
+  <section class="py-12">
+    <div class="mx-auto max-w-6xl px-5">
+      <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4" id="grid">
+        {gallery.map((item, i) => (
+          <button
+            type="button"
+            class="gallery-item group relative block aspect-square w-full cursor-zoom-in overflow-hidden rounded-lg bg-neutral-100"
+            data-index={i}
+            data-full={`/images/${item.src}`}
+            data-caption={item.title}
+          >
+            <Image
+              src={getImg(item.src)}
+              alt={item.alt}
+              width={600}
+              height={600}
+              loading={i < 8 ? "eager" : "lazy"}
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <!-- Hover karartma -->
+            <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20"></div>
+            <span class="sr-only">{item.title}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Galeri görüntüleyici"
+  >
+    <button id="lb-close" aria-label="Kapat" class="absolute right-4 top-4 text-3xl text-white/80 hover:text-white">&times;</button>
+    <button id="lb-prev" aria-label="Önceki" class="absolute left-2 text-4xl text-white/70 hover:text-white md:left-6">&#8249;</button>
+    <figure class="max-h-[90vh] max-w-5xl text-center">
+      <img id="lb-img" src="" alt="" class="mx-auto max-h-[80vh] w-auto rounded-lg object-contain" />
+      <figcaption id="lb-caption" class="mt-3 text-sm text-white/80"></figcaption>
+    </figure>
+    <button id="lb-next" aria-label="Sonraki" class="absolute right-2 text-4xl text-white/70 hover:text-white md:right-6">&#8250;</button>
+  </div>
+</Layout>
+
+<script>
+  const items = Array.from(document.querySelectorAll<HTMLElement>(".gallery-item"));
+  const lightbox = document.getElementById("lightbox")!;
+  const lbImg = document.getElementById("lb-img") as HTMLImageElement;
+  const lbCaption = document.getElementById("lb-caption")!;
+  let current = 0;
+
+  function openLightbox(index: number) {
+    current = ((index % items.length) + items.length) % items.length;
+    const btn = items[current];
+    lbImg.src = btn.dataset.full ?? "";
+    lbImg.alt = btn.querySelector("img")?.alt ?? "";
+    lbCaption.textContent = btn.dataset.caption ?? "";
+    lightbox.classList.remove("hidden");
+    lightbox.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add("hidden");
+    lightbox.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+  items.forEach((el) =>
+    el.addEventListener("click", () => openLightbox(Number(el.dataset.index)))
+  );
+
+  document.getElementById("lb-close")!.addEventListener("click", closeLightbox);
+  document.getElementById("lb-prev")!.addEventListener("click", () => openLightbox(current - 1));
+  document.getElementById("lb-next")!.addEventListener("click", () => openLightbox(current + 1));
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.classList.contains("hidden")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") openLightbox(current - 1);
+    if (e.key === "ArrowRight") openLightbox(current + 1);
+  });
+</script>

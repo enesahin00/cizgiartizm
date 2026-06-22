@@ -1,0 +1,19 @@
+# build çıktısı
+dist/
+# astro
+.astro/
+# bağımlılıklar
+node_modules/
+# ortam
+.env
+.env.production
+# log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+# editör / işletim sistemi
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

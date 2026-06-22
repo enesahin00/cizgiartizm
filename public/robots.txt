@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cizgiartizm.com/sitemap-index.xml

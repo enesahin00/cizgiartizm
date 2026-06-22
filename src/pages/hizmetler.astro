@@ -1,0 +1,123 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+import imgZeus from "../assets/images/zeus-poseidon-bina-cephesi-grafitti.jpg";
+import imgKadin from "../assets/images/renkli-kadin-portesi-grafitti.jpg";
+import imgMickey from "../assets/images/mickey-mouse-minibus-airbrush.jpg";
+import headerBg from "../assets/images/beyaz-kaplan-duvar-resmi.jpg";
+
+const services: {
+  title: string;
+  img: ImageMetadata;
+  desc: string;
+  points: string[];
+}[] = [
+  {
+    title: "Graffiti & Duvar Resmi",
+    img: imgZeus,
+    desc: "Bina cepheleri, iç mekan duvarları, beton, ahşap ve metal yüzeyler — her ölçekte sanatsal graffiti ve duvar resmi uyguluyoruz. Hava koşullarına dayanıklı, uzun ömürlü malzemeler kullanıyoruz.",
+    points: ["Bina cephesi ve dev muraller", "Ofis, kafe ve iç mekan duvarları", "Trafo binaları ve kamusal alanlar", "UV ve hava koşullarına dayanıklı boyalar"],
+  },
+  {
+    title: "Kişiye Özel Portre Çizim",
+    img: imgKadin,
+    desc: "Fotoğrafınızdan özgün portreler üretiyoruz. İster duvara, ister tuvale; gerçekçi ve etkileyici portre çalışmaları.",
+    points: ["Fotoğraftan özgün portre", "Duvar veya tuval üzerine", "Hediyelik ve koleksiyonluk eserler", "Karakalem ve renkli teknikler"],
+  },
+  {
+    title: "Araç & Yat Airbrush Boyama",
+    img: imgMickey,
+    desc: "Otomobil, motosiklet, karavan ve teknelere airbrush tekniğiyle özel tasarım uyguluyoruz. Denizel yüzeyler için su geçirmez, dayanıklı boyalar kullanıyoruz.",
+    points: ["Otomobil, motosiklet ve karavan", "Tekne ve yat için su geçirmez boya", "Tamamen özgün tasarımlar", "Profesyonel airbrush tekniği"],
+  },
+];
+
+const steps = [
+  { n: "01", t: "Danışmanlık & Planlama", d: "Mekanı, hayalinizi ve bütçeyi birlikte değerlendirip yol haritasını çıkarıyoruz." },
+  { n: "02", t: "Tasarım Geliştirme", d: "Size özel taslakları hazırlıyor, onayınızı alana kadar üzerinde çalışıyoruz." },
+  { n: "03", t: "Uygulama & Teslimat", d: "Profesyonel ekip ve dayanıklı malzemelerle tasarımı sahada hayata geçiriyoruz." },
+  { n: "04", t: "Son Değerlendirme", d: "Birlikte gözden geçirip projeyi eksiksiz teslim ediyoruz." },
+];
+---
+
+<Layout
+  title="Hizmetlerimiz — Çizgi Artizm | Graffiti, Portre & Airbrush"
+  description="Graffiti duvar resmi, kişiye özel portre çizim ve araç & yat airbrush boyama. Profesyonel ekip, dayanıklı malzeme, ücretsiz keşif ve fiyat teklifi."
+>
+  <section class="relative isolate overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white">
+    <Image src={headerBg} alt="" aria-hidden="true" loading="eager" class="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-50" />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-neutral-950/30"></div>
+    <div class="mx-auto max-w-6xl px-5">
+      <p class="text-sm font-semibold uppercase tracking-widest text-neutral-400">Hizmetlerimiz</p>
+      <h1 class="mt-3 font-display text-4xl md:text-6xl drop-shadow">Ne Yapıyoruz</h1>
+      <p class="mt-4 max-w-2xl text-lg text-neutral-300 drop-shadow">
+        Fikirden uygulamaya, mekanlarınızı ve yüzeylerinizi sanata çeviriyoruz.
+      </p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        {services.map((s) => (
+          <span class="rounded-full border border-white/30 bg-white/5 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur-sm">
+            {s.title}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Hizmet detayları -->
+  <section class="py-16">
+    <div class="mx-auto max-w-6xl space-y-20 px-5">
+      {services.map((s, i) => (
+        <div class={`grid items-center gap-10 md:grid-cols-2 ${i % 2 === 1 ? "md:[&>div:first-child]:order-2" : ""}`}>
+          <div class="overflow-hidden rounded-2xl">
+            <Image src={s.img} alt={s.title} loading="lazy" class="aspect-[4/3] w-full object-cover" />
+          </div>
+          <div>
+            <h2 class="font-display text-2xl text-neutral-900 md:text-4xl">{s.title}</h2>
+            <p class="mt-4 text-neutral-600">{s.desc}</p>
+            <ul class="mt-6 space-y-2">
+              {s.points.map((p) => (
+                <li class="flex items-start gap-3 text-sm text-neutral-700">
+                  <span class="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-neutral-900"></span>
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Süreç -->
+  <section class="bg-neutral-950 py-20 text-white">
+    <div class="mx-auto max-w-6xl px-5">
+      <h2 class="font-display text-3xl md:text-5xl">Nasıl Çalışıyoruz</h2>
+      <div class="mt-12 grid gap-8 md:grid-cols-4">
+        {steps.map((s) => (
+          <div class="border-t border-neutral-800 pt-5">
+            <p class="font-display text-4xl text-neutral-600">{s.n}</p>
+            <h3 class="mt-3 text-lg font-bold">{s.t}</h3>
+            <p class="mt-2 text-sm text-neutral-400">{s.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Fiyatlandırma -->
+  <section class="py-20">
+    <div class="mx-auto max-w-3xl px-5 text-center">
+      <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Fiyatlandırma</h2>
+      <p class="mt-5 text-lg text-neutral-600">
+        Çalışmalarımız metrekare bazlı hesaplanır. Fiyat; projenin ölçeğine,
+        tasarımın karmaşıklığına ve kullanılacak malzemeye göre değişir.
+        Her proje için <strong>ücretsiz keşif ve fiyat teklifi</strong> sunuyoruz.
+      </p>
+      <a href="/iletisim" class="mt-8 inline-block rounded-full bg-neutral-900 px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-neutral-700">
+        Ücretsiz Teklif Al
+      </a>
+    </div>
+  </section>
+</Layout>

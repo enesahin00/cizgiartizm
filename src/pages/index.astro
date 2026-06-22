@@ -1,0 +1,220 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
+
+import heroImg from "../assets/images/cizgi-sprey-kutu.png";
+import svcZeus from "../assets/images/zeus-poseidon-bina-cephesi-grafitti.jpg";
+import svcKadin from "../assets/images/renkli-kadin-portesi-grafitti.jpg";
+import svcMickey from "../assets/images/mickey-mouse-minibus-airbrush.jpg";
+import featKaplan from "../assets/images/beyaz-kaplan-duvar-resmi.jpg";
+import featMelek from "../assets/images/melek-heykeli-ofis-duvar-resmi.jpg";
+import featFigur from "../assets/images/figur-siyah-beyaz-yapim-asamasi.png";
+import refBuyuksehir from "../assets/images/referans-izmir-buyuksehir.png";
+import refMetro from "../assets/images/referans-metro-izmir.png";
+import refIzenerji from "../assets/images/referans-izenerji.png";
+import refOsmanli from "../assets/images/referans-1453-osmanli.png";
+import refCreative from "../assets/images/referans-creative-qp.png";
+import refAltinordu from "../assets/images/referans-altinordu.png";
+import type { ImageMetadata } from "astro";
+
+const services: { title: string; desc: string; img: ImageMetadata }[] = [
+  {
+    title: "Graffiti & Duvar Resmi",
+    desc: "Bina cepheleri, iç mekan duvarları, beton, ahşap ve metal yüzeylere hava koşullarına dayanıklı, uzun ömürlü graffiti uygulaması.",
+    img: svcZeus,
+  },
+  {
+    title: "Kişiye Özel Portre",
+    desc: "Fotoğrafınızdan özgün portre çizimleri. Hediyelik ve koleksiyonluk eserler.",
+    img: svcKadin,
+  },
+  {
+    title: "Araç & Yat Airbrush",
+    desc: "Otomobil, motosiklet, karavan ve teknelere airbrush tekniğiyle su geçirmez, özel tasarım uygulaması.",
+    img: svcMickey,
+  },
+];
+
+const featured: { img: ImageMetadata; alt: string; full: string }[] = [
+  { img: featKaplan, alt: "Bina duvarına yapılmış gerçekçi beyaz kaplan graffitisi", full: "/images/beyaz-kaplan-duvar-resmi.jpg" },
+  { img: featMelek, alt: "Ofis duvarına yapılmış kanatlı melek heykeli temalı duvar resmi", full: "/images/melek-heykeli-ofis-duvar-resmi.jpg" },
+  { img: featFigur, alt: "Siyah-beyaz figüratif duvar resminin yapım aşaması", full: "/images/figur-siyah-beyaz-yapim-asamasi.png" },
+];
+
+const steps = [
+  { n: "01", t: "Danışmanlık & Planlama", d: "Mekanı, hayalinizi ve bütçeyi birlikte değerlendiriyoruz." },
+  { n: "02", t: "Tasarım Geliştirme", d: "Size özel taslakları hazırlayıp onayınızı alıyoruz." },
+  { n: "03", t: "Uygulama & Teslim", d: "Profesyonel ekip ve dayanıklı malzemelerle hayata geçiriyoruz." },
+  { n: "04", t: "Son Değerlendirme", d: "Birlikte gözden geçirip işi eksiksiz teslim ediyoruz." },
+];
+
+const refs: { name: string; logo: ImageMetadata }[] = [
+  { name: "İzmir Büyükşehir Belediyesi", logo: refBuyuksehir },
+  { name: "Metro İzmir", logo: refMetro },
+  { name: "İZENERJİ", logo: refIzenerji },
+  { name: "1453 Osmanlı", logo: refOsmanli },
+  { name: "Creative QP", logo: refCreative },
+  { name: "Altınordu", logo: refAltinordu },
+];
+---
+
+<Layout>
+  <!-- HERO (ÇİZGİ sprey kutusu arka planı) -->
+  <section class="relative isolate overflow-hidden bg-neutral-950 text-white">
+    <Image
+      src={heroImg}
+      alt="ÇİZGİ yazılı sprey boya kutusu"
+      class="absolute inset-0 -z-10 h-full w-full object-cover object-center"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <!-- Metnin okunması için yalnızca soldan hafif degrade; sağda sprey kutusu net görünür -->
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950/90 via-neutral-950/45 to-transparent"></div>
+
+    <div class="mx-auto max-w-6xl px-5 py-28 md:py-44">
+      <div class="max-w-xl">
+        <h1 class="font-display text-5xl leading-[1.1] drop-shadow-lg md:text-7xl">
+          Duvarları Sanata<br />Çeviriyoruz
+        </h1>
+        <p class="mt-6 max-w-md text-lg text-white/90 drop-shadow">
+          Bina cephelerinden iç mekanlara, araçlardan portrelere — profesyonel
+          graffiti, duvar resmi ve airbrush sanatı. Türkiye genelinde her ölçekte
+          proje teslim ediyoruz.
+        </p>
+        <div class="mt-9 flex flex-wrap gap-4">
+          <a href="/galeri" class="rounded-full border border-white/40 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+            İşlerimizi Gör
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HİZMETLER -->
+  <section class="py-20">
+    <div class="mx-auto max-w-6xl px-5">
+      <div class="mb-12 flex items-end justify-between">
+        <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Ne Yapıyoruz</h2>
+        <a href="/hizmetler" class="hidden text-sm font-semibold text-neutral-600 hover:text-neutral-900 md:block">Tüm hizmetler →</a>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        {services.map((s) => (
+          <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200">
+            <div class="aspect-[4/3] overflow-hidden">
+              <Image src={s.img} alt={s.title} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold text-neutral-900">{s.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-neutral-600">{s.desc}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ÖNE ÇIKAN İŞLER -->
+  <section class="border-t border-neutral-200 bg-neutral-50 py-20">
+    <div class="mx-auto max-w-6xl px-5">
+      <div class="mb-12 flex items-end justify-between">
+        <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Öne Çıkan İşler</h2>
+        <a href="/galeri" class="hidden text-sm font-semibold text-neutral-600 hover:text-neutral-900 md:block">Tüm galeri →</a>
+      </div>
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
+        {featured.map((f) => (
+          <button
+            type="button"
+            class="feat-item group relative aspect-square cursor-zoom-in overflow-hidden rounded-xl"
+            data-full={f.full}
+            data-alt={f.alt}
+          >
+            <Image src={f.img} alt={f.alt} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
+            <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20"></div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SÜREÇ -->
+  <section class="bg-neutral-950 py-20 text-white">
+    <div class="mx-auto max-w-6xl px-5">
+      <h2 class="font-display text-3xl md:text-5xl">Nasıl Çalışıyoruz</h2>
+      <div class="mt-12 grid gap-8 md:grid-cols-4">
+        {steps.map((s) => (
+          <div class="border-t border-neutral-800 pt-5">
+            <p class="font-display text-4xl text-neutral-600">{s.n}</p>
+            <h3 class="mt-3 text-lg font-bold">{s.t}</h3>
+            <p class="mt-2 text-sm text-neutral-400">{s.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- REFERANSLAR -->
+  <section class="py-20">
+    <div class="mx-auto max-w-6xl px-5 text-center">
+      <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Referanslarımız</h2>
+      <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+        {refs.map((r) => (
+          <div class="flex items-center justify-center rounded-xl border border-neutral-200 p-6 transition-shadow hover:shadow-sm">
+            <Image src={r.logo} alt={r.name} title={r.name} loading="lazy" class="max-h-14 w-auto object-contain" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-neutral-900 py-20 text-center text-white">
+    <div class="mx-auto max-w-3xl px-5">
+      <h2 class="font-display text-4xl md:text-6xl">Bir fikrin mi var?</h2>
+      <p class="mt-5 text-lg text-neutral-300">Mekanını sanata çevirmek için bizimle iletişime geç. Ücretsiz keşif ve fiyat teklifi.</p>
+      <a href="/iletisim" class="mt-8 inline-block rounded-full bg-white px-8 py-3 text-sm font-semibold text-neutral-900 transition-colors hover:bg-neutral-200">
+        Hemen İletişime Geç
+      </a>
+    </div>
+  </section>
+
+  <!-- Öne çıkan işler lightbox -->
+  <div
+    id="feat-lightbox"
+    class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Görüntü görüntüleyici"
+  >
+    <button id="feat-close" aria-label="Kapat" class="absolute right-4 top-4 text-3xl text-white/80 hover:text-white">&times;</button>
+    <img id="feat-img" src="" alt="" class="mx-auto max-h-[85vh] w-auto rounded-lg object-contain" />
+  </div>
+</Layout>
+
+<script>
+  const items = Array.from(document.querySelectorAll<HTMLElement>(".feat-item"));
+  const lightbox = document.getElementById("feat-lightbox")!;
+  const lbImg = document.getElementById("feat-img") as HTMLImageElement;
+
+  function open(btn: HTMLElement) {
+    lbImg.src = btn.dataset.full ?? "";
+    lbImg.alt = btn.dataset.alt ?? "";
+    lightbox.classList.remove("hidden");
+    lightbox.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+
+  function close() {
+    lightbox.classList.add("hidden");
+    lightbox.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+  items.forEach((el) => el.addEventListener("click", () => open(el)));
+  document.getElementById("feat-close")!.addEventListener("click", close);
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !lightbox.classList.contains("hidden")) close();
+  });
+</script>

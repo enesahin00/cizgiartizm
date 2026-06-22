@@ -1,0 +1,30 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Sayfa Bulunamadı — Çizgi Artizm"
+  description="Aradığınız sayfa bulunamadı. Ana sayfaya dönebilirsiniz."
+>
+  <section class="flex min-h-[60vh] flex-col items-center justify-center px-5 py-20 text-center">
+    <p class="font-display text-8xl text-neutral-200 md:text-[10rem]">404</p>
+    <h1 class="mt-4 font-display text-3xl text-neutral-900 md:text-5xl">Sayfa Bulunamadı</h1>
+    <p class="mt-4 max-w-md text-lg text-neutral-600">
+      Aradığınız sayfa taşınmış ya da kaldırılmış olabilir. Endişelenmeyin, ana sayfadan devam edebilirsiniz.
+    </p>
+    <div class="mt-8 flex flex-wrap justify-center gap-4">
+      <a
+        href="/"
+        class="rounded-full bg-neutral-900 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-neutral-700"
+      >
+        Ana Sayfaya Dön
+      </a>
+      <a
+        href="/galeri"
+        class="rounded-full border border-neutral-300 px-7 py-3 text-sm font-semibold text-neutral-700 transition-colors hover:border-neutral-900"
+      >
+        Galeriyi İncele
+      </a>
+    </div>
+  </section>
+</Layout>
