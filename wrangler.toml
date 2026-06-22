@@ -1,0 +1,8 @@
+name = "cizgiartizm"
+compatibility_date = "2024-11-01"
+
+# Statik site: dist klasörünü Cloudflare statik varlık olarak sunar.
+# public/_headers ve 404.html otomatik uygulanır.
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"
