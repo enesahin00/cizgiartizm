@@ -6,6 +6,27 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://cizgiartizm.com',
   integrations: [sitemap()],
+  // CSP'yi Astro yönetir: kendi ürettiği satır içi (inline) script ve style'lar için
+  // otomatik sha256 hash üretip <meta> CSP olarak ekler. Böylece Cloudflare'de de
+  // lightbox/menü script'leri çalışır. Diğer güvenlik başlıkları public/_headers'ta.
+  experimental: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "font-src 'self' https://fonts.gstatic.com",
+        "connect-src 'self'",
+        "form-action 'self'",
+        "base-uri 'self'",
+        "object-src 'none'",
+        "frame-ancestors 'none'",
+        "upgrade-insecure-requests",
+      ],
+      styleDirective: {
+        resources: ["'self'", "https://fonts.googleapis.com"],
+      },
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
   },
