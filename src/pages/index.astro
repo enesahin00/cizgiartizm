@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 
 import heroImg from "../assets/images/cizgi-sprey-kutu.png";
 import svcZeus from "../assets/images/zeus-poseidon-bina-cephesi-grafitti.jpg";
@@ -35,11 +35,19 @@ const services: { title: string; desc: string; img: ImageMetadata }[] = [
   },
 ];
 
-const featured: { img: ImageMetadata; alt: string; full: string }[] = [
-  { img: featKaplan, alt: "Bina duvarına yapılmış gerçekçi beyaz kaplan graffitisi", full: "/images/beyaz-kaplan-duvar-resmi.jpg" },
-  { img: featMelek, alt: "Ofis duvarına yapılmış kanatlı melek heykeli temalı duvar resmi", full: "/images/melek-heykeli-ofis-duvar-resmi.jpg" },
-  { img: featFigur, alt: "Siyah-beyaz figüratif duvar resminin yapım aşaması", full: "/images/figur-siyah-beyaz-yapim-asamasi.png" },
+const featuredRaw: { img: ImageMetadata; alt: string }[] = [
+  { img: featKaplan, alt: "Bina duvarına yapılmış gerçekçi beyaz kaplan graffitisi" },
+  { img: featMelek, alt: "Ofis duvarına yapılmış kanatlı melek heykeli temalı duvar resmi" },
+  { img: featFigur, alt: "Siyah-beyaz figüratif duvar resminin yapım aşaması" },
 ];
+
+// Büyütme (lightbox) için optimize, hash'li WebP — orijinal yerine.
+const featured = await Promise.all(
+  featuredRaw.map(async (f) => ({
+    ...f,
+    full: (await getImage({ src: f.img, width: 1400, format: "webp", quality: 78 })).src,
+  }))
+);
 
 const steps = [
   { n: "01", t: "Danışmanlık & Planlama", d: "Mekanı, hayalinizi ve bütçeyi birlikte değerlendiriyoruz." },

@@ -10,6 +10,12 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Mobilde tıklayınca çıkan mavi/gri vurguyu kaldır (özellikle galeri/lightbox) */
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   @apply bg-white text-neutral-900 antialiased;
 }

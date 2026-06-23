@@ -3,6 +3,15 @@ import Layout from "../layouts/Layout.astro";
 import { Image } from "astro:assets";
 import headerBg from "../assets/images/frida-kahlo-portre-ic-mekan-duvar-resmi.jpg";
 
+// ── FORM BACKEND (Web3Forms) ──────────────────────────────────────────────
+// Form mesajları doğrudan e-postaya düşer; sunucu/kod gerektirmez.
+// KURULUM (tek seferlik, ~1 dk):
+//   1. https://web3forms.com/ adresine git
+//   2. "Access Key"i al: cizgiartizm@gmail.com adresini yaz, anında mail gelir
+//   3. Gelen anahtarı aşağıdaki "BURAYA_ACCESS_KEY" yerine yapıştır
+// Not: Bu anahtar herkese açık olabilir (zaten tarayıcıya gönderilir), gizli değildir.
+const WEB3FORMS_ACCESS_KEY = "BURAYA_ACCESS_KEY";
+
 const contacts = [
   {
     label: "Telefon",
@@ -96,8 +105,8 @@ const contacts = [
         </div>
 
         <p class="mt-8 text-sm text-neutral-500">
-          <span class="font-semibold text-neutral-700">Hizmet bölgeleri:</span>
-          İstanbul, Ankara, İzmir, Bursa ve Türkiye geneli.
+          <span class="font-semibold text-neutral-700">Hizmet bölgesi:</span>
+          İzmir merkezli, Türkiye geneli.
         </p>
       </div>
 
@@ -105,27 +114,33 @@ const contacts = [
       <div class="rounded-3xl bg-neutral-50 p-8 ring-1 ring-neutral-200">
         <h2 class="font-display text-2xl text-neutral-900">Bize yazın</h2>
         <p class="mt-2 text-sm text-neutral-600">
-          Formu doldurun, "Gönder"e basınca e-posta uygulamanız hazır mesajla açılır;
-          size en kısa sürede dönelim.
+          Formu doldurup gönderin — mesajınız doğrudan bize ulaşır, en kısa sürede
+          dönüş yapalım.
         </p>
 
         <form id="contact-form" class="mt-6 space-y-4">
+          <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
+          <input type="hidden" name="subject" value="Çizgi Artizm — Web sitesi iletişim formu" />
+          <input type="hidden" name="from_name" value="Çizgi Artizm Web Sitesi" />
+          <!-- spam tuzağı: insanlar görmez, botlar doldurursa mesaj reddedilir -->
+          <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" class="hidden" style="display:none" aria-hidden="true" />
           <div>
             <label for="ad" class="block text-sm font-medium text-neutral-700">Adınız</label>
-            <input id="ad" name="ad" type="text" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10" />
+            <input id="ad" name="Ad Soyad" type="text" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10" />
           </div>
           <div>
             <label for="eposta" class="block text-sm font-medium text-neutral-700">E-posta</label>
-            <input id="eposta" name="eposta" type="email" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10" />
+            <input id="eposta" name="E-posta" type="email" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10" />
           </div>
           <div>
             <label for="mesaj" class="block text-sm font-medium text-neutral-700">Mesajınız</label>
-            <textarea id="mesaj" name="mesaj" rows="4" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"></textarea>
+            <textarea id="mesaj" name="Mesaj" rows="4" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"></textarea>
           </div>
-          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-full bg-neutral-900 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-neutral-700">
+          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-full bg-neutral-900 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-60">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-            E-posta ile Gönder
+            Gönder
           </button>
+          <p id="form-status" role="status" aria-live="polite" class="text-sm"></p>
         </form>
       </div>
     </div>
@@ -134,18 +149,41 @@ const contacts = [
 
 <script>
   const form = document.getElementById("contact-form") as HTMLFormElement | null;
-  form?.addEventListener("submit", (e) => {
+  const statusEl = document.getElementById("form-status");
+  const wpFallback =
+    'Lütfen <a class="font-semibold underline" href="https://wa.me/905396183767" target="_blank" rel="noopener">WhatsApp</a> üzerinden yazın.';
+
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const get = (id: string) =>
-      (document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null)?.value.trim() ?? "";
+    if (!statusEl) return;
+    const btn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
 
-    const ad = get("ad");
-    const eposta = get("eposta");
-    const mesaj = get("mesaj");
+    statusEl.textContent = "Gönderiliyor…";
+    statusEl.className = "text-sm text-neutral-600";
+    btn?.setAttribute("disabled", "true");
 
-    const konu = `Web sitesi mesajı — ${ad}`;
-    const govde = `Ad: ${ad}\nE-posta: ${eposta}\n\n${mesaj}`;
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: new FormData(form),
+      });
+      const data = await res.json();
 
-    window.location.href = `mailto:cizgiartizm@gmail.com?subject=${encodeURIComponent(konu)}&body=${encodeURIComponent(govde)}`;
+      if (res.ok && data.success) {
+        form.reset();
+        statusEl.textContent =
+          "✓ Mesajınız ulaştı, teşekkürler! En kısa sürede dönüş yapacağız.";
+        statusEl.className = "text-sm font-medium text-green-700";
+      } else {
+        statusEl.innerHTML = "Mesaj gönderilemedi. " + wpFallback;
+        statusEl.className = "text-sm font-medium text-red-700";
+      }
+    } catch {
+      statusEl.innerHTML = "Bağlantı hatası. " + wpFallback;
+      statusEl.className = "text-sm font-medium text-red-700";
+    } finally {
+      btn?.removeAttribute("disabled");
+    }
   });
 </script>
