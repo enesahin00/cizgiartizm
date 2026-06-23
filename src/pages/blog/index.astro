@@ -1,12 +1,25 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import { getCollection } from "astro:content";
 import headerBg from "../../assets/images/diz-cokmus-melek-portre-duvar-resmi.png";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+
+// Blog görsellerini optimize WebP olarak sun: frontmatter'daki "/images/x.jpg"
+// yolunu src/assets'teki optimize edilebilir kaynağa eşle.
+const assetImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{png,jpeg,jpg}",
+  { eager: true }
+);
+const resolveImg = (path?: string): ImageMetadata | undefined => {
+  if (!path) return undefined;
+  const file = path.split("/").pop();
+  return assetImages[`/src/assets/images/${file}`]?.default;
+};
 
 const fmt = (d: Date) =>
   d.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
@@ -31,16 +44,18 @@ const fmt = (d: Date) =>
   <section class="py-14">
     <div class="mx-auto max-w-6xl px-5">
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {posts.map((post) => (
+        {posts.map((post) => {
+          const cover = resolveImg(post.data.image);
+          return (
           <a
             href={post.data.externalUrl ?? `/blog/${post.id}/`}
             target={post.data.externalUrl ? "_blank" : undefined}
             rel={post.data.externalUrl ? "noopener noreferrer" : undefined}
             class="group flex flex-col overflow-hidden rounded-2xl ring-1 ring-neutral-200 transition-shadow hover:shadow-lg"
           >
-            {post.data.image ? (
+            {cover ? (
               <div class="aspect-[16/10] overflow-hidden bg-neutral-100">
-                <img src={post.data.image} alt={post.data.title} loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <Image src={cover} alt={post.data.title} width={640} height={400} loading="lazy" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
             ) : (
               <div class="aspect-[16/10] overflow-hidden bg-neutral-900 flex items-center justify-center select-none">
@@ -56,7 +71,8 @@ const fmt = (d: Date) =>
               </span>
             </div>
           </a>
-        ))}
+          );
+        })}
       </div>
     </div>
   </section>

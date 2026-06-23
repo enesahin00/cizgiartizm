@@ -1,5 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
@@ -12,6 +14,14 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Kapak görselini optimize WebP olarak göster (og:image için string yol korunur).
+const assetImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{png,jpeg,jpg}",
+  { eager: true }
+);
+const coverFile = post.data.image?.split("/").pop();
+const cover = coverFile ? assetImages[`/src/assets/images/${coverFile}`]?.default : undefined;
 
 const fmt = (d: Date) =>
   d.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
@@ -27,8 +37,8 @@ const fmt = (d: Date) =>
       <p class="mt-4 text-lg text-neutral-600">{post.data.description}</p>
     </header>
 
-    {post.data.image && (
-      <img src={post.data.image} alt={post.data.title} class="mt-8 aspect-[16/9] w-full rounded-2xl object-cover" />
+    {cover && (
+      <Image src={cover} alt={post.data.title} width={1200} height={675} class="mt-8 aspect-[16/9] w-full rounded-2xl object-cover" />
     )}
 
     <div class="prose prose-neutral mt-10 max-w-none prose-headings:font-bold prose-h2:mt-8 prose-h2:text-2xl prose-img:rounded-xl prose-a:text-neutral-900">
