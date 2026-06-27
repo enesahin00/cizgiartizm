@@ -3,7 +3,7 @@ title: "Bursa'da Türkiye'nin En Büyük Graffiti Festivali Başladı!"
 date: 2024-07-17
 description: "Bursa Büyükşehir Belediyesi'nin Hüdavendigar Kent Parkı'nda düzenlediği festivalde, yurt içi ve yurt dışından 64 sanatçı panoları dev bir tuvale dönüştürdü."
 author: "Çizgi Artizm"
-image: "/images/istanbul-temali-bina-cephesi-hava-fotografi.jpg"
+image: "/images/bursa-graffiti-festivali-ataturk-mural.jpeg"
 ---
 
 Bursa Büyükşehir Belediyesi'nin organizasyonuyla Hüdavendigar Kent Parkı'nda
