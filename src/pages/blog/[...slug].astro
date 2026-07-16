@@ -20,29 +20,76 @@ const assetImages = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/images/*.{png,jpeg,jpg}",
   { eager: true }
 );
-const coverFile = post.data.image?.split("/").pop();
-const cover = coverFile ? assetImages[`/src/assets/images/${coverFile}`]?.default : undefined;
+const resolveImg = (path?: string): ImageMetadata | undefined => {
+  if (!path) return undefined;
+  const file = path.split("/").pop();
+  return assetImages[`/src/assets/images/${file}`]?.default;
+};
+const cover = resolveImg(post.data.image);
+
+// İlgili yazılar: her yazıya en az 2-3 iç link kazandırır (öksüz sayfa kalmaz).
+const related = (await getCollection("blog"))
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
 
 const fmt = (d: Date) =>
   d.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" });
+
+const blogPostingSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  image: post.data.image ? new URL(post.data.image, Astro.site).toString() : undefined,
+  inLanguage: "tr",
+  author: { "@type": "Organization", name: "Çizgi Artizm", url: "https://cizgiartizm.com" },
+  publisher: {
+    "@type": "Organization",
+    name: "Çizgi Artizm",
+    logo: { "@type": "ImageObject", url: new URL("/favicon.svg", Astro.site).toString() },
+  },
+  mainEntityOfPage: new URL(`/blog/${post.id}/`, Astro.site).toString(),
+});
 ---
 
 <Layout title={`${post.data.title} — Çizgi Artizm`} description={post.data.description} image={post.data.image}>
+  <script type="application/ld+json" set:html={blogPostingSchema} slot="head" />
   <article class="mx-auto max-w-3xl px-5 py-14">
-    <a href="/blog" class="text-sm font-semibold text-neutral-500 hover:text-neutral-900">← Tüm yazılar</a>
+    <a href="/blog" class="text-sm font-semibold text-neutral-500 transition-colors hover:text-accent">← Tüm yazılar</a>
 
     <header class="mt-6">
-      <time class="text-xs font-semibold uppercase tracking-wider text-neutral-500">{fmt(post.data.date)}</time>
-      <h1 class="mt-2 font-display text-3xl leading-tight text-neutral-900 md:text-5xl">{post.data.title}</h1>
+      <time class="inline-block -rotate-1 bg-accent px-2.5 py-1 font-display text-xs tracking-wide text-white">{fmt(post.data.date)}</time>
+      <h1 class="mt-4 font-display text-3xl leading-tight text-neutral-900 md:text-5xl">{post.data.title}</h1>
       <p class="mt-4 text-lg text-neutral-600">{post.data.description}</p>
     </header>
 
     {cover && (
-      <Image src={cover} alt={post.data.title} width={1200} height={675} class="mt-8 aspect-[16/9] w-full rounded-2xl object-cover" />
+      <div class="relative mt-10">
+        <div class="absolute -inset-2 rotate-1 rounded-2xl bg-accent/10" aria-hidden="true"></div>
+        <Image src={cover} alt={post.data.title} width={1200} height={675} class="relative aspect-[16/9] w-full rounded-2xl object-cover shadow-lg" />
+      </div>
     )}
 
-    <div class="prose prose-neutral mt-10 max-w-none prose-headings:font-bold prose-h2:mt-8 prose-h2:text-2xl prose-img:rounded-xl prose-a:text-neutral-900">
+    <div class="prose prose-neutral mt-10 max-w-none prose-headings:font-bold prose-h2:mt-8 prose-h2:text-2xl prose-img:rounded-xl prose-a:text-accent prose-a:decoration-accent/40 hover:prose-a:text-accent-bright">
       <Content />
     </div>
+
+    {related.length > 0 && (
+      <aside class="mt-14 border-t border-neutral-200 pt-10">
+        <h2 class="font-display text-2xl text-neutral-900">İlgili Yazılar</h2>
+        <ul class="mt-6 space-y-4">
+          {related.map((p) => (
+            <li>
+              <a href={p.data.externalUrl ?? `/blog/${p.id}/`} class="group block">
+                <span class="text-xs font-semibold uppercase tracking-wider text-accent">{fmt(p.data.date)}</span>
+                <span class="mt-0.5 block font-semibold text-neutral-900 transition-colors group-hover:text-accent">{p.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
   </article>
 </Layout>

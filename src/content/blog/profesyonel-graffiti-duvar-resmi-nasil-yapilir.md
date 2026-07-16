@@ -3,7 +3,7 @@ title: "Profesyonel Graffiti Duvar Resmi Nasıl Yapılır? Adım Adım Rehber"
 date: 2024-07-24
 description: "Duvar hazırlamadan tasarım ölçeklemeye, malzeme seçiminden uygulamaya — profesyonel bir graffiti duvar resminin aşamalarını anlattık."
 author: "Çizgi Artizm"
-image: "/images/buyuk-adam-portesi-bina-cephesi-yapim-asamasi.png"
+image: "/images/kalpakli-ataturk-portresi-yapim-asamasi.png"
 ---
 
 Profesyonel bir graffiti duvar resmi, yalnızca boya ve sprey işi değildir;

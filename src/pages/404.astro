@@ -1,30 +1,52 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import SpraySplat from "../components/SpraySplat.astro";
+import SprayStroke from "../components/SprayStroke.astro";
 ---
 
 <Layout
   title="Sayfa Bulunamadı — Çizgi Artizm"
   description="Aradığınız sayfa bulunamadı. Ana sayfaya dönebilirsiniz."
 >
-  <section class="flex min-h-[60vh] flex-col items-center justify-center px-5 py-20 text-center">
-    <p class="font-display text-8xl text-neutral-200 md:text-[10rem]">404</p>
-    <h1 class="mt-4 font-display text-3xl text-neutral-900 md:text-5xl">Sayfa Bulunamadı</h1>
-    <p class="mt-4 max-w-md text-lg text-neutral-600">
-      Aradığınız sayfa taşınmış ya da kaldırılmış olabilir. Endişelenmeyin, ana sayfadan devam edebilirsiniz.
-    </p>
-    <div class="mt-8 flex flex-wrap justify-center gap-4">
-      <a
-        href="/"
-        class="rounded-full bg-neutral-900 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-neutral-700"
-      >
-        Ana Sayfaya Dön
-      </a>
-      <a
-        href="/galeri"
-        class="rounded-full border border-neutral-300 px-7 py-3 text-sm font-semibold text-neutral-700 transition-colors hover:border-neutral-900"
-      >
-        Galeriyi İncele
-      </a>
+  <section class="relative flex min-h-[70vh] flex-col items-center justify-center overflow-hidden px-5 py-20 text-center">
+    <span
+      aria-hidden="true"
+      class="text-outline pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap font-display text-[38vw] leading-none md:text-[24rem]"
+    >404</span>
+    <div class="float-slow absolute left-[14%] top-[18%]" aria-hidden="true">
+      <SpraySplat class="h-14 w-14 -rotate-12 text-spray-cyan/50" />
+    </div>
+    <div class="float-slower absolute bottom-[16%] right-[12%]" aria-hidden="true">
+      <SpraySplat class="h-16 w-16 rotate-45 text-spray-yellow/50" />
+    </div>
+    <div class="float-slower absolute right-[22%] top-[14%]" aria-hidden="true">
+      <SpraySplat class="h-9 w-9 rotate-90 text-accent/50" />
+    </div>
+
+    <div class="relative">
+      <p class="hero-rise font-display text-8xl md:text-[10rem]">
+        <span class="text-spray-gradient">404</span>
+      </p>
+      <h1 class="hero-rise rise-delay-1 mt-4 font-display text-3xl text-neutral-900 md:text-5xl">Bu Duvar Boş Kalmış</h1>
+      <SprayStroke class="hero-rise rise-delay-2 mx-auto mt-3 text-accent" />
+      <p class="hero-rise rise-delay-3 mx-auto mt-4 max-w-md text-lg text-neutral-600">
+        Aradığınız sayfa taşınmış ya da kaldırılmış olabilir. Endişelenmeyin,
+        ana sayfadan devam edebilirsiniz.
+      </p>
+      <div class="hero-rise rise-delay-4 mt-8 flex flex-wrap justify-center gap-4">
+        <a
+          href="/"
+          class="rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-bright"
+        >
+          Ana Sayfaya Dön
+        </a>
+        <a
+          href="/galeri"
+          class="rounded-full border border-neutral-300 px-7 py-3 text-sm font-semibold text-neutral-700 transition-colors hover:border-accent hover:text-accent"
+        >
+          Galeriyi İncele
+        </a>
+      </div>
     </div>
   </section>
 </Layout>

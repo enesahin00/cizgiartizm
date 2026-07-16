@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Image } from "astro:assets";
+import PageHero from "../components/PageHero.astro";
+import SpraySplat from "../components/SpraySplat.astro";
 import headerBg from "../assets/images/frida-kahlo-portre-ic-mekan-duvar-resmi.jpg";
 
 // ── FORM BACKEND (Web3Forms) ──────────────────────────────────────────────
@@ -47,27 +48,24 @@ const contacts = [
 ---
 
 <Layout
-  title="İletişim — Çizgi Artizm"
-  description="Aklınıza takılan her şeyi bize sorabilirsiniz. Telefon, WhatsApp, e-posta veya Instagram üzerinden Çizgi Artizm ile iletişime geçin."
+  title="İletişim — Çizgi Artizm | Ücretsiz Keşif & Fiyat Teklifi"
+  description="Duvar resmi, graffiti veya airbrush projeniz için bize ulaşın. Telefon, WhatsApp, e-posta veya Instagram üzerinden Çizgi Artizm ile iletişime geçin — ücretsiz keşif ve fiyat teklifi."
 >
-  <section class="relative isolate overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white">
-    <Image src={headerBg} alt="" aria-hidden="true" loading="eager" class="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-50" />
-    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-neutral-950/30"></div>
-    <div class="mx-auto max-w-6xl px-5">
-      <p class="text-sm font-semibold uppercase tracking-widest text-neutral-400">İletişim</p>
-      <h1 class="mt-3 font-display text-4xl md:text-6xl drop-shadow">Merhaba 👋</h1>
-      <p class="mt-4 max-w-xl text-lg text-neutral-300 drop-shadow">
-        Bir fikriniz, bir sorunuz ya da sadece merak ettiğiniz bir şey mi var?
-        Aklınıza takılan her şeyi çekinmeden sorabilirsiniz — en kısa sürede
-        size dönelim.
-      </p>
-    </div>
-  </section>
+  <PageHero label="İletişim" title="Merhaba 👋" watermark="MERHABA" image={headerBg}>
+    <p class="max-w-xl text-lg text-neutral-300 drop-shadow">
+      Bir fikriniz, bir sorunuz ya da sadece merak ettiğiniz bir şey mi var?
+      Aklınıza takılan her şeyi çekinmeden sorabilirsiniz — en kısa sürede
+      size dönelim.
+    </p>
+  </PageHero>
 
-  <section class="py-16">
+  <section class="relative overflow-hidden py-16">
+    <div class="float-slower absolute right-[4%] top-[6%] hidden lg:block" aria-hidden="true">
+      <SpraySplat class="h-11 w-11 rotate-12 text-spray-cyan/40" />
+    </div>
     <div class="mx-auto grid max-w-6xl gap-12 px-5 lg:grid-cols-2">
       <!-- İletişim yöntemleri -->
-      <div>
+      <div data-reveal>
         <h2 class="font-display text-2xl text-neutral-900">Bize ulaşın</h2>
         <p class="mt-2 text-neutral-600">Size en uygun yöntemi seçin.</p>
 
@@ -76,13 +74,13 @@ const contacts = [
             <a
               href={c.href}
               class:list={[
-                "group flex items-center gap-4 rounded-2xl border border-neutral-200 p-5 transition-colors hover:border-neutral-900",
+                "group flex items-center gap-4 rounded-2xl border border-neutral-200 p-5 transition-colors hover:border-accent",
                 contacts.length % 2 !== 0 && i === contacts.length - 1
                   ? "sm:col-span-2 sm:max-w-[calc(50%-8px)]"
                   : "",
               ]}
             >
-              <span class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white transition-transform group-hover:scale-105">
+              <span class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-neutral-900 text-white transition group-hover:scale-105 group-hover:bg-accent">
                 {c.icon === "phone" && (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 )}
@@ -111,7 +109,10 @@ const contacts = [
       </div>
 
       <!-- Form -->
-      <div class="rounded-3xl bg-neutral-50 p-8 ring-1 ring-neutral-200">
+      <div class="reveal-delay-1 relative rounded-3xl bg-neutral-50 p-8 ring-1 ring-neutral-200" data-reveal>
+        <div class="absolute -right-3 -top-3" aria-hidden="true">
+          <SpraySplat class="h-10 w-10 rotate-45 text-accent/60" />
+        </div>
         <h2 class="font-display text-2xl text-neutral-900">Bize yazın</h2>
         <p class="mt-2 text-sm text-neutral-600">
           Formu doldurup gönderin — mesajınız doğrudan bize ulaşır, en kısa sürede
@@ -122,21 +123,22 @@ const contacts = [
           <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
           <input type="hidden" name="subject" value="Çizgi Artizm — Web sitesi iletişim formu" />
           <input type="hidden" name="from_name" value="Çizgi Artizm Web Sitesi" />
-          <!-- spam tuzağı: insanlar görmez, botlar doldurursa mesaj reddedilir -->
-          <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" class="hidden" style="display:none" aria-hidden="true" />
+          <!-- spam tuzağı: insanlar görmez, botlar doldurursa mesaj reddedilir.
+               display:none zaten odak/erişilebilirlik ağacından çıkarır; aria-label denetçiler için. -->
+          <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" class="hidden" aria-label="Bu alanı boş bırakın" />
           <div>
             <label for="ad" class="block text-sm font-medium text-neutral-700">Adınız</label>
-            <input id="ad" name="Ad Soyad" type="text" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10" />
+            <input id="ad" name="Ad Soyad" type="text" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15" />
           </div>
           <div>
             <label for="eposta" class="block text-sm font-medium text-neutral-700">E-posta</label>
-            <input id="eposta" name="E-posta" type="email" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10" />
+            <input id="eposta" name="E-posta" type="email" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15" />
           </div>
           <div>
             <label for="mesaj" class="block text-sm font-medium text-neutral-700">Mesajınız</label>
-            <textarea id="mesaj" name="Mesaj" rows="4" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-900/10"></textarea>
+            <textarea id="mesaj" name="Mesaj" rows="4" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15"></textarea>
           </div>
-          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-full bg-neutral-900 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-60">
+          <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-colors hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-60">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
             Gönder
           </button>

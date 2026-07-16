@@ -1,0 +1,44 @@
+---
+// İç sayfa hero bandı: arka plan görseli + grain dokusu + dev watermark +
+// sticker etiket + sprey fırça darbesi. Açıklama ve ek içerik slot ile gelir.
+import { Image } from "astro:assets";
+import SprayStroke from "./SprayStroke.astro";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  label: string;
+  title: string;
+  watermark: string;
+  image: ImageMetadata;
+}
+const { label, title, watermark, image } = Astro.props;
+---
+
+<section class="relative isolate overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white md:py-20">
+  <Image
+    src={image}
+    alt=""
+    role="presentation"
+    aria-hidden="true"
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-50"
+  />
+  <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-neutral-950/30"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <span
+    aria-hidden="true"
+    class="text-outline text-outline-dark pointer-events-none absolute -bottom-5 right-0 select-none whitespace-nowrap font-display text-[14vw] leading-none"
+  >{watermark}</span>
+
+  <div class="relative mx-auto max-w-6xl px-5">
+    <p class="hero-rise inline-block -rotate-2 bg-accent px-3 py-1 font-display text-sm tracking-wide text-white shadow-lg shadow-accent/30">
+      {label}
+    </p>
+    <h1 class="hero-rise rise-delay-1 mt-5 font-display text-4xl drop-shadow md:text-6xl">{title}</h1>
+    <SprayStroke class="hero-rise rise-delay-2 mt-3 text-accent-bright" />
+    <div class="hero-rise rise-delay-3 mt-5">
+      <slot />
+    </div>
+  </div>
+</section>

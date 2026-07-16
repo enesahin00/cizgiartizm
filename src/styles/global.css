@@ -1,14 +1,25 @@
+/* Self-host fontlar: Google Fonts'a dış istek yok — render-blocking CSS,
+   preconnect ve SRI sorunları kökten çözülür; latin-ext (Türkçe) dahil. */
+@import "@fontsource-variable/inter";
+@import "@fontsource/anton";
+
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Anton", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Anton", "Inter Variable", system-ui, sans-serif;
 
   /* Marka accent'i — hero'daki sprey kutusunun fuşya-pembesi */
   --color-accent: #db2777; /* açık zeminde buton/vurgu */
   --color-accent-bright: #ec4899; /* koyu zeminde vurgu */
   --color-accent-soft: #f9a8d4; /* koyu zeminde küçük metin/hover */
+
+  /* Dekoratif sprey renkleri — YALNIZ süsleme (sıçrama, gradyan, nokta).
+     Butonlar ve marka vurguları her zaman accent (pembe) kalır. */
+  --color-spray-cyan: #22d3ee;
+  --color-spray-yellow: #facc15;
+  --color-spray-purple: #a855f7;
 }
 
 html {
@@ -48,6 +59,32 @@ body {
 }
 .text-outline-dark {
   --outline-c: rgb(255 255 255 / 0.06);
+}
+.text-outline-accent {
+  --outline-c: rgb(219 39 119 / 0.35);
+}
+
+/* Sprey boyası gradyanı — başlıklarda tek kelimeyi renklendirmek için */
+.text-spray-gradient {
+  background: linear-gradient(
+    92deg,
+    var(--color-accent-bright),
+    var(--color-spray-purple) 55%,
+    var(--color-spray-cyan)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Beton/grain dokusu — koyu bölümlere derinlik (statik SVG, ~300 byte) */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
 }
 
 /* Stagger gecikmeleri (CSP nedeniyle inline style yerine class) */
@@ -98,6 +135,22 @@ body {
   }
   .hero-zoom {
     animation: hero-zoom 22s ease-out forwards;
+  }
+
+  /* Sprey sıçramaları: çok yavaş süzülme */
+  @keyframes float-drift {
+    from {
+      transform: translateY(-7px);
+    }
+    to {
+      transform: translateY(9px);
+    }
+  }
+  .float-slow {
+    animation: float-drift 7s ease-in-out infinite alternate;
+  }
+  .float-slower {
+    animation: float-drift 11s ease-in-out infinite alternate;
   }
 
   /* Referans logoları: akan şerit */

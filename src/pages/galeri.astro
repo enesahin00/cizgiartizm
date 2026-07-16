@@ -1,8 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
 import { Image, getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import { gallery } from "../data/gallery";
+import { gallery, categories } from "../data/gallery";
 
 const allImages = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/images/*.{png,jpeg,jpg}",
@@ -25,30 +26,48 @@ const items = await Promise.all(
   })
 );
 
-const headerImg = getImg("su-altinda-kiz-yunus-gemi-duvar-resmi.jpg");
+const counts = Object.fromEntries(
+  categories.map((c) => [c.id, gallery.filter((g) => g.category === c.id).length])
+);
+
+const headerImg = getImg("barista-kiz-kahve-bufesi-boyama.jpg");
 ---
 
 <Layout
   title="Galeri — Çizgi Artizm | Duvar Resmi, Graffiti, Portre & Su Deposu"
   description="Çizgi Artizm'in gerçekleştirdiği duvar resmi, graffiti, portre ve su deposu maskot projelerinden seçmeler. İzmir, Bursa, Çanakkale ve daha fazlası."
 >
-  <!-- Başlık -->
-  <section class="relative isolate overflow-hidden border-b border-neutral-800 bg-neutral-950 py-16 text-white">
-    <Image src={headerImg} alt="" aria-hidden="true" loading="eager" class="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-50" />
-    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-neutral-950/30"></div>
-    <div class="mx-auto max-w-6xl px-5">
-      <p class="text-sm font-semibold uppercase tracking-widest text-accent-soft">Portföy</p>
-      <h1 class="mt-3 font-display text-4xl md:text-6xl drop-shadow">Galeri</h1>
-      <p class="mt-4 max-w-xl text-lg text-neutral-300 drop-shadow">
-        Bina cephelerinden iç mekanlara, portrelerden maskotlara — tamamladığımız
-        bazı projeler.
-      </p>
-    </div>
-  </section>
+  <PageHero label="Portföy" title="Galeri" watermark="GALERİ" image={headerImg}>
+    <p class="max-w-xl text-lg text-neutral-300 drop-shadow">
+      Bina cephelerinden iç mekanlara, portrelerden maskotlara — tamamladığımız
+      bazı projeler.
+    </p>
+  </PageHero>
 
-  <!-- Galeri (tüm fotoğraflar, tek akış) -->
+  <!-- Kategori filtreleri -->
   <section class="py-12">
     <div class="mx-auto max-w-6xl px-5">
+      <div class="mb-8 flex flex-wrap gap-2.5" data-reveal>
+        <button
+          type="button"
+          data-filter="all"
+          aria-pressed="true"
+          class="rounded-full border border-accent bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors"
+        >
+          Tümü <span class="opacity-70">({gallery.length})</span>
+        </button>
+        {categories.map((c) => (
+          <button
+            type="button"
+            data-filter={c.id}
+            aria-pressed="false"
+            class="rounded-full border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-700 transition-colors hover:border-accent hover:text-accent"
+          >
+            {c.label} <span class="opacity-60">({counts[c.id]})</span>
+          </button>
+        ))}
+      </div>
+
       <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4" id="grid">
         {items.map((item, i) => (
           <button
@@ -60,15 +79,16 @@ const headerImg = getImg("su-altinda-kiz-yunus-gemi-duvar-resmi.jpg");
             data-index={i}
             data-full={item.full}
             data-caption={item.title}
+            data-category={item.category}
           >
             <Image
               src={item.meta}
               alt={item.alt}
               width={600}
               height={600}
-              loading={i < 8 ? "eager" : "lazy"}
+              loading={i < 4 ? "eager" : "lazy"}
               class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              data-fade={i >= 8 ? "" : undefined}
+              data-fade={i >= 4 ? "" : undefined}
             />
             <!-- Hover karartma -->
             <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20"></div>
@@ -87,13 +107,19 @@ const headerImg = getImg("su-altinda-kiz-yunus-gemi-duvar-resmi.jpg");
     aria-modal="true"
     aria-label="Galeri görüntüleyici"
   >
-    <button id="lb-close" aria-label="Kapat" class="absolute right-4 top-4 text-3xl text-white/80 hover:text-white">&times;</button>
-    <button id="lb-prev" aria-label="Önceki" class="absolute left-2 text-4xl text-white/70 hover:text-white md:left-6">&#8249;</button>
+    <button id="lb-close" aria-label="Kapat" class="absolute right-4 top-4 p-2 text-white/80 hover:text-white">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <button id="lb-prev" aria-label="Önceki" class="absolute left-2 p-2 text-white/70 hover:text-white md:left-6">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
     <figure class="max-h-[90vh] max-w-5xl text-center">
       <img id="lb-img" src="" alt="" class="mx-auto max-h-[80vh] w-auto rounded-lg object-contain" />
       <figcaption id="lb-caption" class="mt-3 text-sm text-white/80"></figcaption>
     </figure>
-    <button id="lb-next" aria-label="Sonraki" class="absolute right-2 text-4xl text-white/70 hover:text-white md:right-6">&#8250;</button>
+    <button id="lb-next" aria-label="Sonraki" class="absolute right-2 p-2 text-white/70 hover:text-white md:right-6">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
   </div>
 </Layout>
 
@@ -103,23 +129,37 @@ const headerImg = getImg("su-altinda-kiz-yunus-gemi-duvar-resmi.jpg");
   const lbImg = document.getElementById("lb-img") as HTMLImageElement;
   const lbCaption = document.getElementById("lb-caption")!;
   const lbClose = document.getElementById("lb-close") as HTMLButtonElement;
-  let current = 0;
+  let current: HTMLElement | null = null;
   let lastTrigger: HTMLElement | null = null;
 
-  function openLightbox(index: number) {
+  // ── Lightbox (filtre uygulanınca yalnız görünür öğeler arasında gezinir) ──
+  const visibleItems = () => items.filter((el) => !el.classList.contains("hidden"));
+
+  function display(el: HTMLElement) {
+    current = el;
+    lbImg.src = el.dataset.full ?? "";
+    lbImg.alt = el.querySelector("img")?.alt ?? "";
+    lbCaption.textContent = el.dataset.caption ?? "";
+  }
+
+  function openLightbox(el: HTMLElement) {
     const wasOpen = !lightbox.classList.contains("hidden");
-    current = ((index % items.length) + items.length) % items.length;
-    const btn = items[current];
-    lbImg.src = btn.dataset.full ?? "";
-    lbImg.alt = btn.querySelector("img")?.alt ?? "";
-    lbCaption.textContent = btn.dataset.caption ?? "";
+    display(el);
     lightbox.classList.remove("hidden");
     lightbox.classList.add("flex");
     document.body.style.overflow = "hidden";
     if (!wasOpen) {
-      lastTrigger = btn;
+      lastTrigger = el;
       lbClose.focus();
     }
+  }
+
+  function step(dir: number) {
+    if (!current) return;
+    const vis = visibleItems();
+    if (!vis.length) return;
+    const idx = vis.indexOf(current);
+    display(vis[(idx + dir + vis.length) % vis.length]);
   }
 
   function closeLightbox() {
@@ -129,13 +169,10 @@ const headerImg = getImg("su-altinda-kiz-yunus-gemi-duvar-resmi.jpg");
     lastTrigger?.focus();
   }
 
-  items.forEach((el) =>
-    el.addEventListener("click", () => openLightbox(Number(el.dataset.index)))
-  );
-
-  document.getElementById("lb-close")!.addEventListener("click", closeLightbox);
-  document.getElementById("lb-prev")!.addEventListener("click", () => openLightbox(current - 1));
-  document.getElementById("lb-next")!.addEventListener("click", () => openLightbox(current + 1));
+  items.forEach((el) => el.addEventListener("click", () => openLightbox(el)));
+  lbClose.addEventListener("click", closeLightbox);
+  document.getElementById("lb-prev")!.addEventListener("click", () => step(-1));
+  document.getElementById("lb-next")!.addEventListener("click", () => step(1));
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();
   });
@@ -143,7 +180,39 @@ const headerImg = getImg("su-altinda-kiz-yunus-gemi-duvar-resmi.jpg");
   document.addEventListener("keydown", (e) => {
     if (lightbox.classList.contains("hidden")) return;
     if (e.key === "Escape") closeLightbox();
-    if (e.key === "ArrowLeft") openLightbox(current - 1);
-    if (e.key === "ArrowRight") openLightbox(current + 1);
+    if (e.key === "ArrowLeft") step(-1);
+    if (e.key === "ArrowRight") step(1);
   });
+
+  // ── Kategori filtresi (URL ?kategori= ile paylaşılabilir) ──
+  const filterBtns = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter]"));
+  const activeCls = ["bg-accent", "text-white", "border-accent"];
+  const idleCls = ["border-neutral-300", "text-neutral-700", "hover:border-accent", "hover:text-accent"];
+
+  function applyFilter(cat: string, updateUrl = true) {
+    items.forEach((el) =>
+      el.classList.toggle("hidden", cat !== "all" && el.dataset.category !== cat)
+    );
+    filterBtns.forEach((b) => {
+      const on = b.dataset.filter === cat;
+      b.setAttribute("aria-pressed", String(on));
+      activeCls.forEach((c) => b.classList.toggle(c, on));
+      idleCls.forEach((c) => b.classList.toggle(c, !on));
+    });
+    if (updateUrl) {
+      const url = new URL(location.href);
+      if (cat === "all") url.searchParams.delete("kategori");
+      else url.searchParams.set("kategori", cat);
+      history.replaceState(null, "", url);
+    }
+  }
+
+  filterBtns.forEach((b) =>
+    b.addEventListener("click", () => applyFilter(b.dataset.filter ?? "all"))
+  );
+
+  const initial = new URLSearchParams(location.search).get("kategori");
+  if (initial && filterBtns.some((b) => b.dataset.filter === initial)) {
+    applyFilter(initial, false);
+  }
 </script>

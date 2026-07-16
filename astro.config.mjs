@@ -14,16 +14,18 @@ export default defineConfig({
       directives: [
         "default-src 'self'",
         "img-src 'self' data:",
-        "font-src 'self' https://fonts.gstatic.com",
+        // Fontlar artık self-host (@fontsource) — dış font kaynağı yok
+        "font-src 'self'",
         "connect-src 'self' https://api.web3forms.com",
         "form-action 'self' https://api.web3forms.com",
         "base-uri 'self'",
         "object-src 'none'",
-        "frame-ancestors 'none'",
+        // frame-ancestors <meta> CSP'de geçersiz (tarayıcı yok sayar + konsol hatası);
+        // clickjacking koruması public/_headers'taki X-Frame-Options: DENY ile sağlanıyor.
         "upgrade-insecure-requests",
       ],
       styleDirective: {
-        resources: ["'self'", "https://fonts.googleapis.com"],
+        resources: ["'self'"],
       },
     },
   },

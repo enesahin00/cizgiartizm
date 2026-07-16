@@ -38,25 +38,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:locale" content="tr_TR" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Fontlar -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-
     <!-- LocalBusiness yapısal verisi -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
+      "@id": "https://cizgiartizm.com/#business",
       "name": "Çizgi Artizm",
       "description": description,
       "image": new URL(image, Astro.site).toString(),
       "url": "https://cizgiartizm.com",
       "telephone": ["+905396183767", "+905357746012"],
       "email": "cizgiartizm@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "İzmir",
+        "addressCountry": "TR",
+      },
       "areaServed": "TR",
+      "priceRange": "₺₺",
+      "knowsAbout": ["Graffiti", "Duvar Resmi", "Mural", "Airbrush", "Portre Çizim"],
       "sameAs": ["https://www.instagram.com/cizgiartizm/"],
     })} />
 

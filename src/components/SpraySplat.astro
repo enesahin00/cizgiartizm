@@ -1,0 +1,31 @@
+---
+// Dekoratif sprey boyası sıçraması — inline SVG (~0.5 KB).
+// Renk kullanım yerinde text-spray-cyan / text-spray-yellow / text-accent ile verilir.
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 120 120"
+  fill="currentColor"
+  aria-hidden="true"
+  class:list={["pointer-events-none select-none", className]}
+>
+  <circle cx="60" cy="58" r="24"></circle>
+  <circle cx="83" cy="46" r="10"></circle>
+  <circle cx="43" cy="41" r="9"></circle>
+  <circle cx="77" cy="77" r="8"></circle>
+  <circle cx="39" cy="75" r="7"></circle>
+  <circle cx="97" cy="63" r="4"></circle>
+  <circle cx="23" cy="57" r="4"></circle>
+  <circle cx="60" cy="22" r="4"></circle>
+  <circle cx="57" cy="95" r="4"></circle>
+  <circle cx="105" cy="39" r="2.5"></circle>
+  <circle cx="17" cy="80" r="2.5"></circle>
+  <circle cx="87" cy="19" r="2"></circle>
+  <circle cx="29" cy="29" r="2"></circle>
+  <circle cx="97" cy="93" r="2"></circle>
+  <rect x="56" y="88" width="6" height="20" rx="3"></rect>
+</svg>

@@ -1,7 +1,7 @@
 ---
 title: "Duvar Resmi: Mekanları Dönüştüren Sanat"
 date: 2024-07-22
-description: "Duvar resmi, şehrin monotonluğunu kıran ve mekanlara kişilik katan güçlü bir sanatsal ifade biçimidir."
+description: "Duvar resmi, şehrin monotonluğunu kıran ve mekanlara kişilik katan güçlü bir sanatsal ifade biçimidir. Duvar resminin gücünü ve mekanlara kattığı değeri inceliyoruz."
 author: "Çizgi Artizm"
 image: "/images/sosyal-medya-temali-renkli-ic-mekan-duvar-resmi.jpg"
 ---

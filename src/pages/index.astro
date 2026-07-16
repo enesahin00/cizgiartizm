@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import SprayStroke from "../components/SprayStroke.astro";
+import SpraySplat from "../components/SpraySplat.astro";
 import { Image, getImage } from "astro:assets";
 
 import heroImg from "../assets/images/cizgi-sprey-kutu.png";
@@ -9,8 +10,7 @@ import svcKadin from "../assets/images/renkli-kadin-portesi-grafitti.jpg";
 import svcMickey from "../assets/images/mickey-mouse-minibus-airbrush.jpg";
 import featKaplan from "../assets/images/beyaz-kaplan-duvar-resmi.jpg";
 import featMelek from "../assets/images/melek-heykeli-ofis-duvar-resmi.jpg";
-// Dikkat: dosya adı yanıltıcı — içerik Atatürk trafo murali (galeri verisinde de düzeltilmeli)
-import featAtaturk from "../assets/images/figur-siyah-beyaz-yapim-asamasi.png";
+import featAtaturk from "../assets/images/ataturk-portresi-turk-bayragi-trafo-duvar-resmi.png";
 import featEjderha from "../assets/images/ejderha-ic-mekan-duvar-resmi.jpg";
 import featAraba from "../assets/images/sari-spor-araba-3kplus-duvar-resmi.jpg";
 import refBuyuksehir from "../assets/images/referans-izmir-buyuksehir.png";
@@ -86,6 +86,17 @@ const refs: { name: string; logo: ImageMetadata }[] = [
     <!-- Metnin okunması için yalnızca soldan hafif degrade; sağda sprey kutusu net görünür -->
     <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950/90 via-neutral-950/45 to-transparent"></div>
 
+    <!-- Süzülen sprey sıçramaları -->
+    <div class="float-slow absolute right-[6%] top-[14%] hidden md:block" aria-hidden="true">
+      <SpraySplat class="h-16 w-16 rotate-12 text-spray-cyan/70" />
+    </div>
+    <div class="float-slower absolute bottom-[16%] right-[30%] hidden lg:block" aria-hidden="true">
+      <SpraySplat class="h-10 w-10 -rotate-45 text-spray-yellow/60" />
+    </div>
+    <div class="float-slower absolute left-[4%] top-[12%]" aria-hidden="true">
+      <SpraySplat class="h-8 w-8 rotate-90 text-accent-bright/50" />
+    </div>
+
     <div class="mx-auto max-w-6xl px-5 py-28 md:py-44">
       <div class="max-w-xl">
         <p class="hero-rise mb-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
@@ -93,7 +104,7 @@ const refs: { name: string; logo: ImageMetadata }[] = [
           İzmir merkezli · Türkiye geneli
         </p>
         <h1 class="font-display text-5xl leading-[1.1] drop-shadow-lg md:text-7xl">
-          <span class="hero-rise rise-delay-1 block">Duvarları Sanata</span>
+          <span class="hero-rise rise-delay-1 block">Duvarları <span class="text-spray-gradient">Sanata</span></span>
           <span class="hero-rise rise-delay-2 block">Dönüştürüyoruz</span>
         </h1>
         <p class="hero-rise rise-delay-3 mt-6 max-w-md text-lg text-white/90 drop-shadow">
@@ -111,13 +122,21 @@ const refs: { name: string; logo: ImageMetadata }[] = [
         </div>
       </div>
     </div>
+
+    <!-- Aşağı kaydır ipucu -->
+    <div class="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/60 motion-safe:animate-bounce" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
   </section>
 
   <!-- HİZMETLER -->
   <section class="py-20">
     <div class="mx-auto max-w-6xl px-5">
       <div class="mb-12 flex items-end justify-between" data-reveal>
-        <div>
+        <div class="relative">
+          <div class="absolute -right-14 -top-4 hidden md:block" aria-hidden="true">
+            <SpraySplat class="h-9 w-9 rotate-45 text-spray-purple/50" />
+          </div>
           <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Ne Yapıyoruz</h2>
           <SprayStroke class="mt-3 text-accent" />
         </div>
@@ -127,7 +146,7 @@ const refs: { name: string; logo: ImageMetadata }[] = [
         {services.map((s, i) => (
           <article
             class:list={[
-              "group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200 transition duration-300 hover:-translate-y-1 hover:shadow-xl",
+              "group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200 transition duration-300 hover:-translate-y-1.5 hover:-rotate-1 hover:shadow-xl hover:ring-accent/40",
               i > 0 && `reveal-delay-${i}`,
             ]}
             data-reveal
@@ -198,6 +217,7 @@ const refs: { name: string; logo: ImageMetadata }[] = [
 
   <!-- SÜREÇ -->
   <section class="relative overflow-hidden bg-neutral-950 py-20 text-white">
+    <div class="grain" aria-hidden="true"></div>
     <span
       aria-hidden="true"
       class="text-outline text-outline-dark pointer-events-none absolute -bottom-8 left-0 select-none whitespace-nowrap font-display text-[18vw] leading-none"
@@ -233,9 +253,10 @@ const refs: { name: string; logo: ImageMetadata }[] = [
               <Image
                 src={r.logo}
                 alt={hidden ? "" : r.name}
+                role={hidden ? "presentation" : undefined}
                 title={r.name}
                 loading="lazy"
-                class="max-h-14 w-auto shrink-0 object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+                class="max-h-14 w-auto shrink-0 object-contain opacity-80 transition-opacity duration-300 hover:opacity-100"
               />
             ))}
           </div>
@@ -247,14 +268,52 @@ const refs: { name: string; logo: ImageMetadata }[] = [
     </div>
   </section>
 
+  <!-- SEO / TANITIM METNİ -->
+  <section class="border-t border-neutral-200 bg-neutral-50 py-16">
+    <div class="mx-auto max-w-6xl px-5">
+      <div class="grid gap-10 md:grid-cols-2 md:gap-16" data-reveal>
+        <div>
+          <h2 class="font-display text-2xl text-neutral-900 md:text-4xl">İzmir'de Graffiti & Duvar Resmi Sanatı</h2>
+          <SprayStroke class="mt-3 text-accent" />
+          <p class="mt-5 leading-relaxed text-neutral-600">
+            Çizgi Artizm, İzmir merkezli profesyonel bir graffiti ve duvar resmi
+            ekibidir. Bina cepheleri, ofis ve kafe iç mekanları, trafo binaları,
+            su depoları, okul ve AVM duvarları — her ölçekteki yüzeyi özgün
+            tasarımlarla sanata dönüştürüyoruz. İzmir başta olmak üzere
+            Türkiye'nin her yerinde <a href="/hizmetler" class="font-semibold text-accent hover:text-accent-bright">duvar resmi, portre çizim ve airbrush</a>
+            projeleri gerçekleştiriyoruz.
+          </p>
+        </div>
+        <div class="md:pt-14">
+          <p class="leading-relaxed text-neutral-600">
+            Her projede UV ve hava koşullarına dayanıklı boyalar kullanıyor;
+            vinç, iskele ve yüksekte çalışma dahil uygulamanın tamamını kendi
+            ekibimizle yürütüyoruz. Çalışmalarımız metrekare bazlı, şeffaf
+            fiyatlandırılır ve her proje <a href="/iletisim" class="font-semibold text-accent hover:text-accent-bright">ücretsiz keşif ve fiyat teklifiyle</a> başlar.
+            İzmir Büyükşehir Belediyesi ve Metro İzmir gibi kurumlar için
+            tamamladığımız işleri <a href="/galeri" class="font-semibold text-accent hover:text-accent-bright">galerimizde</a> inceleyebilir,
+            sektöre dair yazılarımızı <a href="/blog" class="font-semibold text-accent hover:text-accent-bright">blogumuzda</a> okuyabilirsiniz.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="relative overflow-hidden bg-neutral-900 py-20 text-center text-white">
+    <div class="grain" aria-hidden="true"></div>
     <span
       aria-hidden="true"
       class="text-outline text-outline-dark pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap font-display text-[20vw] leading-none"
     >ÇİZGİ</span>
+    <div class="float-slow absolute left-[8%] top-[18%]" aria-hidden="true">
+      <SpraySplat class="h-12 w-12 -rotate-12 text-spray-cyan/40" />
+    </div>
+    <div class="float-slower absolute bottom-[14%] right-[9%]" aria-hidden="true">
+      <SpraySplat class="h-14 w-14 rotate-45 text-spray-yellow/35" />
+    </div>
     <div class="relative mx-auto max-w-3xl px-5" data-reveal>
-      <h2 class="font-display text-4xl md:text-6xl">Bir fikrin mi var?</h2>
+      <h2 class="font-display text-4xl md:text-6xl">Bir <span class="text-spray-gradient">fikrin</span> mi var?</h2>
       <p class="mt-5 text-lg text-neutral-300">Mekanını sanata çevirmek için bizimle iletişime geç. Ücretsiz keşif ve fiyat teklifi.</p>
       <a href="/iletisim" class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-bright">
         Hemen İletişime Geç
@@ -270,7 +329,9 @@ const refs: { name: string; logo: ImageMetadata }[] = [
     aria-modal="true"
     aria-label="Görüntü görüntüleyici"
   >
-    <button id="feat-close" aria-label="Kapat" class="absolute right-4 top-4 text-3xl text-white/80 hover:text-white">&times;</button>
+    <button id="feat-close" aria-label="Kapat" class="absolute right-4 top-4 p-2 text-white/80 hover:text-white">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
     <img id="feat-img" src="" alt="" class="mx-auto max-h-[85vh] w-auto rounded-lg object-contain" />
   </div>
 </Layout>
