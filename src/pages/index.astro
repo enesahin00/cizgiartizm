@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import SprayStroke from "../components/SprayStroke.astro";
 import { Image, getImage } from "astro:assets";
 
 import heroImg from "../assets/images/cizgi-sprey-kutu.png";
@@ -8,7 +9,10 @@ import svcKadin from "../assets/images/renkli-kadin-portesi-grafitti.jpg";
 import svcMickey from "../assets/images/mickey-mouse-minibus-airbrush.jpg";
 import featKaplan from "../assets/images/beyaz-kaplan-duvar-resmi.jpg";
 import featMelek from "../assets/images/melek-heykeli-ofis-duvar-resmi.jpg";
-import featFigur from "../assets/images/figur-siyah-beyaz-yapim-asamasi.png";
+// Dikkat: dosya adı yanıltıcı — içerik Atatürk trafo murali (galeri verisinde de düzeltilmeli)
+import featAtaturk from "../assets/images/figur-siyah-beyaz-yapim-asamasi.png";
+import featEjderha from "../assets/images/ejderha-ic-mekan-duvar-resmi.jpg";
+import featAraba from "../assets/images/sari-spor-araba-3kplus-duvar-resmi.jpg";
 import refBuyuksehir from "../assets/images/referans-izmir-buyuksehir.png";
 import refMetro from "../assets/images/referans-metro-izmir.png";
 import refIzenerji from "../assets/images/referans-izenerji.png";
@@ -35,10 +39,13 @@ const services: { title: string; desc: string; img: ImageMetadata }[] = [
   },
 ];
 
-const featuredRaw: { img: ImageMetadata; alt: string }[] = [
-  { img: featKaplan, alt: "Bina duvarına yapılmış gerçekçi beyaz kaplan graffitisi" },
-  { img: featMelek, alt: "Ofis duvarına yapılmış kanatlı melek heykeli temalı duvar resmi" },
-  { img: featFigur, alt: "Siyah-beyaz figüratif duvar resminin yapım aşaması" },
+// 1 büyük + 4 küçük asimetrik grid; 2 ve 4 kolonda boşluksuz kapanır.
+const featuredRaw: { img: ImageMetadata; alt: string; title: string }[] = [
+  { img: featKaplan, alt: "Bina duvarına yapılmış gerçekçi beyaz kaplan graffitisi", title: "Beyaz Kaplan" },
+  { img: featEjderha, alt: "İç mekan duvarına yapılmış ateşli ejderha duvar resmi", title: "Ejderha — İç Mekan" },
+  { img: featMelek, alt: "Ofis duvarına yapılmış kanatlı melek heykeli temalı duvar resmi", title: "Melek Heykeli — Ofis" },
+  { img: featAraba, alt: "İç mekanda duvardan fırlayan 3K PLUS plakalı sarı spor araba duvar resmi", title: "Sarı Spor Araba" },
+  { img: featAtaturk, alt: "Kırmızı zeminde Türk bayrağı önünde siyah-beyaz Atatürk portresi trafo binası duvar resmi", title: "Atatürk Portresi — Trafo" },
 ];
 
 // Büyütme (lightbox) için optimize, hash'li WebP — orijinal yerine.
@@ -72,7 +79,7 @@ const refs: { name: string; logo: ImageMetadata }[] = [
     <Image
       src={heroImg}
       alt="ÇİZGİ yazılı sprey boya kutusu"
-      class="absolute inset-0 -z-10 h-full w-full object-cover object-center"
+      class="hero-zoom absolute inset-0 -z-10 h-full w-full object-cover object-[70%_center] md:object-center"
       loading="eager"
       fetchpriority="high"
     />
@@ -81,15 +88,23 @@ const refs: { name: string; logo: ImageMetadata }[] = [
 
     <div class="mx-auto max-w-6xl px-5 py-28 md:py-44">
       <div class="max-w-xl">
+        <p class="hero-rise mb-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
+          <span class="h-2 w-2 rounded-full bg-accent-bright motion-safe:animate-pulse" aria-hidden="true"></span>
+          İzmir merkezli · Türkiye geneli
+        </p>
         <h1 class="font-display text-5xl leading-[1.1] drop-shadow-lg md:text-7xl">
-          Duvarları Sanata<br />Dönüştürüyoruz
+          <span class="hero-rise rise-delay-1 block">Duvarları Sanata</span>
+          <span class="hero-rise rise-delay-2 block">Dönüştürüyoruz</span>
         </h1>
-        <p class="mt-6 max-w-md text-lg text-white/90 drop-shadow">
+        <p class="hero-rise rise-delay-3 mt-6 max-w-md text-lg text-white/90 drop-shadow">
           Bina cephelerinden iç mekanlara, araçlardan portrelere — profesyonel
           graffiti, duvar resmi ve airbrush sanatı. Türkiye genelinde her ölçekte
           proje teslim ediyoruz.
         </p>
-        <div class="mt-9 flex flex-wrap gap-4">
+        <div class="hero-rise rise-delay-4 mt-9 flex flex-wrap gap-4">
+          <a href="/iletisim" class="rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-bright">
+            Teklif Al
+          </a>
           <a href="/galeri" class="rounded-full border border-white/40 px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">
             İşlerimizi Gör
           </a>
@@ -101,15 +116,24 @@ const refs: { name: string; logo: ImageMetadata }[] = [
   <!-- HİZMETLER -->
   <section class="py-20">
     <div class="mx-auto max-w-6xl px-5">
-      <div class="mb-12 flex items-end justify-between">
-        <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Ne Yapıyoruz</h2>
-        <a href="/hizmetler" class="hidden text-sm font-semibold text-neutral-600 hover:text-neutral-900 md:block">Tüm hizmetler →</a>
+      <div class="mb-12 flex items-end justify-between" data-reveal>
+        <div>
+          <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Ne Yapıyoruz</h2>
+          <SprayStroke class="mt-3 text-accent" />
+        </div>
+        <a href="/hizmetler" class="hidden text-sm font-semibold text-neutral-600 transition-colors hover:text-accent md:block">Tüm hizmetler →</a>
       </div>
       <div class="grid gap-6 md:grid-cols-3">
-        {services.map((s) => (
-          <article class="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200">
+        {services.map((s, i) => (
+          <article
+            class:list={[
+              "group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200 transition duration-300 hover:-translate-y-1 hover:shadow-xl",
+              i > 0 && `reveal-delay-${i}`,
+            ]}
+            data-reveal
+          >
             <div class="aspect-[4/3] overflow-hidden">
-              <Image src={s.img} alt={s.title} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+              <Image src={s.img} alt={s.title} width={800} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" data-fade />
             </div>
             <div class="p-6">
               <h3 class="text-lg font-bold text-neutral-900">{s.title}</h3>
@@ -122,36 +146,71 @@ const refs: { name: string; logo: ImageMetadata }[] = [
   </section>
 
   <!-- ÖNE ÇIKAN İŞLER -->
-  <section class="border-t border-neutral-200 bg-neutral-50 py-20">
-    <div class="mx-auto max-w-6xl px-5">
-      <div class="mb-12 flex items-end justify-between">
-        <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Öne Çıkan İşler</h2>
-        <a href="/galeri" class="hidden text-sm font-semibold text-neutral-600 hover:text-neutral-900 md:block">Tüm galeri →</a>
+  <section class="relative overflow-hidden border-t border-neutral-200 bg-neutral-50 py-20">
+    <span
+      aria-hidden="true"
+      class="text-outline pointer-events-none absolute -top-4 right-0 select-none whitespace-nowrap font-display text-[16vw] leading-none"
+    >PORTFÖY</span>
+    <div class="relative mx-auto max-w-6xl px-5">
+      <div class="mb-12 flex items-end justify-between" data-reveal>
+        <div>
+          <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Öne Çıkan İşler</h2>
+          <SprayStroke class="mt-3 text-accent" />
+        </div>
+        <a href="/galeri" class="hidden text-sm font-semibold text-neutral-600 transition-colors hover:text-accent md:block">Tüm galeri →</a>
       </div>
-      <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
-        {featured.map((f) => (
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
+        {featured.map((f, i) => (
           <button
             type="button"
-            class="feat-item group relative aspect-square cursor-zoom-in overflow-hidden rounded-xl"
+            class:list={[
+              "feat-item group relative aspect-square cursor-zoom-in overflow-hidden rounded-xl bg-neutral-200",
+              i === 0 && "col-span-2 row-span-2",
+              i > 0 && `reveal-delay-${i}`,
+            ]}
             data-full={f.full}
             data-alt={f.alt}
+            data-reveal
           >
-            <Image src={f.img} alt={f.alt} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy" />
-            <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20"></div>
+            <Image
+              src={f.img}
+              alt={f.alt}
+              width={i === 0 ? 1200 : 700}
+              height={i === 0 ? 1200 : 700}
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              data-fade
+            />
+            <!-- Başlık: hover beklemeden, telefonda da görünür -->
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent px-4 pb-3 pt-10 text-left">
+              <p class="text-sm font-semibold text-white drop-shadow md:text-base">{f.title}</p>
+            </div>
           </button>
         ))}
+      </div>
+      <div class="mt-8 text-center md:hidden" data-reveal>
+        <a href="/galeri" class="inline-block rounded-full border border-neutral-300 px-6 py-2.5 text-sm font-semibold text-neutral-700 transition-colors hover:border-accent hover:text-accent">
+          Tüm galeriyi gör →
+        </a>
       </div>
     </div>
   </section>
 
   <!-- SÜREÇ -->
-  <section class="bg-neutral-950 py-20 text-white">
-    <div class="mx-auto max-w-6xl px-5">
-      <h2 class="font-display text-3xl md:text-5xl">Nasıl Çalışıyoruz</h2>
+  <section class="relative overflow-hidden bg-neutral-950 py-20 text-white">
+    <span
+      aria-hidden="true"
+      class="text-outline text-outline-dark pointer-events-none absolute -bottom-8 left-0 select-none whitespace-nowrap font-display text-[18vw] leading-none"
+    >SÜREÇ</span>
+    <div class="relative mx-auto max-w-6xl px-5">
+      <div data-reveal>
+        <h2 class="font-display text-3xl md:text-5xl">Nasıl Çalışıyoruz</h2>
+        <SprayStroke class="mt-3 text-accent-bright" />
+      </div>
       <div class="mt-12 grid gap-8 md:grid-cols-4">
-        {steps.map((s) => (
-          <div class="border-t border-neutral-800 pt-5">
-            <p class="font-display text-4xl text-neutral-600">{s.n}</p>
+        {steps.map((s, i) => (
+          <div class:list={["group border-t border-neutral-800 pt-5 transition-colors hover:border-accent-bright", i > 0 && `reveal-delay-${i}`]} data-reveal>
+            <p class="font-display text-4xl text-accent-bright">{s.n}</p>
             <h3 class="mt-3 text-lg font-bold">{s.t}</h3>
             <p class="mt-2 text-sm text-neutral-400">{s.d}</p>
           </div>
@@ -160,26 +219,44 @@ const refs: { name: string; logo: ImageMetadata }[] = [
     </div>
   </section>
 
-  <!-- REFERANSLAR -->
+  <!-- REFERANSLAR (akan logo şeridi) -->
   <section class="py-20">
-    <div class="mx-auto max-w-6xl px-5 text-center">
+    <div class="mx-auto max-w-6xl px-5 text-center" data-reveal>
       <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Referanslarımız</h2>
-      <div class="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-        {refs.map((r) => (
-          <div class="flex items-center justify-center rounded-xl border border-neutral-200 p-6 transition-shadow hover:shadow-sm">
-            <Image src={r.logo} alt={r.name} title={r.name} loading="lazy" class="max-h-14 w-auto object-contain" />
+      <SprayStroke class="mx-auto mt-3 text-accent" />
+    </div>
+    <div class="marquee relative mt-12 overflow-hidden" data-reveal>
+      <div class="marquee-track flex w-max">
+        {[false, true].map((hidden) => (
+          <div class="flex shrink-0 items-center gap-14 pr-14 md:gap-20 md:pr-20" aria-hidden={hidden || undefined}>
+            {refs.map((r) => (
+              <Image
+                src={r.logo}
+                alt={hidden ? "" : r.name}
+                title={r.name}
+                loading="lazy"
+                class="max-h-14 w-auto shrink-0 object-contain opacity-70 grayscale transition duration-300 hover:opacity-100 hover:grayscale-0"
+              />
+            ))}
           </div>
         ))}
       </div>
+      <!-- Kenar yumuşatma -->
+      <div class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent md:w-28" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent md:w-28" aria-hidden="true"></div>
     </div>
   </section>
 
   <!-- CTA -->
-  <section class="bg-neutral-900 py-20 text-center text-white">
-    <div class="mx-auto max-w-3xl px-5">
+  <section class="relative overflow-hidden bg-neutral-900 py-20 text-center text-white">
+    <span
+      aria-hidden="true"
+      class="text-outline text-outline-dark pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap font-display text-[20vw] leading-none"
+    >ÇİZGİ</span>
+    <div class="relative mx-auto max-w-3xl px-5" data-reveal>
       <h2 class="font-display text-4xl md:text-6xl">Bir fikrin mi var?</h2>
       <p class="mt-5 text-lg text-neutral-300">Mekanını sanata çevirmek için bizimle iletişime geç. Ücretsiz keşif ve fiyat teklifi.</p>
-      <a href="/iletisim" class="mt-8 inline-block rounded-full bg-white px-8 py-3 text-sm font-semibold text-neutral-900 transition-colors hover:bg-neutral-200">
+      <a href="/iletisim" class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-bright">
         Hemen İletişime Geç
       </a>
     </div>
@@ -188,7 +265,7 @@ const refs: { name: string; logo: ImageMetadata }[] = [
   <!-- Öne çıkan işler lightbox -->
   <div
     id="feat-lightbox"
-    class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4"
+    class="lightbox fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4"
     role="dialog"
     aria-modal="true"
     aria-label="Görüntü görüntüleyici"
@@ -202,23 +279,28 @@ const refs: { name: string; logo: ImageMetadata }[] = [
   const items = Array.from(document.querySelectorAll<HTMLElement>(".feat-item"));
   const lightbox = document.getElementById("feat-lightbox")!;
   const lbImg = document.getElementById("feat-img") as HTMLImageElement;
+  const lbClose = document.getElementById("feat-close") as HTMLButtonElement;
+  let lastTrigger: HTMLElement | null = null;
 
   function open(btn: HTMLElement) {
+    lastTrigger = btn;
     lbImg.src = btn.dataset.full ?? "";
     lbImg.alt = btn.dataset.alt ?? "";
     lightbox.classList.remove("hidden");
     lightbox.classList.add("flex");
     document.body.style.overflow = "hidden";
+    lbClose.focus();
   }
 
   function close() {
     lightbox.classList.add("hidden");
     lightbox.classList.remove("flex");
     document.body.style.overflow = "";
+    lastTrigger?.focus();
   }
 
   items.forEach((el) => el.addEventListener("click", () => open(el)));
-  document.getElementById("feat-close")!.addEventListener("click", close);
+  lbClose.addEventListener("click", close);
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) close();
   });

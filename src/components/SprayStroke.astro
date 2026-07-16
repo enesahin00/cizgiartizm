@@ -1,0 +1,31 @@
+---
+// Başlık altı sprey fırça darbesi — dekoratif, inline SVG (~1 KB).
+// Renk, kullanıldığı yerde text-accent / text-accent-bright ile verilir.
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 220 16"
+  fill="none"
+  aria-hidden="true"
+  class:list={["h-3 w-36 md:h-4 md:w-48", className]}
+>
+  <path
+    d="M4 10 C 38 5, 82 4, 126 6 C 158 7.5, 188 8.5, 216 7"
+    stroke="currentColor"
+    stroke-width="6"
+    stroke-linecap="round"
+    opacity="0.9"></path>
+  <path
+    d="M10 14 C 40 11, 70 10.5, 96 11.5"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    opacity="0.45"></path>
+  <circle cx="204" cy="13" r="1.6" fill="currentColor" opacity="0.5"></circle>
+  <circle cx="212" cy="11" r="1.1" fill="currentColor" opacity="0.35"></circle>
+  <circle cx="197" cy="10.5" r="1" fill="currentColor" opacity="0.3"></circle>
+</svg>

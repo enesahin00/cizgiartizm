@@ -16,7 +16,7 @@ const isActive = (href: string) =>
 <header class="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
     <a href="/" class="font-display text-xl tracking-tight text-neutral-900">
-      ÇİZGİ<span class="text-neutral-400">ARTİZM</span>
+      ÇİZGİ<span class="text-accent">ARTİZM</span>
     </a>
 
     <nav class="hidden items-center gap-8 md:flex">
@@ -26,7 +26,7 @@ const isActive = (href: string) =>
           class:list={[
             "text-sm font-medium transition-colors",
             isActive(l.href)
-              ? "text-neutral-900 font-semibold underline underline-offset-4 decoration-2"
+              ? "text-neutral-900 font-semibold underline underline-offset-4 decoration-2 decoration-accent"
               : "text-neutral-600 hover:text-neutral-900",
           ]}
         >
@@ -35,7 +35,7 @@ const isActive = (href: string) =>
       ))}
       <a
         href="/iletisim"
-        class="rounded-full bg-neutral-900 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-neutral-700"
+        class="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-bright"
       >
         Teklif Al
       </a>
@@ -60,7 +60,7 @@ const isActive = (href: string) =>
             {l.label}
           </a>
         ))}
-        <a href="/iletisim" class="mt-2 block rounded-full bg-neutral-900 px-5 py-2 text-center text-sm font-semibold text-white">Teklif Al</a>
+        <a href="/iletisim" class="mt-2 block rounded-full bg-accent px-5 py-2 text-center text-sm font-semibold text-white">Teklif Al</a>
       </div>
     </details>
   </div>
