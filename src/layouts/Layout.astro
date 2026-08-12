@@ -42,11 +42,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "@id": "https://cizgiartizm.com/#business",
+      "@id": new URL("/#business", Astro.site).toString(),
       "name": "Çizgi Artizm",
       "description": description,
       "image": new URL(image, Astro.site).toString(),
-      "url": "https://cizgiartizm.com",
+      "url": new URL("/", Astro.site).toString(),
       "telephone": ["+905396183767", "+905357746012"],
       "email": "cizgiartizm@gmail.com",
       "address": {

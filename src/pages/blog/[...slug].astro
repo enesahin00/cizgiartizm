@@ -44,7 +44,7 @@ const blogPostingSchema = JSON.stringify({
   datePublished: post.data.date.toISOString(),
   image: post.data.image ? new URL(post.data.image, Astro.site).toString() : undefined,
   inLanguage: "tr",
-  author: { "@type": "Organization", name: "Çizgi Artizm", url: "https://cizgiartizm.com" },
+  author: { "@type": "Organization", name: "Çizgi Artizm", url: new URL("/", Astro.site).toString() },
   publisher: {
     "@type": "Organization",
     name: "Çizgi Artizm",

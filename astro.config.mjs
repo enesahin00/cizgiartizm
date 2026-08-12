@@ -4,7 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://cizgiartizm.com',
+  // GitHub Pages kullanıcı sitesi: repo adı enesahin00.github.io olduğu için
+  // site kökten yayınlanır, base path gerekmez.
+  site: 'https://enesahin00.github.io',
   integrations: [sitemap()],
   // CSP'yi Astro yönetir: kendi ürettiği satır içi (inline) script ve style'lar için
   // otomatik sha256 hash üretip <meta> CSP olarak ekler. Böylece Cloudflare'de de
