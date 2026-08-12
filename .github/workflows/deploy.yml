@@ -31,7 +31,11 @@ jobs:
 
       - run: npm run build
 
+      # enablement: Pages kapalıysa açar ve kaynağı "GitHub Actions"a çevirir
+      # (Jekyll build'i devre dışı kalır). Ayarı elle değiştirmeye gerek kalmaz.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/upload-pages-artifact@v3
         with:
