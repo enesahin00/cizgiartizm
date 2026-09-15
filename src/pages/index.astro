@@ -343,9 +343,19 @@ const refs: { name: string; logo: ImageMetadata }[] = [
   const lbClose = document.getElementById("feat-close") as HTMLButtonElement;
   let lastTrigger: HTMLElement | null = null;
 
+  // src değişince tarayıcı yeni görsel inene kadar eskisini gösterir; yüklenene
+  // kadar gizli tut (bkz. galeri.astro).
+  const reveal = () => {
+    if (lbImg.complete) lbImg.classList.remove("is-loading");
+  };
+  lbImg.addEventListener("load", reveal);
+  lbImg.addEventListener("error", reveal);
+
   function open(btn: HTMLElement) {
     lastTrigger = btn;
+    lbImg.classList.add("is-loading");
     lbImg.src = btn.dataset.full ?? "";
+    reveal();
     lbImg.alt = btn.dataset.alt ?? "";
     lightbox.classList.remove("hidden");
     lightbox.classList.add("flex");

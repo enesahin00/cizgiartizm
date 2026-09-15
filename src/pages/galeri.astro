@@ -135,9 +135,20 @@ const headerImg = getImg("barista-kiz-kahve-bufesi-boyama.jpg");
   // ── Lightbox (filtre uygulanınca yalnız görünür öğeler arasında gezinir) ──
   const visibleItems = () => items.filter((el) => !el.classList.contains("hidden"));
 
+  // src değişince tarayıcı yeni görsel inene kadar eskisini gösterir; yüklenene
+  // kadar gizli tut. complete, bekleyen bir yükleme varken false döner — geç gelen
+  // eski load olayı görseli erken açmaz.
+  const reveal = () => {
+    if (lbImg.complete) lbImg.classList.remove("is-loading");
+  };
+  lbImg.addEventListener("load", reveal);
+  lbImg.addEventListener("error", reveal);
+
   function display(el: HTMLElement) {
     current = el;
+    lbImg.classList.add("is-loading");
     lbImg.src = el.dataset.full ?? "";
+    reveal();
     lbImg.alt = el.querySelector("img")?.alt ?? "";
     lbCaption.textContent = el.dataset.caption ?? "";
   }

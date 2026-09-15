@@ -181,7 +181,8 @@ body {
   .lightbox {
     animation: lb-fade 0.25s ease both;
   }
-  .lightbox img {
+  /* Görsel yüklenip görünür olduğu anda "pop" oynar (okla geçişte de) */
+  .lightbox img:not(.is-loading) {
     animation: lb-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 }
@@ -189,6 +190,12 @@ body {
 /* Lightbox içindeyken arka sayfanın kaymasını engelle */
 .lightbox {
   overscroll-behavior: contain;
+}
+
+/* src değişince tarayıcı yenisi inene kadar ÖNCEKİ görseli gösterir;
+   yeni görsel yüklenene kadar gizle */
+.lightbox img.is-loading {
+  visibility: hidden;
 }
 
 /* Lazy görseller yüklenince yumuşak fade-in (JS yoksa hep görünür) */
