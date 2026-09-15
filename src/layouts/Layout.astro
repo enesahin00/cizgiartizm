@@ -25,6 +25,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Reveal stilleri yalnız JS varken devreye girsin (no-JS'te her şey görünür) -->
     <script is:inline>document.documentElement.classList.add("js");</script>
+    <!-- Google etiketi (GA4 + Google Ads) — eski WordPress sitesindeki kimliklerle aynı,
+         reklam dönüşüm takibi kopmasın. İzinli alan adları astro.config.mjs CSP'de. -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7N3EN1HBTS"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", "G-7N3EN1HBTS");
+      gtag("config", "AW-16646268606");
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
     <title>{title}</title>
