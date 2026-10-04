@@ -11,6 +11,7 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { gallery } from "../data/gallery";
 import { serviceLandings, type ServiceLanding } from "../data/serviceLandings";
+import { getCollection } from "astro:content";
 
 export function getStaticPaths() {
   return serviceLandings.map((s) => ({ params: { hizmet: s.slug }, props: { s } }));
@@ -34,6 +35,11 @@ const works = s.works.map((file) => {
   if (!item) throw new Error(`${s.slug}: galeride olmayan iş görseli: ${file}`);
   return { ...item, meta: getImg(file) };
 });
+
+// Bu hizmete bağlı vaka çalışmaları (blog frontmatter'ında proje.hizmet)
+const caseStudies = (await getCollection("blog"))
+  .filter((p) => p.data.proje?.hizmet === s.slug)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const isPricing = s.slug === "duvar-resmi-fiyatlari";
 const others = serviceLandings.filter((o) => o.slug !== s.slug);
@@ -152,6 +158,32 @@ const schema = JSON.stringify({
         </div>
       </div>
     </section>
+
+    <!-- Vaka çalışmaları (blog'da bu hizmete bağlı proje varsa) -->
+    {caseStudies.length > 0 && (
+      <section class="py-16">
+        <div class="mx-auto max-w-6xl px-5">
+          <div data-reveal>
+            <h2 class="font-display text-3xl text-neutral-900 md:text-4xl">Vaka Çalışmaları</h2>
+            <SprayStroke class="mt-3 text-accent" />
+          </div>
+          <ul class="mt-8 grid gap-4 md:grid-cols-2">
+            {caseStudies.map((p) => (
+              <li data-reveal>
+                <a href={`/blog/${p.id}/`} class="group block h-full rounded-2xl border border-neutral-200 p-6 transition-colors hover:border-accent/50">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-accent">
+                    {[p.data.proje?.musteri, p.data.proje?.konum].filter(Boolean).join(" · ")}
+                  </p>
+                  <h3 class="mt-2 font-bold text-neutral-900 transition-colors group-hover:text-accent">{p.data.title}</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-neutral-600">{p.data.description}</p>
+                  <span class="mt-3 inline-block text-sm font-semibold text-neutral-900 transition-colors group-hover:text-accent">Projeyi oku →</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
 
     <!-- Süreç -->
     <section class="relative overflow-hidden bg-neutral-950 py-20 text-white">

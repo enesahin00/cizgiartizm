@@ -4,6 +4,10 @@ date: 2024-09-22
 description: "İzmir Büyükşehir Belediyesi'nin 25 Kasım kapsamında Üçyol Metro İstasyonu'nda açtığı farkındalık alanındaki duvar resmini Çizgi Artizm hayata geçirdi."
 author: "Çizgi Artizm"
 image: "/images/metro-istasyonu-karikatur-yolcular-duvar-resmi.jpg"
+proje:
+  hizmet: "belediye-duvar-resmi"
+  musteri: "İzmir Büyükşehir Belediyesi"
+  konum: "Üçyol Metro İstasyonu, İzmir"
 ---
 
 İzmir Büyükşehir Belediyesi, 25 Kasım Kadına Yönelik Şiddetle Mücadele Günü
