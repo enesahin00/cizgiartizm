@@ -3,10 +3,10 @@ const currentPath = Astro.url.pathname;
 
 const links = [
   { href: "/", label: "Anasayfa" },
-  { href: "/hizmetler", label: "Hizmetler" },
-  { href: "/galeri", label: "Galeri" },
-  { href: "/blog", label: "Blog" },
-  { href: "/iletisim", label: "İletişim" },
+  { href: "/hizmetler/", label: "Hizmetler" },
+  { href: "/galeri/", label: "Galeri" },
+  { href: "/blog/", label: "Blog" },
+  { href: "/iletisim/", label: "İletişim" },
 ];
 
 const isActive = (href: string) =>
@@ -34,7 +34,7 @@ const isActive = (href: string) =>
         </a>
       ))}
       <a
-        href="/iletisim"
+        href="/iletisim/"
         data-cta="teklif_al"
         class="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-bright"
       >
@@ -61,7 +61,7 @@ const isActive = (href: string) =>
             {l.label}
           </a>
         ))}
-        <a href="/iletisim" data-cta="teklif_al" class="mt-2 block rounded-full bg-accent px-5 py-2 text-center text-sm font-semibold text-white">Teklif Al</a>
+        <a href="/iletisim/" data-cta="teklif_al" class="mt-2 block rounded-full bg-accent px-5 py-2 text-center text-sm font-semibold text-white">Teklif Al</a>
       </div>
     </details>
   </div>
