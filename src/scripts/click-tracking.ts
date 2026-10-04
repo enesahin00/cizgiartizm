@@ -43,7 +43,8 @@ document.addEventListener(
     const link = e.target.closest<HTMLAnchorElement>("a[href]");
     const contact = link && contactEvent(link.href);
     if (link && contact) {
-      track(contact, { link_url: link.href, link_location: linkLocation(link) });
+      // ?text= hazır mesajı atılır: GA4 parametre değerini 100 karakterde keser
+      track(contact, { link_url: link.href.split("?")[0], link_location: linkLocation(link) });
     }
 
     const item = e.target.closest<HTMLElement>(".gallery-item, .feat-item");
