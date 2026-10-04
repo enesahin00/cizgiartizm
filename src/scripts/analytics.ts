@@ -17,4 +17,8 @@ export function track(name: string, params: TrackParams = {}) {
   // Etiketi tanımlı olaylar ayrıca Google Ads dönüşümü olarak gider
   const sendTo = ADS_CONVERSIONS[name];
   if (sendTo) window.gtag?.("event", "conversion", { send_to: sendTo });
+
+  // Clarity'de oturum kayıtlarını bu olaya göre süzebilmek için
+  // ("WhatsApp'a tıklayanların kayıtları" gibi)
+  window.clarity?.("event", name);
 }

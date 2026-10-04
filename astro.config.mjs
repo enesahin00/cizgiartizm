@@ -43,10 +43,11 @@ export default defineConfig({
       directives: [
         "default-src 'self'",
         // Google etiketi (GA4 + Ads) alan adları: Google'ın CSP rehberindeki liste
-        "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.doubleclick.net https://*.google.com https://*.google.com.tr",
+        // Microsoft Clarity: *.clarity.ms + c.bing.com (Clarity CSP rehberi)
+        "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://*.doubleclick.net https://*.google.com https://*.google.com.tr https://*.clarity.ms https://c.bing.com",
         // Fontlar artık self-host (@fontsource) — dış font kaynağı yok
         "font-src 'self'",
-        "connect-src 'self' https://api.web3forms.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.doubleclick.net https://*.google.com https://*.google.com.tr https://pagead2.googlesyndication.com https://www.googleadservices.com",
+        "connect-src 'self' https://api.web3forms.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.doubleclick.net https://*.google.com https://*.google.com.tr https://pagead2.googlesyndication.com https://www.googleadservices.com https://*.clarity.ms https://c.bing.com",
         "frame-src https://td.doubleclick.net https://www.googletagmanager.com",
         "form-action 'self' https://api.web3forms.com",
         "base-uri 'self'",
@@ -62,6 +63,8 @@ export default defineConfig({
           "https://www.googleadservices.com",
           "https://googleads.g.doubleclick.net",
           "https://www.google.com",
+          "https://*.clarity.ms",
+          "https://c.bing.com",
         ],
       },
       styleDirective: {
