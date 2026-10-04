@@ -18,3 +18,13 @@
 - Uygulama yüzeyleri: bina cephesi, iç mekan, beton, ahşap, metal, araç, tekne.
 - UV ve hava koşullarına dayanıklı boya; vinç/iskele dahil profesyonel uygulama.
 - Her proje ücretsiz keşif ve fiyat teklifiyle başlar.
+
+## English
+
+The site is also available in English under /en/.
+
+- [Home](https://cizgiartizm.com/en/): Overview of services, featured work and clients.
+- [Services](https://cizgiartizm.com/en/services): Graffiti & murals, custom portrait drawing, vehicle & yacht airbrush painting; process and pricing.
+- [Gallery](https://cizgiartizm.com/en/gallery): Completed projects with a category filter (?category=duvar|portre|sudeposu|arac).
+- [Blog](https://cizgiartizm.com/en/blog): Guides and project news about murals and graffiti.
+- [Contact](https://cizgiartizm.com/en/contact): Phone (+90 539 618 37 67 / +90 535 774 60 12), WhatsApp, email (cizgiartizm@gmail.com), Instagram (@cizgiartizm) and a contact form.

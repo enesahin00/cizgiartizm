@@ -1,0 +1,100 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import headerBg from "../assets/images/diz-cokmus-melek-portre-duvar-resmi.png";
+import { ui, type Lang } from "../i18n";
+import { getPosts, postHref } from "../i18n/blog";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const content = {
+  tr: {
+    metaTitle: "Blog — Çizgi Artizm | Duvar Resmi & Graffiti Üzerine Yazılar",
+    metaDescription:
+      "Graffiti, duvar resmi ve airbrush sanatı üzerine rehberler, proje hikayeleri ve güncel haberler. Çizgi Artizm ekibinin sahadan deneyimleri ve ipuçları.",
+    title: "Yazılar & Haberler",
+    intro: "Sanatımıza dair rehberler, proje hikayeleri ve güncel haberler.",
+    readExternal: "Haberi oku ↗",
+    readMore: "Devamını oku →",
+  },
+  en: {
+    metaTitle: "Blog — Çizgi Artizm | Articles on Murals & Graffiti",
+    metaDescription:
+      "Guides, project stories and news on graffiti, mural and airbrush art. Field experience and tips from the Çizgi Artizm team.",
+    title: "Articles & News",
+    intro: "Guides, project stories and the latest news about our craft.",
+    readExternal: "Read the story ↗",
+    readMore: "Read more →",
+  },
+}[lang];
+
+const posts = await getPosts(lang);
+
+// Blog görsellerini optimize WebP olarak sun: frontmatter'daki "/images/x.jpg"
+// yolunu src/assets'teki optimize edilebilir kaynağa eşle.
+const assetImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{png,jpeg,jpg}",
+  { eager: true }
+);
+const resolveImg = (path?: string): ImageMetadata | undefined => {
+  if (!path) return undefined;
+  const file = path.split("/").pop();
+  return assetImages[`/src/assets/images/${file}`]?.default;
+};
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString(ui[lang].dateLocale, { day: "numeric", month: "long", year: "numeric" });
+---
+
+<Layout lang={lang} route="blog" title={content.metaTitle} description={content.metaDescription}>
+  <PageHero label="Blog" title={content.title} watermark="BLOG" image={headerBg}>
+    <p class="max-w-xl text-lg text-neutral-300 drop-shadow">
+      {content.intro}
+    </p>
+  </PageHero>
+
+  <section class="py-14">
+    <div class="mx-auto max-w-6xl px-5">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post, i) => {
+          const cover = resolveImg(post.data.image);
+          return (
+          <a
+            href={postHref(post)}
+            target={post.data.externalUrl ? "_blank" : undefined}
+            rel={post.data.externalUrl ? "noopener noreferrer" : undefined}
+            class:list={[
+              "group flex flex-col overflow-hidden rounded-2xl ring-1 ring-neutral-200 transition duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:ring-accent/40",
+              i > 0 && `reveal-delay-${Math.min(i, 4)}`,
+            ]}
+            data-reveal
+          >
+            {cover ? (
+              <div class="aspect-[16/10] overflow-hidden bg-neutral-100">
+                <Image src={cover} alt={post.data.title} width={640} height={400} loading={i < 3 ? "eager" : "lazy"} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" data-fade />
+              </div>
+            ) : (
+              <div class="aspect-[16/10] overflow-hidden bg-neutral-900 flex items-center justify-center select-none">
+                <span class="font-display text-6xl text-neutral-700 transition-transform duration-500 group-hover:scale-110">Ç</span>
+              </div>
+            )}
+            <div class="flex flex-1 flex-col p-6">
+              <time class="text-xs font-semibold uppercase tracking-wider text-accent">{fmt(post.data.date)}</time>
+              <h2 class="mt-2 text-lg font-bold leading-snug text-neutral-900">{post.data.title}</h2>
+              <p class="mt-3 flex-1 text-sm leading-relaxed text-neutral-600">{post.data.description}</p>
+              <span class="mt-4 text-sm font-semibold text-neutral-900 transition-colors group-hover:text-accent">
+                {post.data.externalUrl ? content.readExternal : content.readMore}
+              </span>
+            </div>
+          </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</Layout>

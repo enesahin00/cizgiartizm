@@ -10,6 +10,8 @@ const blog = defineCollection({
     author: z.string().default("Çizgi Artizm"),
     image: z.string().optional(),
     externalUrl: z.string().url().optional(),
+    // Yalnız İngilizce yazılarda (src/content/blog/en): Türkçe aslının id'si
+    translationOf: z.string().optional(),
   }),
 });
 
