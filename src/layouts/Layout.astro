@@ -35,24 +35,66 @@ const absolute = (path: string) => new URL(path.endsWith("/") ? path : `${path}/
 const hreflangs = langs.every((l) => translations[l])
   ? langs.map((l) => ({ hreflang: ui[l].htmlLang, href: absolute(translations[l]!) }))
   : [];
+// Otomatik dil yönlendirmesinin hedefi: öbür dildeki karşılık. Sondaki "/" ile,
+// yoksa GitHub Pages bir 301 daha ekler.
+const otherLang = langs.find((l) => l !== lang)!;
+const langAlt = hreflangs.length > 0 ? absolute(translations[otherLang]!).pathname : undefined;
 ---
 
 <!doctype html>
-<html lang={t.htmlLang}>
+<html lang={t.htmlLang} data-lang-alt={langAlt}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Varsayılan dil: dışarıdan gelen ziyaretçi, cihaz saat dilimi Türkiye ise
+         Türkçe, değilse İngilizce sürüme yönlenir. Ağ isteği yok; parse'tan önce,
+         Google etiketinden önce çalışır. Kurallar:
+         - botlar ve otomasyon yönlendirilmez (Google Türkçe sayfaları görmeye devam etsin)
+         - site içi gezinmede yönlendirme yok; dil kutucuğuyla geçiş seçim olarak saklanır
+           ve sonraki girişlerde saat diliminin önüne geçer
+         - oturum başına en fazla bir yönlendirme (depolama kapalıysa kullanıcı kilitlenmesin)
+         - sorgu ve hash korunur (Google Ads gclid kaybolmasın) -->
+    <script is:inline>
+      (function () {
+        var html = document.documentElement, lang = html.lang, alt = html.getAttribute("data-lang-alt");
+        if (!alt || navigator.webdriver || /bot|crawl|spider|slurp|google|bing|yandex|baidu|lighthouse|headless|preview/i.test(navigator.userAgent)) return;
+        function get(s, k) { try { return window[s].getItem(k); } catch (e) { return null; } }
+        function set(s, k, v) { try { window[s].setItem(k, v); } catch (e) {} }
+        try {
+          var ref = document.referrer ? new URL(document.referrer) : null;
+          if (ref && ref.origin === location.origin) {
+            if ((/^\/en(\/|$)/.test(ref.pathname) ? "en" : "tr") !== lang) set("localStorage", "lang", lang);
+            return;
+          }
+          if (get("sessionStorage", "langRedirected")) return;
+          var want = get("localStorage", "lang");
+          if (!want) {
+            var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if (!tz) return;
+            want = /^(Europe|Asia)\/Istanbul$|^Turkey$/.test(tz) ? "tr" : "en";
+          }
+          if (want !== lang) {
+            set("sessionStorage", "langRedirected", "1");
+            window.__langRedirect = true;
+            location.replace(alt + location.search + location.hash);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <!-- Reveal stilleri yalnız JS varken devreye girsin (no-JS'te her şey görünür) -->
     <script is:inline>document.documentElement.classList.add("js");</script>
     <!-- Google etiketi (GA4 + Google Ads) — eski WordPress sitesindeki kimliklerle aynı,
-         reklam dönüşüm takibi kopmasın. İzinli alan adları astro.config.mjs CSP'de. -->
+         reklam dönüşüm takibi kopmasın. İzinli alan adları astro.config.mjs CSP'de.
+         Dil yönlendirmesi başladıysa bu sayfa için görüntüleme gönderilmez (çift sayım). -->
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7N3EN1HBTS"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag("js", new Date());
-      gtag("config", "G-7N3EN1HBTS");
-      gtag("config", "AW-16646268606");
+      if (!window.__langRedirect) {
+        gtag("js", new Date());
+        gtag("config", "G-7N3EN1HBTS");
+        gtag("config", "AW-16646268606");
+      }
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />

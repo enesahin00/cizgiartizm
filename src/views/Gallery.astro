@@ -259,7 +259,9 @@ const headerImg = getImg("barista-kiz-kahve-bufesi-boyama.jpg");
     b.addEventListener("click", () => applyFilter(b.dataset.filter ?? "all"))
   );
 
-  const initial = new URLSearchParams(location.search).get(filterParam);
+  // Otomatik dil yönlendirmesi sorguyu olduğu gibi taşır; öbür dilin adı da geçerli.
+  const params = new URLSearchParams(location.search);
+  const initial = params.get(filterParam) ?? params.get(filterParam === "category" ? "kategori" : "category");
   if (initial && filterBtns.some((b) => b.dataset.filter === initial)) {
     applyFilter(initial, false);
   }
