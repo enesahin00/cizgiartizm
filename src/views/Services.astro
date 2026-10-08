@@ -7,7 +7,7 @@ import Rich from "../components/Rich.astro";
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { routes, type Lang } from "../i18n";
-import { serviceLandings } from "../data/serviceLandings";
+import { getLandings, landingPath } from "../i18n/landings";
 
 import imgZeus from "../assets/images/zeus-poseidon-bina-cephesi-grafitti.jpg";
 import imgKadin from "../assets/images/renkli-kadin-portesi-grafitti.jpg";
@@ -57,6 +57,11 @@ const content = {
     pricingText:
       "Çalışmalarımız metrekare bazlı hesaplanır. Fiyat; projenin ölçeğine, tasarımın karmaşıklığına ve kullanılacak malzemeye göre değişir. Her proje için **ücretsiz keşif ve fiyat teklifi** sunuyoruz.",
     pricingButton: "Ücretsiz Teklif Al",
+    pricingLink: "Fiyatı neler belirler?",
+    sectorTitle: "Alanınıza Göre Hizmetler",
+    sectorText:
+      "Okuldan fabrikaya, kafeden trafo binasına; her mekanın ihtiyacı farklı. Alanınızı seçin, o alandaki işlerimizi ve süreci inceleyin.",
+    arrow: "→",
   },
   en: {
     metaTitle: "Our Services — Çizgi Artizm | Graffiti, Portraits & Airbrush",
@@ -95,6 +100,11 @@ const content = {
     pricingText:
       "Our work is priced per square meter. The price depends on the scale of the project, the complexity of the design and the materials used. We offer a **free site visit and quote** for every project.",
     pricingButton: "Get a Free Quote",
+    pricingLink: "What determines the price?",
+    sectorTitle: "Services by Sector",
+    sectorText:
+      "From schools to factories, from cafés to transformer buildings — every space has different needs. Choose yours to see our work and process in that sector.",
+    arrow: "→",
   },
   es: {
     metaTitle: "Nuestros servicios — Çizgi Artizm | Grafiti, retratos y aerografía",
@@ -133,6 +143,11 @@ const content = {
     pricingText:
       "Nuestros trabajos se presupuestan por metro cuadrado. El precio depende de la escala del proyecto, la complejidad del diseño y los materiales que se utilicen. Ofrecemos **visita y presupuesto gratuitos** para cada proyecto.",
     pricingButton: "Pedir presupuesto gratuito",
+    pricingLink: "¿Qué determina el precio?",
+    sectorTitle: "Servicios por sector",
+    sectorText:
+      "De colegios a fábricas, de cafeterías a casetas eléctricas: cada espacio tiene necesidades distintas. Elija el suyo y descubra nuestros trabajos y nuestro proceso en ese sector.",
+    arrow: "→",
   },
   ar: {
     metaTitle: "خدماتنا — Çizgi Artizm | الجرافيتي والبورتريه والإيربرش",
@@ -171,6 +186,11 @@ const content = {
     pricingText:
       "تُحسب أسعار أعمالنا حسب المتر المربع، ويختلف السعر بحسب حجم المشروع ومدى تعقيد التصميم والمواد المستخدمة. ونقدّم لكل مشروع **معاينة مجانية وعرض سعر**.",
     pricingButton: "اطلب عرض سعر مجاني",
+    pricingLink: "ما الذي يحدد السعر؟",
+    sectorTitle: "خدماتنا حسب القطاع",
+    sectorText:
+      "من المدارس إلى المصانع، ومن المقاهي إلى مباني المحولات الكهربائية، لكل مساحة احتياجاتها الخاصة. اختر مجالك واطّلع على أعمالنا ومراحل العمل فيه.",
+    arrow: "←",
   },
 }[lang];
 
@@ -178,10 +198,11 @@ const imgs: ImageMetadata[] = [imgZeus, imgKadin, imgMickey];
 const services = content.services.map((s, i) => ({ ...s, img: imgs[i] }));
 const steps = content.steps.map((s, i) => ({ ...s, n: `0${i + 1}` }));
 
-// Sektöre göre açılış sayfaları yalnız Türkçe; öbür dillerde bölüm ve fiyat
-// bağlantısı gösterilmez (yabancı ziyaretçi Türkçe sayfaya düşmesin). Fiyat
-// sayfası Fiyatlandırma bölümünden bağlanır.
-const sectorPages = lang === "tr" ? serviceLandings.filter((l) => l.slug !== "duvar-resmi-fiyatlari") : [];
+// Sektöre göre açılış sayfaları, sayfanın dilinde. Fiyat sayfası kartlarda değil,
+// Fiyatlandırma bölümünden bağlanır.
+const landings = getLandings(lang);
+const sectorPages = landings.filter((l) => l.key !== "duvar-resmi-fiyatlari");
+const pricingPage = landings.find((l) => l.key === "duvar-resmi-fiyatlari")!;
 const landingImages = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/images/*.{png,jpeg,jpg}",
   { eager: true }
@@ -234,22 +255,19 @@ const landingImg = (file: string) => landingImages[`/src/assets/images/${file}`]
     </div>
   </section>
 
-  <!-- Alanınıza göre hizmetler (yalnız TR) -->
+  <!-- Alanınıza göre hizmetler -->
   {sectorPages.length > 0 && (
     <section class="border-t border-neutral-200 bg-neutral-50 py-16 md:py-20">
       <div class="mx-auto max-w-6xl px-5">
         <div data-reveal>
-          <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Alanınıza Göre Hizmetler</h2>
+          <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">{content.sectorTitle}</h2>
           <SprayStroke class="mt-3 text-accent" />
-          <p class="mt-4 max-w-2xl text-neutral-600">
-            Okuldan fabrikaya, kafeden trafo binasına; her mekanın ihtiyacı farklı.
-            Alanınızı seçin, o alandaki işlerimizi ve süreci inceleyin.
-          </p>
+          <p class="mt-4 max-w-2xl text-neutral-600">{content.sectorText}</p>
         </div>
         <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {sectorPages.map((l, i) => (
             <a
-              href={`/${l.slug}/`}
+              href={landingPath(l)}
               class:list={["group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200 transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-accent/40", i % 4 > 0 && `reveal-delay-${i % 4}`]}
               data-reveal
             >
@@ -257,7 +275,7 @@ const landingImg = (file: string) => landingImages[`/src/assets/images/${file}`]
                 <Image src={landingImg(l.heroImage)} alt="" width={500} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" data-fade />
               </div>
               <div class="p-5">
-                <h3 class="font-bold text-neutral-900 transition-colors group-hover:text-accent">{l.name} →</h3>
+                <h3 class="font-bold text-neutral-900 transition-colors group-hover:text-accent">{l.name} {content.arrow}</h3>
                 <p class="mt-1.5 text-sm leading-relaxed text-neutral-600">{l.cardText}</p>
               </div>
             </a>
@@ -305,11 +323,9 @@ const landingImg = (file: string) => landingImages[`/src/assets/images/${file}`]
       <p class="mt-5 text-lg text-neutral-600">
         <Rich text={content.pricingText} lang={lang} />
       </p>
-      {lang === "tr" && (
-        <p class="mt-3">
-          <a href="/duvar-resmi-fiyatlari/" class="text-sm font-semibold text-accent underline decoration-accent/30 underline-offset-4 hover:text-accent-bright">Fiyatı neler belirler?</a>
-        </p>
-      )}
+      <p class="mt-3">
+        <a href={landingPath(pricingPage)} class="text-sm font-semibold text-accent underline decoration-accent/30 underline-offset-4 hover:text-accent-bright">{content.pricingLink}</a>
+      </p>
       <a href={routes.contact[lang]} data-cta="teklif_al" class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-bright">
         {content.pricingButton}
       </a>

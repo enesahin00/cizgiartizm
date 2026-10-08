@@ -1,5 +1,7 @@
 // Hizmet açılış sayfaları (/okul-duvar-resmi, /trafo-boyama ...). Her biri
-// src/pages/[hizmet].astro şablonuyla üretilir ve sitemap'e kendiliğinden girer.
+// src/views/ServiceLanding.astro şablonuyla üretilir ve sitemap'e kendiliğinden girer.
+// Bu dosya Türkçe asıl; çeviriler serviceLandings.<dil>.ts'te Türkçe slug'la
+// eşleşir (dil bağlantıları için bkz. src/i18n/landings.ts).
 //
 // İçerik kuralı: sayfalar birbirinin kopyası olmamalı; her müşteri grubunun
 // kendi sorusu, kendi süreci var. Fiyat, süre ya da garanti gibi sitede
@@ -37,6 +39,9 @@ export interface ServiceLanding {
   /** WhatsApp'ta hazır gelen mesaj */
   whatsappText: string;
 }
+
+/** Çeviri kaydı: kendi slug'ı ve metinleri; görseller ve işler Türkçe kayıttan gelir. */
+export type ServiceLandingText = Omit<ServiceLanding, "heroImage" | "works">;
 
 export const serviceLandings: ServiceLanding[] = [
   {

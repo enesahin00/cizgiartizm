@@ -20,6 +20,18 @@ export async function getPosts(lang: Lang) {
   );
 }
 
+/**
+ * Hizmet sayfasındaki vaka çalışmaları: künyesi bu hizmeti gösteren yazılar. Künye
+ * Türkçe asılda; çeviriler translationOf ile aslına bağlanır.
+ */
+export async function caseStudies(lang: Lang, service: string) {
+  const all = await getCollection("blog");
+  const originals = new Set(
+    all.filter((p) => postLang(p) === "tr" && p.data.proje?.hizmet === service).map((p) => p.id)
+  );
+  return (await getPosts(lang)).filter((p) => originals.has(lang === "tr" ? p.id : (p.data.translationOf ?? "")));
+}
+
 export async function postAlternates(post: Post): Promise<Alternates> {
   const all = await getCollection("blog");
   const originalId = postLang(post) === "tr" ? post.id : post.data.translationOf;

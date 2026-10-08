@@ -1,0 +1,12 @@
+---
+import ServiceLanding from "../../views/ServiceLanding.astro";
+import { getLandings, type Landing } from "../../i18n/landings";
+
+export function getStaticPaths() {
+  return getLandings("ar").map((landing) => ({ params: { service: landing.slug }, props: { landing } }));
+}
+
+const { landing } = Astro.props as { landing: Landing };
+---
+
+<ServiceLanding landing={landing} />

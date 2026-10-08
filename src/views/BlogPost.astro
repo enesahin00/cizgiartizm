@@ -5,7 +5,7 @@ import type { ImageMetadata } from "astro";
 import { render, type CollectionEntry } from "astro:content";
 import { routes, ui } from "../i18n";
 import { getPosts, postAlternates, postHref, postLang, postPath } from "../i18n/blog";
-import { serviceLandings } from "../data/serviceLandings";
+import { getLandings, landingPath } from "../i18n/landings";
 
 interface Props {
   post: CollectionEntry<"blog">;
@@ -21,6 +21,7 @@ const content = {
     caseStudy: "Vaka Çalışması",
     kunye: "Proje Künyesi",
     fields: { hizmet: "Hizmet", musteri: "Müşteri", konum: "Konum", yil: "Yıl", alan: "Alan", sure: "Süre" },
+    serviceLink: "{name} hizmetimizi inceleyin →",
   },
   en: {
     allPosts: "← All articles",
@@ -28,6 +29,7 @@ const content = {
     caseStudy: "Case Study",
     kunye: "Project Details",
     fields: { hizmet: "Service", musteri: "Client", konum: "Location", yil: "Year", alan: "Area", sure: "Duration" },
+    serviceLink: "See our {name} service →",
   },
   es: {
     allPosts: "← Todos los artículos",
@@ -35,6 +37,7 @@ const content = {
     caseStudy: "Caso práctico",
     kunye: "Ficha del proyecto",
     fields: { hizmet: "Servicio", musteri: "Cliente", konum: "Ubicación", yil: "Año", alan: "Superficie", sure: "Duración" },
+    serviceLink: "Ver el servicio: {name} →",
   },
   ar: {
     allPosts: "→ جميع المقالات",
@@ -42,6 +45,7 @@ const content = {
     caseStudy: "دراسة حالة",
     kunye: "بطاقة المشروع",
     fields: { hizmet: "الخدمة", musteri: "العميل", konum: "الموقع", yil: "السنة", alan: "المساحة", sure: "المدة" },
+    serviceLink: "تعرّف على خدمة {name} ←",
   },
 }[lang];
 
@@ -57,10 +61,10 @@ const resolveImg = (path?: string): ImageMetadata | undefined => {
 };
 const cover = resolveImg(post.data.image);
 
-// Vaka çalışması künyesi (frontmatter'da proje varsa). Hizmet açılış sayfaları
-// yalnız Türkçe: hizmet satırı ve sayfa bağlantısı yalnız Türkçe yazıda çıkar.
+// Vaka çalışması künyesi (frontmatter'da proje varsa). Hizmet satırı ve bağlantısı
+// yazının dilindeki hizmet sayfasına gider.
 const proje = post.data.proje;
-const projeHizmet = proje && lang === "tr" ? serviceLandings.find((l) => l.slug === proje.hizmet) : undefined;
+const projeHizmet = proje ? getLandings(lang).find((l) => l.key === proje.hizmet) : undefined;
 const f = content.fields;
 const kunye = proje
   ? ([
@@ -134,8 +138,8 @@ const blogPostingSchema = JSON.stringify({
           ))}
         </dl>
         {projeHizmet && (
-          <a href={`/${projeHizmet.slug}/`} class="mt-5 inline-block text-sm font-semibold text-accent transition-colors hover:text-accent-bright">
-            {projeHizmet.name} hizmetimizi inceleyin →
+          <a href={landingPath(projeHizmet)} class="mt-5 inline-block text-sm font-semibold text-accent transition-colors hover:text-accent-bright">
+            {content.serviceLink.replace("{name}", projeHizmet.name)}
           </a>
         )}
       </aside>
