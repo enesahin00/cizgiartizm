@@ -1,9 +1,8 @@
 import type { ServiceLandingText } from "./serviceLandings";
 
 // İngilizce hizmet açılış sayfaları (/en/<slug>/). Anahtar: Türkçe kaydın slug'ı.
-// Birebir çeviri değil, yurt dışı ziyaretçiye uyarlama: hizmet bölgesi dünya geneli
-// (Türkçe metindeki "Türkiye geneli" yerine), Türkiye'ye özgü örnekler (Atatürk
-// köşesi) genel karşılığıyla. Yurt dışında ücretsiz yerinde keşif sözü verilmez;
+// Birebir çeviri değil, yurt dışı ziyaretçiye uyarlama: Türkiye'ye özgü örnekler
+// (Atatürk köşesi) genel karşılığıyla. Yurt dışında ücretsiz yerinde keşif sözü verilmez;
 // teklif ücretsiz, keşif "gerektiğinde". Kurum ve yer adları galeri ve blogdaki
 // İngilizce adlarıyla aynı.
 

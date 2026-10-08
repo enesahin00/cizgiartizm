@@ -49,7 +49,7 @@ export const serviceLandings: ServiceLanding[] = [
     name: "Okul Duvar Resmi",
     title: "Okul Duvar Resmi — Bahçe, Koridor, Sınıf | Çizgi Artizm",
     description:
-      "Okul bahçesi, koridor, anasınıfı ve kantin duvarlarına eğitici, renkli duvar resimleri. Türkiye geneli uygulama, ücretsiz keşif ve fiyat teklifi.",
+      "Okul bahçesi, koridor, anasınıfı ve kantin duvarlarına eğitici, renkli duvar resimleri. Dünya genelinde uygulama, ücretsiz keşif ve fiyat teklifi.",
     label: "Okullar için",
     h1: "Okul Duvar Resmi",
     watermark: "OKUL",
@@ -103,8 +103,8 @@ export const serviceLandings: ServiceLanding[] = [
         a: "Fiyat metrekare bazlıdır; duvarın büyüklüğü, yüzeyin durumu ve tasarımın detayına göre değişir. Duvarın fotoğrafını ve yaklaşık ölçüsünü gönderin, ücretsiz fiyat teklifi hazırlayalım.",
       },
       {
-        q: "Hangi şehirlerdeki okullara hizmet veriyorsunuz?",
-        a: "Türkiye genelinde çalışıyoruz. İlk değerlendirmeyi gönderdiğiniz fotoğraf ve ölçülerle uzaktan yapıyor, gerektiğinde yerinde keşfe geliyoruz.",
+        q: "Hangi şehir ve ülkelerdeki okullara hizmet veriyorsunuz?",
+        a: "Dünyanın her yerinde çalışıyoruz. İlk değerlendirmeyi gönderdiğiniz fotoğraf ve ölçülerle uzaktan yapıyor, gerektiğinde yerinde keşfe geliyoruz.",
       },
     ],
     whatsappText:
@@ -359,8 +359,8 @@ export const serviceLandings: ServiceLanding[] = [
         a: "Evet. Logonuzu ve kurumsal renk kodlarınızı alıp duvarın ölçüsüne göre ölçekliyor, net çizgilerle uyguluyoruz. Logoyu sanatsal bir kompozisyonun parçası yapan tasarımlar da hazırlıyoruz.",
       },
       {
-        q: "Farklı şehirlerdeki ofislerimize aynı konsepti uygular mısınız?",
-        a: "Evet. Türkiye genelinde çalıştığımız için farklı şehirlerdeki ofislerinize aynı konsepti, her mekana göre uyarlayarak uygulayabiliyoruz.",
+        q: "Farklı şehir ve ülkelerdeki ofislerimize aynı konsepti uygular mısınız?",
+        a: "Evet. Dünya genelinde çalıştığımız için farklı şehir ve ülkelerdeki ofislerinize aynı konsepti, her mekana göre uyarlayarak uygulayabiliyoruz.",
       },
       {
         q: "Fiyat teklifi nasıl alırım?",
@@ -493,8 +493,8 @@ export const serviceLandings: ServiceLanding[] = [
         a: "Çalışma alanını yaya trafiğinden ayırıyor, yüksekte çalışma gerektiren işlerde iskele ya da sepetli vinç kullanıyoruz. Uygulama saatlerini kurumla birlikte planlıyoruz.",
       },
       {
-        q: "Farklı şehirlerdeki belediyelere hizmet veriyor musunuz?",
-        a: "Evet, Türkiye genelinde çalışıyoruz. İlk değerlendirmeyi fotoğraf ve ölçülerle uzaktan yapıp gerektiğinde yerinde keşfe geliyoruz.",
+        q: "Farklı şehir ve ülkelerdeki belediyelere hizmet veriyor musunuz?",
+        a: "Evet, dünyanın her yerinde çalışıyoruz. İlk değerlendirmeyi fotoğraf ve ölçülerle uzaktan yapıp gerektiğinde yerinde keşfe geliyoruz.",
       },
     ],
     whatsappText:
@@ -589,7 +589,7 @@ export const serviceLandings: ServiceLanding[] = [
       { t: "Yükseklik ve erişim", d: "İskele ya da sepetli vinç gerektiren cephe işlerinde erişim ihtiyacı teklife yansır." },
       { t: "Yüzeyin durumu", d: "Sıva onarımı, temizlik ve astar gibi hazırlık ihtiyacı yüzeyden yüzeye değişir." },
       { t: "İç ya da dış mekan", d: "Dış mekanda UV ve hava koşullarına dayanıklı boya ve gerektiğinde koruyucu vernik kullanılır." },
-      { t: "Konum", d: "Türkiye genelinde çalışıyoruz; şehir dışı projelerde ulaşım ve konaklama teklif hazırlanırken hesaba katılır." },
+      { t: "Konum", d: "Dünya genelinde çalışıyoruz; yolculuk gerektiren projelerde ulaşım ve konaklama teklif hazırlanırken hesaba katılır." },
     ],
     worksTitle: "Farklı ölçeklerden işlerimiz",
     works: [
@@ -625,8 +625,8 @@ export const serviceLandings: ServiceLanding[] = [
         a: "Evet. Bir kafe köşesinden dev bir bina cephesine kadar her ölçekte proje yapıyoruz.",
       },
       {
-        q: "Şehir dışındaki projelerde fiyat nasıl belirleniyor?",
-        a: "Türkiye genelinde çalışıyoruz. Şehir dışı projelerde ulaşım ve konaklama, teklif hazırlanırken hesaba katılır.",
+        q: "Başka şehir ve ülkelerdeki projelerde fiyat nasıl belirleniyor?",
+        a: "Dünya genelinde çalışıyoruz. Yolculuk gerektiren projelerde ulaşım ve konaklama, teklif hazırlanırken hesaba katılır.",
       },
     ],
     whatsappText:

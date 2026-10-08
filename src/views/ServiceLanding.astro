@@ -33,9 +33,9 @@ const content = {
     processWatermark: "SÜREÇ",
     processTitle: "Nasıl Çalışıyoruz",
     faqTitle: "Sık Sorulan Sorular",
-    areaTitle: "Türkiye geneli hizmet",
+    areaTitle: "Dünya genelinde hizmet",
     areaText:
-      "Türkiye'nin her yerinde proje yapıyoruz. İlk değerlendirmeyi gönderdiğiniz fotoğraf ve ölçüyle uzaktan yapıyor, gerektiğinde yerinde ücretsiz keşfe geliyoruz.",
+      "Dünyanın her yerinde proje yapıyoruz. İlk değerlendirmeyi gönderdiğiniz fotoğraf ve ölçüyle uzaktan yapıyor, gerektiğinde yerinde keşfe geliyoruz.",
     ctaTitle: "Fotoğraf ve ölçü gönder, *teklif al*",
     ctaSteps: [
       "Duvarın karşıdan bir fotoğrafını çekin.",
@@ -162,8 +162,6 @@ const schema = JSON.stringify({
       name: s.h1,
       description: s.description,
       url: pageUrl,
-      // Türkçe sayfaların metni Türkiye geneli; çeviriler dünya geneli (LocalBusiness gibi alan belirtilmez)
-      areaServed: lang === "tr" ? { "@type": "Country", name: "Türkiye" } : undefined,
       provider: { "@id": new URL("/#business", Astro.site).toString() },
     },
     {
