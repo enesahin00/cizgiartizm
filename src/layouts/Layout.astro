@@ -52,8 +52,8 @@ const absolute = (path: string) => new URL(path.endsWith("/") ? path : `${path}/
 const hreflangs = langs.every((l) => translations[l])
   ? langs.map((l) => ({ hreflang: ui[l].htmlLang, href: absolute(translations[l]!) }))
   : [];
-// x-default: hiçbir sürümle eşleşmeyen dilde İngilizce (saat dilimi kuralıyla aynı:
-// Türkiye dışı ziyaretçi İngilizce görür).
+// x-default: hiçbir sürümle eşleşmeyen dilde İngilizce (otomatik dil kuralıyla aynı:
+// dili desteklenmeyen Türkiye dışı ziyaretçi İngilizce görür).
 const xDefault = hreflangs.find((h) => h.hreflang === ui.en.htmlLang);
 // Otomatik dil yönlendirmesinin hedefleri: öbür dillerdeki karşılıklar
 // (data-alt-<dil>). Sondaki "/" ile, yoksa GitHub Pages bir 301 daha ekler.
@@ -70,15 +70,18 @@ const langAlts = Object.fromEntries(
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Varsayılan dil: dışarıdan gelen ziyaretçi, cihaz saat dilimi Türkiye ise
-         Türkçe, değilse İngilizce sürüme yönlenir. Ağ isteği yok; parse'tan önce,
-         Google etiketinden önce çalışır. Kurallar:
+         Türkçe sürüme yönlenir. Türkiye dışında tarayıcı dil listesindeki
+         (navigator.languages) desteklenen ilk dil açılır, hiçbiri desteklenmiyorsa
+         İngilizce. Ağ isteği yok; parse'tan önce, Google etiketinden önce çalışır.
+         Türkiye içinde tarayıcı diline bakılmaz: İngilizce arayüzlü Türk cihazı da
+         Türkçe görsün. Kurallar:
          - botlar ve otomasyon yönlendirilmez (Google Türkçe sayfaları görmeye devam etsin)
          - reklam tıklaması (gclid/gbraid/wbraid/msclkid/utm_*) ve arama motorundan gelen
            yönlendirilmez: reklamın hedef sayfası ve Google'ın hreflang ile seçtiği sonuç
            ziyaretçinin dilidir (İstanbul'daki cihaza İngilizce reklam, Dubai'deki cihaza
            Arapça reklam olduğu gibi açılır)
-         - saat dilimi yalnız TR/EN sayfalarında karar verir; ES/AR sayfasına doğrudan
-           gelen kalır, bu diller yalnız seçimle açılır
+         - otomatik karar yalnız TR/EN sayfalarında verilir; ES/AR sayfasına doğrudan
+           gelen (paylaşılan bağlantı) kalır
          - site içi gezinmede yönlendirme yok; dil kutucuğuyla geçiş seçim olarak saklanır
            ve sonraki girişlerde saat diliminin önüne geçer (seçilen dil ES/AR olabilir).
            Otomatik yönlendirmenin vardığı sayfa da site içinden gelmiş görünür; o sayfa
@@ -111,7 +114,15 @@ const langAlts = Object.fromEntries(
             if (lang !== "tr" && lang !== "en") return;
             var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
             if (!tz) return;
-            want = /^(Europe|Asia)\/Istanbul$|^Turkey$/.test(tz) ? "tr" : "en";
+            if (/^(Europe|Asia)\/Istanbul$|^Turkey$/.test(tz)) want = "tr";
+            else {
+              want = "en";
+              var prefs = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+              for (var i = 0; i < prefs.length; i++) {
+                var m = /^(tr|en|es|ar)(-|$)/i.exec(prefs[i] || "");
+                if (m) { want = m[1].toLowerCase(); break; }
+              }
+            }
           }
           var alt = want !== lang && html.getAttribute("data-alt-" + want);
           if (alt) {

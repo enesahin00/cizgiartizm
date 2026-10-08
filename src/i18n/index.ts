@@ -1,8 +1,8 @@
 // Site çok dilli. Türkçe varsayılan ve kökte yayınlanır (mevcut URL'ler, Google
 // indeksi ve reklam hedef sayfaları aynen kalır); diğer diller /en/, /es/, /ar/
 // altında. Sayfa şablonları src/views altında, tüm diller aynı şablonu kullanır.
-// Otomatik varsayılan yalnız TR/EN arasında seçer (bkz. Layout); ES ve AR yalnız
-// dil kutucuğuyla ya da doğrudan bağlantıyla açılır.
+// Otomatik varsayılan: Türkiye saat diliminde TR, dışında tarayıcının desteklenen
+// ilk dili, o da yoksa EN (bkz. Layout).
 
 export const langs = ["tr", "en", "es", "ar"] as const;
 export type Lang = (typeof langs)[number];
