@@ -31,7 +31,9 @@ const content = {
     intro:
       "Bir fikriniz, bir sorunuz ya da sadece merak ettiğiniz bir şey mi var? Aklınıza takılan her şeyi çekinmeden sorabilirsiniz — en kısa sürede size dönelim.",
     phone: "Telefon",
+    whatsappLabel: "WhatsApp",
     whatsappValue: "Mesaj gönderin",
+    instagramLabel: "Instagram",
     email: "E-posta",
     reachTitle: "Bize ulaşın",
     reachText: "Size en uygun yöntemi seçin.",
@@ -50,6 +52,7 @@ const content = {
     failed: "Mesaj gönderilemedi.",
     networkError: "Bağlantı hatası.",
     fallbackBefore: "Lütfen",
+    fallbackLink: "WhatsApp",
     fallbackAfter: "üzerinden yazın.",
   },
   en: {
@@ -62,7 +65,9 @@ const content = {
     intro:
       "Have an idea, a question, or just something you're curious about? Feel free to ask us anything — we'll get back to you as soon as we can.",
     phone: "Phone",
+    whatsappLabel: "WhatsApp",
     whatsappValue: "Send a message",
+    instagramLabel: "Instagram",
     email: "Email",
     reachTitle: "Reach us",
     reachText: "Choose whichever works best for you.",
@@ -80,7 +85,74 @@ const content = {
     failed: "Your message could not be sent.",
     networkError: "Connection error.",
     fallbackBefore: "Please message us on",
+    fallbackLink: "WhatsApp",
     fallbackAfter: "instead.",
+  },
+  es: {
+    metaTitle: "Contacto — Çizgi Artizm | Visita y presupuesto gratuitos",
+    metaDescription:
+      "Cuéntenos su proyecto de mural, grafiti o aerografía. Contacte con Çizgi Artizm por teléfono, WhatsApp, correo electrónico o Instagram: visita y presupuesto gratuitos.",
+    label: "Contacto",
+    title: "Hola 👋",
+    watermark: "HOLA",
+    intro:
+      "¿Tiene una idea, una pregunta o simplemente curiosidad? Pregúntenos lo que quiera, sin compromiso: le responderemos lo antes posible.",
+    phone: "Teléfono",
+    whatsappLabel: "WhatsApp",
+    whatsappValue: "Envíenos un mensaje",
+    instagramLabel: "Instagram",
+    email: "Correo electrónico",
+    reachTitle: "Contáctenos",
+    reachText: "Elija la opción que le resulte más cómoda.",
+    areaLabel: "Zona de servicio:",
+    area: "Toda Turquía.",
+    formTitle: "Escríbanos",
+    formText: "Rellene el formulario y envíelo: su mensaje nos llega directamente y le responderemos en breve.",
+    subject: "Çizgi Artizm — Web sitesi iletişim formu (İspanyolca sayfa)",
+    botcheck: "Deje este campo vacío",
+    name: "Su nombre",
+    message: "Su mensaje",
+    send: "Enviar",
+    sending: "Enviando…",
+    success: "✓ Hemos recibido su mensaje. ¡Gracias! Le responderemos en breve.",
+    failed: "No se ha podido enviar el mensaje.",
+    networkError: "Error de conexión.",
+    fallbackBefore: "Escríbanos por",
+    fallbackLink: "WhatsApp",
+    fallbackAfter: "y le atenderemos enseguida.",
+  },
+  ar: {
+    metaTitle: "تواصل معنا — Çizgi Artizm | معاينة مجانية وعرض سعر",
+    metaDescription:
+      "تواصل معنا بخصوص مشروع الجداريات أو الجرافيتي أو الإيربرش. يمكنك التواصل مع Çizgi Artizm عبر الهاتف أو واتساب أو البريد الإلكتروني أو إنستغرام — معاينة مجانية وعرض سعر.",
+    label: "تواصل معنا",
+    title: "مرحباً 👋",
+    watermark: "مرحباً",
+    intro:
+      "لديك فكرة أو سؤال أو استفسار؟ لا تتردد في سؤالنا عن أي شيء، وسنرد عليك في أقرب وقت.",
+    phone: "الهاتف",
+    whatsappLabel: "واتساب",
+    whatsappValue: "أرسل رسالة",
+    instagramLabel: "إنستغرام",
+    email: "البريد الإلكتروني",
+    reachTitle: "طرق التواصل",
+    reachText: "اختر الطريقة الأنسب لك.",
+    areaLabel: "نطاق الخدمة:",
+    area: "جميع أنحاء تركيا.",
+    formTitle: "راسلنا",
+    formText: "املأ النموذج وأرسله — ستصلنا رسالتك مباشرة وسنرد عليك قريباً.",
+    subject: "Çizgi Artizm — Web sitesi iletişim formu (Arapça sayfa)",
+    botcheck: "اترك هذا الحقل فارغاً",
+    name: "الاسم",
+    message: "رسالتك",
+    send: "إرسال",
+    sending: "جارٍ الإرسال…",
+    success: "✓ وصلتنا رسالتك، شكراً لك! سنرد عليك قريباً.",
+    failed: "تعذّر إرسال الرسالة.",
+    networkError: "حدث خطأ في الاتصال.",
+    fallbackBefore: "يرجى مراسلتنا عبر",
+    fallbackLink: "واتساب",
+    fallbackAfter: "وسنرد عليك في أقرب وقت.",
   },
 }[lang];
 
@@ -90,15 +162,17 @@ const contacts = [
     value: t.phones[0],
     href: "tel:+905396183767",
     icon: "phone",
+    dir: "ltr",
   },
   {
     label: content.phone,
     value: t.phones[1],
     href: "tel:+905357746012",
     icon: "phone",
+    dir: "ltr",
   },
   {
-    label: "WhatsApp",
+    label: content.whatsappLabel,
     value: content.whatsappValue,
     href: "https://wa.me/905396183767",
     icon: "whatsapp",
@@ -108,12 +182,14 @@ const contacts = [
     value: "cizgiartizm@gmail.com",
     href: "mailto:cizgiartizm@gmail.com",
     icon: "mail",
+    dir: "ltr",
   },
   {
-    label: "Instagram",
+    label: content.instagramLabel,
     value: "@cizgiartizm",
     href: "https://instagram.com/cizgiartizm",
     icon: "instagram",
+    dir: "ltr",
   },
 ];
 ---
@@ -162,7 +238,7 @@ const contacts = [
               </span>
               <span class="min-w-0">
                 <span class="block text-xs font-semibold uppercase tracking-wider text-neutral-500">{c.label}</span>
-                <span class="block truncate font-semibold text-neutral-900">{c.value}</span>
+                <span class="block truncate font-semibold text-neutral-900"><span dir={c.dir}>{c.value}</span></span>
               </span>
             </a>
           ))}
@@ -193,6 +269,7 @@ const contacts = [
           data-failed={content.failed}
           data-network-error={content.networkError}
           data-fallback-before={content.fallbackBefore}
+          data-fallback-link={content.fallbackLink}
           data-fallback-after={content.fallbackAfter}
         >
           <input type="hidden" name="access_key" value={WEB3FORMS_ACCESS_KEY} />
@@ -207,7 +284,7 @@ const contacts = [
           </div>
           <div>
             <label for="eposta" class="block text-sm font-medium text-neutral-700">{content.email}</label>
-            <input id="eposta" name="E-posta" type="email" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15" />
+            <input id="eposta" name="E-posta" type="email" dir="ltr" required class="mt-1 w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 text-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/15" />
           </div>
           <div>
             <label for="mesaj" class="block text-sm font-medium text-neutral-700">{content.message}</label>
@@ -237,7 +314,7 @@ const contacts = [
     link.href = "https://wa.me/905396183767";
     link.target = "_blank";
     link.rel = "noopener";
-    link.textContent = "WhatsApp";
+    link.textContent = msg.fallbackLink ?? "WhatsApp";
     statusEl.replaceChildren(`${text} ${msg.fallbackBefore} `, link, ` ${msg.fallbackAfter}`);
     statusEl.className = "text-sm font-medium text-red-700";
   }

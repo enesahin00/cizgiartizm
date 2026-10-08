@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import PageHero from "../components/PageHero.astro";
 import SprayStroke from "../components/SprayStroke.astro";
 import SpraySplat from "../components/SpraySplat.astro";
+import Rich from "../components/Rich.astro";
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { routes, type Lang } from "../i18n";
@@ -52,6 +53,8 @@ const content = {
       { t: "Son Değerlendirme", d: "Birlikte gözden geçirip projeyi eksiksiz teslim ediyoruz." },
     ],
     pricingTitle: "Fiyatlandırma",
+    pricingText:
+      "Çalışmalarımız metrekare bazlı hesaplanır. Fiyat; projenin ölçeğine, tasarımın karmaşıklığına ve kullanılacak malzemeye göre değişir. Her proje için **ücretsiz keşif ve fiyat teklifi** sunuyoruz.",
     pricingButton: "Ücretsiz Teklif Al",
   },
   en: {
@@ -88,7 +91,85 @@ const content = {
       { t: "Final Review", d: "We review the work together and hand over the completed project." },
     ],
     pricingTitle: "Pricing",
+    pricingText:
+      "Our work is priced per square meter. The price depends on the scale of the project, the complexity of the design and the materials used. We offer a **free site visit and quote** for every project.",
     pricingButton: "Get a Free Quote",
+  },
+  es: {
+    metaTitle: "Nuestros servicios — Çizgi Artizm | Grafiti, retratos y aerografía",
+    metaDescription:
+      "Murales de grafiti, retratos personalizados y aerografía para vehículos y yates. Equipo profesional, materiales duraderos, visita y presupuesto gratuitos.",
+    label: "Nuestros servicios",
+    title: "Qué hacemos",
+    watermark: "SERVICIOS",
+    intro: "De la idea a la ejecución, convertimos sus espacios y superficies en arte.",
+    services: [
+      {
+        title: "Grafiti y murales",
+        desc: "Fachadas de edificios, paredes interiores y superficies de hormigón, madera y metal: realizamos grafitis y murales artísticos a cualquier escala, con materiales duraderos y resistentes a la intemperie.",
+        points: ["Fachadas y murales de gran formato", "Paredes de oficinas, cafeterías e interiores", "Casetas eléctricas y espacios públicos", "Pinturas resistentes a los rayos UV y a la intemperie"],
+      },
+      {
+        title: "Retratos personalizados",
+        desc: "Creamos retratos originales a partir de sus fotografías. En pared o en lienzo, retratos realistas y llamativos.",
+        points: ["Retratos originales a partir de fotos", "Sobre pared o lienzo", "Piezas para regalar y coleccionar", "Técnicas a carboncillo y a color"],
+      },
+      {
+        title: "Aerografía para vehículos y yates",
+        desc: "Aplicamos diseños exclusivos con aerógrafo en coches, motos, caravanas y embarcaciones, con pinturas impermeables y duraderas para superficies marinas.",
+        points: ["Coches, motos y caravanas", "Pintura impermeable para barcos y yates", "Diseños totalmente originales", "Técnica profesional de aerografía"],
+      },
+    ],
+    processWatermark: "PROCESO",
+    processTitle: "Cómo trabajamos",
+    steps: [
+      { t: "Asesoramiento y planificación", d: "Valoramos juntos el espacio, su idea y su presupuesto, y trazamos el plan de trabajo." },
+      { t: "Desarrollo del diseño", d: "Preparamos bocetos a medida y los ajustamos hasta que cuenten con su aprobación." },
+      { t: "Ejecución y entrega", d: "Hacemos realidad el diseño in situ con un equipo profesional y materiales duraderos." },
+      { t: "Revisión final", d: "Revisamos juntos el trabajo y entregamos el proyecto terminado." },
+    ],
+    pricingTitle: "Precios",
+    pricingText:
+      "Nuestros trabajos se presupuestan por metro cuadrado. El precio depende de la escala del proyecto, la complejidad del diseño y los materiales que se utilicen. Ofrecemos **visita y presupuesto gratuitos** para cada proyecto.",
+    pricingButton: "Pedir presupuesto gratuito",
+  },
+  ar: {
+    metaTitle: "خدماتنا — Çizgi Artizm | الجرافيتي والبورتريه والإيربرش",
+    metaDescription:
+      "جداريات الجرافيتي ولوحات البورتريه حسب الطلب والرسم بتقنية الإيربرش على المركبات واليخوت. فريق محترف ومواد متينة ومعاينة مجانية وعرض سعر.",
+    label: "خدماتنا",
+    title: "ماذا نقدّم",
+    watermark: "خدماتنا",
+    intro: "من الفكرة إلى التنفيذ، نحوّل مساحاتك وأسطحك إلى أعمال فنية.",
+    services: [
+      {
+        title: "الجرافيتي والجداريات",
+        desc: "واجهات المباني والجدران الداخلية وأسطح الخرسانة والخشب والمعادن — ننفّذ أعمال الجرافيتي والجداريات الفنية بجميع الأحجام، ونستخدم مواد متينة تدوم طويلاً وتقاوم العوامل الجوية.",
+        points: ["واجهات المباني والجداريات الضخمة", "جدران المكاتب والمقاهي والمساحات الداخلية", "مباني المحولات الكهربائية والأماكن العامة", "دهانات مقاومة للأشعة فوق البنفسجية والعوامل الجوية"],
+      },
+      {
+        title: "رسم البورتريه حسب الطلب",
+        desc: "نرسم لوحات بورتريه أصلية من صورك، على الجدار أو على القماش، بأسلوب واقعي ومؤثر.",
+        points: ["بورتريه أصلي من صورتك", "على الجدار أو على القماش", "قطع فنية للإهداء والاقتناء", "رسم بالفحم وبالألوان"],
+      },
+      {
+        title: "الرسم بالإيربرش على المركبات واليخوت",
+        desc: "ننفّذ تصاميم حصرية بتقنية الإيربرش على السيارات والدراجات النارية والكرفانات والقوارب، بدهانات متينة مقاومة للماء مخصّصة للأسطح البحرية.",
+        points: ["السيارات والدراجات النارية والكرفانات", "دهانات مقاومة للماء للقوارب واليخوت", "تصاميم أصلية بالكامل", "تقنية إيربرش احترافية"],
+      },
+    ],
+    processWatermark: "مراحل العمل",
+    processTitle: "كيف نعمل",
+    steps: [
+      { t: "الاستشارة والتخطيط", d: "ندرس معك المساحة وتصوّرك والميزانية، ونضع خطة العمل." },
+      { t: "تطوير التصميم", d: "نعدّ لك مسودات خاصة ونواصل تطويرها حتى تحصل على موافقتك." },
+      { t: "التنفيذ والتسليم", d: "ننفّذ التصميم في الموقع بفريق محترف ومواد متينة." },
+      { t: "المراجعة النهائية", d: "نراجع العمل معك ونسلّم المشروع مكتملاً." },
+    ],
+    pricingTitle: "الأسعار",
+    pricingText:
+      "تُحسب أسعار أعمالنا حسب المتر المربع، ويختلف السعر بحسب حجم المشروع ومدى تعقيد التصميم والمواد المستخدمة. ونقدّم لكل مشروع **معاينة مجانية وعرض سعر**.",
+    pricingButton: "اطلب عرض سعر مجاني",
   },
 }[lang];
 
@@ -177,19 +258,9 @@ const steps = content.steps.map((s, i) => ({ ...s, n: `0${i + 1}` }));
     <div class="mx-auto max-w-3xl px-5 text-center" data-reveal>
       <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">{content.pricingTitle}</h2>
       <SprayStroke class="mx-auto mt-3 text-accent" />
-      {lang === "tr" ? (
-        <p class="mt-5 text-lg text-neutral-600">
-          Çalışmalarımız metrekare bazlı hesaplanır. Fiyat; projenin ölçeğine,
-          tasarımın karmaşıklığına ve kullanılacak malzemeye göre değişir.
-          Her proje için <strong>ücretsiz keşif ve fiyat teklifi</strong> sunuyoruz.
-        </p>
-      ) : (
-        <p class="mt-5 text-lg text-neutral-600">
-          Our work is priced per square meter. The price depends on the scale of
-          the project, the complexity of the design and the materials used.
-          We offer a <strong>free site visit and quote</strong> for every project.
-        </p>
-      )}
+      <p class="mt-5 text-lg text-neutral-600">
+        <Rich text={content.pricingText} lang={lang} />
+      </p>
       <a href={routes.contact[lang]} class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-bright">
         {content.pricingButton}
       </a>

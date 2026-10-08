@@ -28,3 +28,10 @@ The site is also available in English under /en/.
 - [Gallery](https://cizgiartizm.com/en/gallery): Completed projects with a category filter (?category=duvar|portre|sudeposu|arac).
 - [Blog](https://cizgiartizm.com/en/blog): Guides and project news about murals and graffiti.
 - [Contact](https://cizgiartizm.com/en/contact): Phone (+90 539 618 37 67 / +90 535 774 60 12), WhatsApp, email (cizgiartizm@gmail.com), Instagram (@cizgiartizm) and a contact form.
+
+## Español / العربية
+
+Spanish and Arabic versions mirror the English pages:
+
+- Español: [Inicio](https://cizgiartizm.com/es/), [Servicios](https://cizgiartizm.com/es/servicios), [Galería](https://cizgiartizm.com/es/galeria), [Blog](https://cizgiartizm.com/es/blog), [Contacto](https://cizgiartizm.com/es/contacto)
+- العربية: [الرئيسية](https://cizgiartizm.com/ar/), [خدماتنا](https://cizgiartizm.com/ar/services), [معرض الأعمال](https://cizgiartizm.com/ar/gallery), [المدونة](https://cizgiartizm.com/ar/blog), [تواصل معنا](https://cizgiartizm.com/ar/contact)

@@ -2,6 +2,7 @@
    preconnect ve SRI sorunları kökten çözülür; latin-ext (Türkçe) dahil. */
 @import "@fontsource-variable/inter";
 @import "@fontsource/anton";
+@import "@fontsource-variable/cairo";
 
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
@@ -49,6 +50,24 @@ body {
   font-family: var(--font-display);
   letter-spacing: -0.01em;
   text-transform: uppercase;
+}
+
+/* Arapça sayfalar: Inter/Anton'da Arap harfi yok, Cairo kullanılır. @font-face
+   unicode-range'li olduğundan font yalnız Arapça metin görününce iner; diğer
+   dillere yük yok. Arap yazısı bitişik: harf aralığı bağları koparır, sıfırlanır
+   (tracking-* sınıflarını da ezmek için !important). Display başlıklarda Anton'un
+   sıkı satır yüksekliği Arapça nokta ve çanaklara dar gelir. */
+:lang(ar) {
+  font-family: "Cairo Variable", var(--font-sans);
+}
+:lang(ar) .font-display {
+  font-family: "Cairo Variable", var(--font-display);
+  font-weight: 900;
+  line-height: 1.35;
+}
+:lang(ar),
+:lang(ar) * {
+  letter-spacing: normal !important;
 }
 
 /* Bölüm arkalarındaki dev kontur yazılar (grafiti/poster dokusu).

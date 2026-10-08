@@ -17,6 +17,8 @@ const content = {
     metaTitle: "Blog — Çizgi Artizm | Duvar Resmi & Graffiti Üzerine Yazılar",
     metaDescription:
       "Graffiti, duvar resmi ve airbrush sanatı üzerine rehberler, proje hikayeleri ve güncel haberler. Çizgi Artizm ekibinin sahadan deneyimleri ve ipuçları.",
+    label: "Blog",
+    watermark: "BLOG",
     title: "Yazılar & Haberler",
     intro: "Sanatımıza dair rehberler, proje hikayeleri ve güncel haberler.",
     readExternal: "Haberi oku ↗",
@@ -26,10 +28,34 @@ const content = {
     metaTitle: "Blog — Çizgi Artizm | Articles on Murals & Graffiti",
     metaDescription:
       "Guides, project stories and news on graffiti, mural and airbrush art. Field experience and tips from the Çizgi Artizm team.",
+    label: "Blog",
+    watermark: "BLOG",
     title: "Articles & News",
     intro: "Guides, project stories and the latest news about our craft.",
     readExternal: "Read the story ↗",
     readMore: "Read more →",
+  },
+  es: {
+    metaTitle: "Blog — Çizgi Artizm | Artículos sobre murales y grafiti",
+    metaDescription:
+      "Guías, historias de proyectos y noticias sobre grafiti, murales y aerografía. Experiencia sobre el terreno y consejos del equipo de Çizgi Artizm.",
+    label: "Blog",
+    watermark: "BLOG",
+    title: "Artículos y noticias",
+    intro: "Guías, historias de proyectos y las últimas noticias sobre nuestro oficio.",
+    readExternal: "Leer la noticia ↗",
+    readMore: "Seguir leyendo →",
+  },
+  ar: {
+    metaTitle: "المدونة — Çizgi Artizm | مقالات عن الجداريات والجرافيتي",
+    metaDescription:
+      "أدلة وقصص مشاريع وأخبار عن فنون الجرافيتي والجداريات والإيربرش، مع خبرات ونصائح من فريق Çizgi Artizm في الميدان.",
+    label: "المدونة",
+    watermark: "المدونة",
+    title: "مقالات وأخبار",
+    intro: "أدلة وقصص مشاريع وآخر الأخبار عن فنّنا.",
+    readExternal: "اقرأ الخبر ↗",
+    readMore: "اقرأ المزيد ←",
   },
 }[lang];
 
@@ -52,7 +78,7 @@ const fmt = (d: Date) =>
 ---
 
 <Layout lang={lang} route="blog" title={content.metaTitle} description={content.metaDescription}>
-  <PageHero label="Blog" title={content.title} watermark="BLOG" image={headerBg}>
+  <PageHero label={content.label} title={content.title} watermark={content.watermark} image={headerBg}>
     <p class="max-w-xl text-lg text-neutral-300 drop-shadow">
       {content.intro}
     </p>

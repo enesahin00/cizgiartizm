@@ -1,0 +1,24 @@
+---
+// Çeviri metinlerinde küçük işaretleme, böylece her dilin metni tek string kalır:
+//   [etiket](rota)  → o dildeki sayfaya iç bağlantı (rota: src/i18n routes anahtarı)
+//   **metin**       → <strong>
+//   *metin*         → sprey gradyanlı vurgu
+import { routes, type Lang, type RouteKey } from "../i18n";
+
+interface Props {
+  text: string;
+  lang: Lang;
+  linkClass?: string;
+}
+const { text, lang, linkClass } = Astro.props;
+
+const parts = text.split(/(\[[^\]]+\]\([a-z]+\)|\*\*[^*]+\*\*|\*[^*]+\*)/).filter(Boolean);
+---
+
+{parts.map((part) => {
+  const link = part.match(/^\[([^\]]+)\]\(([a-z]+)\)$/);
+  if (link) return <a href={routes[link[2] as RouteKey][lang]} class={linkClass}>{link[1]}</a>;
+  if (part.startsWith("**")) return <strong>{part.slice(2, -2)}</strong>;
+  if (part.startsWith("*")) return <span class="text-spray-gradient">{part.slice(1, -1)}</span>;
+  return part;
+})}

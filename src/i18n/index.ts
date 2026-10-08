@@ -1,17 +1,24 @@
-// Site iki dilli. Türkçe varsayılan ve kökte yayınlanır (mevcut URL'ler, Google
-// indeksi ve reklam hedef sayfaları aynen kalır); İngilizce /en/ altında, kendi
-// slug'larıyla. Sayfa şablonları src/views altında, iki dil aynı şablonu kullanır.
+// Site çok dilli. Türkçe varsayılan ve kökte yayınlanır (mevcut URL'ler, Google
+// indeksi ve reklam hedef sayfaları aynen kalır); diğer diller /en/, /es/, /ar/
+// altında. Sayfa şablonları src/views altında, tüm diller aynı şablonu kullanır.
+// Otomatik varsayılan yalnız TR/EN arasında seçer (bkz. Layout); ES ve AR yalnız
+// dil kutucuğuyla ya da doğrudan bağlantıyla açılır.
 
-export const langs = ["tr", "en"] as const;
+export const langs = ["tr", "en", "es", "ar"] as const;
 export type Lang = (typeof langs)[number];
 
 export const routes = {
-  home: { tr: "/", en: "/en/" },
-  services: { tr: "/hizmetler", en: "/en/services" },
-  gallery: { tr: "/galeri", en: "/en/gallery" },
-  blog: { tr: "/blog", en: "/en/blog" },
-  contact: { tr: "/iletisim", en: "/en/contact" },
-  privacy: { tr: "/gizlilik-politikasi", en: "/en/privacy-policy" },
+  home: { tr: "/", en: "/en/", es: "/es/", ar: "/ar/" },
+  services: { tr: "/hizmetler", en: "/en/services", es: "/es/servicios", ar: "/ar/services" },
+  gallery: { tr: "/galeri", en: "/en/gallery", es: "/es/galeria", ar: "/ar/gallery" },
+  blog: { tr: "/blog", en: "/en/blog", es: "/es/blog", ar: "/ar/blog" },
+  contact: { tr: "/iletisim", en: "/en/contact", es: "/es/contacto", ar: "/ar/contact" },
+  privacy: {
+    tr: "/gizlilik-politikasi",
+    en: "/en/privacy-policy",
+    es: "/es/politica-de-privacidad",
+    ar: "/ar/privacy-policy",
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export type RouteKey = keyof typeof routes;
@@ -23,6 +30,7 @@ export const ui = {
   tr: {
     langName: "Türkçe",
     htmlLang: "tr",
+    dir: "ltr",
     ogLocale: "tr_TR",
     dateLocale: "tr-TR",
     defaultTitle: "Çizgi Artizm — Duvar Resmi & Graffiti Sanatı",
@@ -54,6 +62,7 @@ export const ui = {
   en: {
     langName: "English",
     htmlLang: "en",
+    dir: "ltr",
     ogLocale: "en_US",
     dateLocale: "en-US",
     defaultTitle: "Çizgi Artizm — Mural & Graffiti Art",
@@ -81,6 +90,72 @@ export const ui = {
     phones: ["+90 539 618 37 67", "+90 535 774 60 12"],
     lightbox: "Image viewer",
     close: "Close",
+  },
+  es: {
+    langName: "Español",
+    htmlLang: "es",
+    dir: "ltr",
+    ogLocale: "es_ES",
+    dateLocale: "es-ES",
+    defaultTitle: "Çizgi Artizm — Murales y arte grafiti",
+    defaultDescription:
+      "Murales, grafiti, retratos y aerografía para vehículos realizados por profesionales en toda Turquía. Convierta sus espacios en arte con Çizgi Artizm.",
+    knowsAbout: ["Grafiti", "Murales", "Arte urbano", "Aerografía", "Retratos"],
+    nav: {
+      home: "Inicio",
+      services: "Servicios",
+      gallery: "Galería",
+      blog: "Blog",
+      contact: "Contacto",
+    },
+    quote: "Pedir presupuesto",
+    langSwitch: "Idioma",
+    menu: "Menú",
+    whatsapp: "Escríbanos por WhatsApp",
+    footer: {
+      tagline: "Murales, grafiti, retratos y aerografía para vehículos. Servicio en toda Turquía.",
+      contact: "Contacto",
+      pages: "Páginas",
+      rights: "Todos los derechos reservados.",
+      privacy: "Política de privacidad",
+    },
+    phones: ["+90 539 618 37 67", "+90 535 774 60 12"],
+    lightbox: "Visor de imágenes",
+    close: "Cerrar",
+  },
+  // Arapça: Körfez (Dubai) kitlesi için Modern Standart Arapça. Terimler BAE basını
+  // ve yerel hizmet sitelerinden: جدارية (mural), الجرافيتي, معاينة مجانية, عرض سعر.
+  ar: {
+    langName: "العربية",
+    htmlLang: "ar",
+    dir: "rtl",
+    ogLocale: "ar_AE",
+    dateLocale: "ar-AE",
+    defaultTitle: "Çizgi Artizm — فن الجداريات والجرافيتي",
+    defaultDescription:
+      "رسم جداريات وجرافيتي ولوحات بورتريه ورسم بتقنية الإيربرش على المركبات بأيدي فريق محترف في جميع أنحاء تركيا. حوّل مساحتك إلى عمل فني مع Çizgi Artizm.",
+    knowsAbout: ["الجرافيتي", "الجداريات", "فن الشارع", "الإيربرش", "رسم البورتريه"],
+    nav: {
+      home: "الرئيسية",
+      services: "خدماتنا",
+      gallery: "أعمالنا",
+      blog: "المدونة",
+      contact: "تواصل معنا",
+    },
+    quote: "اطلب عرض سعر",
+    langSwitch: "اللغة",
+    menu: "القائمة",
+    whatsapp: "راسلنا عبر واتساب",
+    footer: {
+      tagline: "رسم الجداريات والجرافيتي ولوحات البورتريه والإيربرش على المركبات. نخدم جميع أنحاء تركيا.",
+      contact: "تواصل معنا",
+      pages: "الصفحات",
+      rights: "جميع الحقوق محفوظة.",
+      privacy: "سياسة الخصوصية",
+    },
+    phones: ["+90 539 618 37 67", "+90 535 774 60 12"],
+    lightbox: "عارض الصور",
+    close: "إغلاق",
   },
 } satisfies Record<Lang, unknown>;
 

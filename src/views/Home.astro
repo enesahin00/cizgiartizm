@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import SprayStroke from "../components/SprayStroke.astro";
 import SpraySplat from "../components/SpraySplat.astro";
+import Rich from "../components/Rich.astro";
 import { Image, getImage } from "astro:assets";
 import { routes, ui, type Lang } from "../i18n";
 
@@ -32,6 +33,7 @@ const content = {
   tr: {
     heroAlt: "ÇİZGİ yazılı sprey boya kutusu",
     heroTag: "Türkiye geneli",
+    heroLines: ["Duvarları *Sanata*", "Dönüştürüyoruz"],
     heroText:
       "Bina cephelerinden iç mekanlara, araçlardan portrelere — profesyonel graffiti, duvar resmi ve airbrush sanatı. Türkiye genelinde her ölçekte proje teslim ediyoruz.",
     seeWork: "İşlerimizi Gör",
@@ -73,12 +75,18 @@ const content = {
     refsTitle: "Referanslarımız",
     refNames: ["İzmir Büyükşehir Belediyesi", "Metro İzmir", "İZENERJİ", "1453 Osmanlı", "Creative QP", "Altınordu"],
     seoTitle: "Türkiye Genelinde Graffiti & Duvar Resmi Sanatı",
+    seoP1:
+      "Çizgi Artizm, profesyonel bir graffiti ve duvar resmi ekibidir. Bina cepheleri, ofis ve kafe iç mekanları, trafo binaları, su depoları, okul ve AVM duvarları — her ölçekteki yüzeyi özgün tasarımlarla sanata dönüştürüyoruz. Türkiye'nin her yerinde [duvar resmi, portre çizim ve airbrush](services) projeleri gerçekleştiriyoruz.",
+    seoP2:
+      "Her projede UV ve hava koşullarına dayanıklı boyalar kullanıyor; vinç, iskele ve yüksekte çalışma dahil uygulamanın tamamını kendi ekibimizle yürütüyoruz. Çalışmalarımız metrekare bazlı, şeffaf fiyatlandırılır ve her proje [ücretsiz keşif ve fiyat teklifiyle](contact) başlar. İzmir Büyükşehir Belediyesi ve Metro İzmir gibi kurumlar için tamamladığımız işleri [galerimizde](gallery) inceleyebilir, sektöre dair yazılarımızı [blogumuzda](blog) okuyabilirsiniz.",
+    ctaTitle: "Bir *fikrin* mi var?",
     ctaText: "Mekanını sanata çevirmek için bizimle iletişime geç. Ücretsiz keşif ve fiyat teklifi.",
     ctaButton: "Hemen İletişime Geç",
   },
   en: {
     heroAlt: "Spray paint can labeled ÇİZGİ",
     heroTag: "Across Türkiye",
+    heroLines: ["We Turn Walls", "Into *Art*"],
     heroText:
       "From building facades to interiors, from vehicles to portraits — professional graffiti, mural and airbrush art. We deliver projects of every scale across Türkiye.",
     seeWork: "See Our Work",
@@ -120,8 +128,119 @@ const content = {
     refsTitle: "Our Clients",
     refNames: ["İzmir Metropolitan Municipality", "Metro İzmir", "İZENERJİ", "1453 Osmanlı", "Creative QP", "Altınordu"],
     seoTitle: "Graffiti & Mural Art Across Türkiye",
+    seoP1:
+      "Çizgi Artizm is a professional graffiti and mural team. Building facades, office and café interiors, transformer buildings, water tanks, school and shopping mall walls — we turn surfaces of every size into art with original designs. We deliver [mural, portrait and airbrush](services) projects all over Türkiye.",
+    seoP2:
+      "We use UV- and weather-resistant paints on every project and carry out the entire job with our own team — including cranes, scaffolding and work at height. Our work is priced transparently per square meter, and every project starts with a [free site visit and quote](contact). Browse the projects we've completed for institutions such as İzmir Metropolitan Municipality and Metro İzmir in our [gallery](gallery), and read about our craft on our [blog](blog).",
+    ctaTitle: "Got an *idea*?",
     ctaText: "Get in touch to turn your space into art. Free site visit and quote.",
     ctaButton: "Contact Us Now",
+  },
+  es: {
+    heroAlt: "Bote de pintura en espray con la palabra ÇİZGİ",
+    heroTag: "En toda Turquía",
+    heroLines: ["Convertimos muros", "en *arte*"],
+    heroText:
+      "De fachadas a interiores, de vehículos a retratos: grafiti, murales y aerografía de nivel profesional. Realizamos proyectos de cualquier escala en toda Turquía.",
+    seeWork: "Ver nuestros trabajos",
+    servicesTitle: "Qué hacemos",
+    allServices: "Todos los servicios →",
+    services: [
+      {
+        title: "Grafiti y murales",
+        desc: "Grafiti duradero y resistente a la intemperie en fachadas, paredes interiores y superficies de hormigón, madera y metal.",
+      },
+      {
+        title: "Retratos personalizados",
+        desc: "Retratos originales a partir de sus fotografías. Piezas ideales para regalar y coleccionar.",
+      },
+      {
+        title: "Aerografía para vehículos y yates",
+        desc: "Diseños exclusivos e impermeables con aerógrafo para coches, motos, caravanas y embarcaciones.",
+      },
+    ],
+    featuredWatermark: "PORTAFOLIO",
+    featuredTitle: "Trabajos destacados",
+    allGallery: "Galería completa →",
+    allGalleryMobile: "Ver toda la galería →",
+    featured: [
+      { title: "Tigre blanco", alt: "Grafiti realista de un tigre blanco en la pared de un edificio" },
+      { title: "Dragón — Interior", alt: "Mural de un dragón que escupe fuego en una pared interior" },
+      { title: "Estatua de ángel — Oficina", alt: "Mural de una estatua de ángel alado en la pared de una oficina" },
+      { title: "Deportivo amarillo", alt: "Mural interior de un deportivo amarillo con matrícula 3K PLUS que parece salir de la pared" },
+      { title: "Retrato de Atatürk — Caseta eléctrica", alt: "Retrato en blanco y negro de Atatürk ante la bandera turca sobre fondo rojo, pintado en una caseta eléctrica" },
+    ],
+    processWatermark: "PROCESO",
+    processTitle: "Cómo trabajamos",
+    steps: [
+      { t: "Asesoramiento y planificación", d: "Valoramos juntos el espacio, su idea y su presupuesto." },
+      { t: "Desarrollo del diseño", d: "Preparamos bocetos a medida y los sometemos a su aprobación." },
+      { t: "Ejecución y entrega", d: "Lo hacemos realidad con un equipo profesional y materiales duraderos." },
+      { t: "Revisión final", d: "Lo revisamos juntos y entregamos el trabajo terminado." },
+    ],
+    refsTitle: "Nuestros clientes",
+    refNames: ["Ayuntamiento Metropolitano de Esmirna", "Metro İzmir", "İZENERJİ", "1453 Osmanlı", "Creative QP", "Altınordu"],
+    seoTitle: "Grafiti y murales en toda Turquía",
+    seoP1:
+      "Çizgi Artizm es un equipo profesional de grafiti y murales. Fachadas de edificios, interiores de oficinas y cafeterías, casetas eléctricas, depósitos de agua, paredes de colegios y centros comerciales: convertimos superficies de cualquier tamaño en arte con diseños originales. Realizamos proyectos de [murales, retratos y aerografía](services) en toda Turquía.",
+    seoP2:
+      "En cada proyecto usamos pinturas resistentes a los rayos UV y a la intemperie, y realizamos todo el trabajo con nuestro propio equipo, incluidos grúas, andamios y trabajos en altura. Nuestros precios son transparentes y se calculan por metro cuadrado, y cada proyecto empieza con una [visita y un presupuesto gratuitos](contact). En nuestra [galería](gallery) puede ver los trabajos realizados para instituciones como el Ayuntamiento Metropolitano de Esmirna y Metro İzmir, y en nuestro [blog](blog) encontrará artículos sobre nuestro oficio.",
+    ctaTitle: "¿Tiene una *idea*?",
+    ctaText: "Contáctenos para convertir su espacio en arte. Visita y presupuesto gratuitos.",
+    ctaButton: "Contáctenos ahora",
+  },
+  ar: {
+    heroAlt: "علبة طلاء بخاخ مكتوب عليها ÇİZGİ",
+    heroTag: "في جميع أنحاء تركيا",
+    heroLines: ["نحوّل الجدران", "إلى *فن*"],
+    heroText:
+      "من واجهات المباني إلى المساحات الداخلية، ومن المركبات إلى لوحات البورتريه — جرافيتي وجداريات وإيربرش بأيدٍ محترفة. ننفّذ مشاريع بجميع الأحجام في أنحاء تركيا كافة.",
+    seeWork: "شاهد أعمالنا",
+    servicesTitle: "ماذا نقدّم",
+    allServices: "جميع الخدمات ←",
+    services: [
+      {
+        title: "الجرافيتي والجداريات",
+        desc: "جرافيتي متين يدوم طويلاً ويقاوم العوامل الجوية، على واجهات المباني والجدران الداخلية وأسطح الخرسانة والخشب والمعادن.",
+      },
+      {
+        title: "بورتريه حسب الطلب",
+        desc: "لوحات بورتريه أصلية نرسمها من صورك، تصلح هدايا وقطعاً فنية للاقتناء.",
+      },
+      {
+        title: "إيربرش للمركبات واليخوت",
+        desc: "تصاميم حصرية مقاومة للماء بتقنية الإيربرش للسيارات والدراجات النارية والكرفانات والقوارب.",
+      },
+    ],
+    featuredWatermark: "أعمالنا",
+    featuredTitle: "أبرز أعمالنا",
+    allGallery: "معرض الأعمال كاملاً ←",
+    allGalleryMobile: "شاهد معرض الأعمال كاملاً ←",
+    featured: [
+      { title: "النمر الأبيض", alt: "جرافيتي واقعي لنمر أبيض على جدار مبنى" },
+      { title: "التنين — مساحة داخلية", alt: "جدارية لتنين ينفث النار على جدار داخلي" },
+      { title: "تمثال الملاك — مكتب", alt: "جدارية لتمثال ملاك مجنّح على جدار مكتب" },
+      { title: "السيارة الرياضية الصفراء", alt: "جدارية داخلية لسيارة رياضية صفراء تحمل لوحة 3K PLUS وكأنها تخرج من الجدار" },
+      { title: "بورتريه أتاتورك — مبنى محولات", alt: "بورتريه بالأبيض والأسود لأتاتورك أمام العلم التركي على خلفية حمراء، مرسوم على مبنى محولات كهربائية" },
+    ],
+    processWatermark: "مراحل العمل",
+    processTitle: "كيف نعمل",
+    steps: [
+      { t: "الاستشارة والتخطيط", d: "ندرس معك المساحة وتصوّرك والميزانية." },
+      { t: "تطوير التصميم", d: "نعدّ لك مسودات خاصة ونحصل على موافقتك." },
+      { t: "التنفيذ والتسليم", d: "ننفّذ العمل بفريق محترف ومواد متينة." },
+      { t: "المراجعة النهائية", d: "نراجع العمل معك ونسلّمه مكتملاً." },
+    ],
+    refsTitle: "عملاؤنا",
+    refNames: ["بلدية إزمير الكبرى", "مترو إزمير", "İZENERJİ", "1453 Osmanlı", "Creative QP", "Altınordu"],
+    seoTitle: "فن الجرافيتي والجداريات في جميع أنحاء تركيا",
+    seoP1:
+      "Çizgi Artizm فريق محترف متخصص في الجرافيتي والجداريات. من واجهات المباني والمساحات الداخلية للمكاتب والمقاهي، إلى مباني المحولات الكهربائية وخزانات المياه وجدران المدارس ومراكز التسوق — نحوّل كل سطح، مهما كان حجمه، إلى عمل فني بتصاميم أصلية. وننفّذ مشاريع [الجداريات والبورتريه والإيربرش](services) في أنحاء تركيا كافة.",
+    seoP2:
+      "نستخدم في كل مشروع دهانات مقاومة للأشعة فوق البنفسجية والعوامل الجوية، وينفّذ فريقنا العمل كاملاً، بما في ذلك الرافعات والسقالات والعمل على المرتفعات. تُحسب أسعارنا بشفافية حسب المتر المربع، ويبدأ كل مشروع [بمعاينة مجانية وعرض سعر](contact). يمكنك مشاهدة الأعمال التي أنجزناها لجهات مثل بلدية إزمير الكبرى ومترو إزمير في [معرض الأعمال](gallery)، وقراءة مقالاتنا حول هذا الفن في [المدونة](blog).",
+    ctaTitle: "لديك *فكرة*؟",
+    ctaText: "تواصل معنا لتحويل مساحتك إلى عمل فني. معاينة مجانية وعرض سعر.",
+    ctaButton: "تواصل معنا الآن",
   },
 }[lang];
 const t = ui[lang];
@@ -160,7 +279,7 @@ const inlineLink = "font-semibold text-accent hover:text-accent-bright";
       fetchpriority="high"
     />
     <!-- Metnin okunması için yalnızca soldan hafif degrade; sağda sprey kutusu net görünür -->
-    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950/90 via-neutral-950/45 to-transparent"></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-neutral-950/90 via-neutral-950/45 to-transparent rtl:bg-gradient-to-l"></div>
 
     <!-- Süzülen sprey sıçramaları -->
     <div class="float-slow absolute right-[6%] top-[14%] hidden md:block" aria-hidden="true">
@@ -180,17 +299,9 @@ const inlineLink = "font-semibold text-accent hover:text-accent-bright";
           {content.heroTag}
         </p>
         <h1 class="font-display text-5xl leading-[1.1] drop-shadow-lg md:text-7xl">
-          {lang === "tr" ? (
-            <>
-              <span class="hero-rise rise-delay-1 block">Duvarları <span class="text-spray-gradient">Sanata</span></span>
-              <span class="hero-rise rise-delay-2 block">Dönüştürüyoruz</span>
-            </>
-          ) : (
-            <>
-              <span class="hero-rise rise-delay-1 block">We Turn Walls</span>
-              <span class="hero-rise rise-delay-2 block">Into <span class="text-spray-gradient">Art</span></span>
-            </>
-          )}
+          {content.heroLines.map((line, i) => (
+            <span class:list={["hero-rise block", `rise-delay-${i + 1}`]}><Rich text={line} lang={lang} /></span>
+          ))}
         </h1>
         <p class="hero-rise rise-delay-3 mt-6 max-w-md text-lg text-white/90 drop-shadow">
           {content.heroText}
@@ -284,7 +395,7 @@ const inlineLink = "font-semibold text-accent hover:text-accent-bright";
               data-fade
             />
             <!-- Başlık: hover beklemeden, telefonda da görünür -->
-            <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent px-4 pb-3 pt-10 text-left">
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent px-4 pb-3 pt-10 text-start">
               <p class="text-sm font-semibold text-white drop-shadow md:text-base">{f.title}</p>
             </div>
           </button>
@@ -328,7 +439,7 @@ const inlineLink = "font-semibold text-accent hover:text-accent-bright";
       <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">{content.refsTitle}</h2>
       <SprayStroke class="mx-auto mt-3 text-accent" />
     </div>
-    <div class="marquee relative mt-12 overflow-hidden" data-reveal>
+    <div class="marquee relative mt-12 overflow-hidden" dir="ltr" data-reveal>
       <div class="marquee-track flex w-max">
         {[false, true].map((hidden) => (
           <div class="flex shrink-0 items-center gap-14 pr-14 md:gap-20 md:pr-20" aria-hidden={hidden || undefined}>
@@ -358,50 +469,14 @@ const inlineLink = "font-semibold text-accent hover:text-accent-bright";
         <div>
           <h2 class="font-display text-2xl text-neutral-900 md:text-4xl">{content.seoTitle}</h2>
           <SprayStroke class="mt-3 text-accent" />
-          {lang === "tr" ? (
-            <p class="mt-5 leading-relaxed text-neutral-600">
-              Çizgi Artizm, profesyonel bir graffiti ve duvar resmi
-              ekibidir. Bina cepheleri, ofis ve kafe iç mekanları, trafo binaları,
-              su depoları, okul ve AVM duvarları — her ölçekteki yüzeyi özgün
-              tasarımlarla sanata dönüştürüyoruz.
-              Türkiye'nin her yerinde <a href={r("services")} class={inlineLink}>duvar resmi, portre çizim ve airbrush</a>
-              projeleri gerçekleştiriyoruz.
-            </p>
-          ) : (
-            <p class="mt-5 leading-relaxed text-neutral-600">
-              Çizgi Artizm is a professional graffiti and mural team. Building
-              facades, office and café interiors, transformer buildings, water
-              tanks, school and shopping mall walls — we turn surfaces of every
-              size into art with original designs. We deliver
-              <a href={r("services")} class={inlineLink}>mural, portrait and airbrush</a>
-              projects all over Türkiye.
-            </p>
-          )}
+          <p class="mt-5 leading-relaxed text-neutral-600">
+            <Rich text={content.seoP1} lang={lang} linkClass={inlineLink} />
+          </p>
         </div>
         <div class="md:pt-14">
-          {lang === "tr" ? (
-            <p class="leading-relaxed text-neutral-600">
-              Her projede UV ve hava koşullarına dayanıklı boyalar kullanıyor;
-              vinç, iskele ve yüksekte çalışma dahil uygulamanın tamamını kendi
-              ekibimizle yürütüyoruz. Çalışmalarımız metrekare bazlı, şeffaf
-              fiyatlandırılır ve her proje <a href={r("contact")} class={inlineLink}>ücretsiz keşif ve fiyat teklifiyle</a> başlar.
-              İzmir Büyükşehir Belediyesi ve Metro İzmir gibi kurumlar için
-              tamamladığımız işleri <a href={r("gallery")} class={inlineLink}>galerimizde</a> inceleyebilir,
-              sektöre dair yazılarımızı <a href={r("blog")} class={inlineLink}>blogumuzda</a> okuyabilirsiniz.
-            </p>
-          ) : (
-            <p class="leading-relaxed text-neutral-600">
-              We use UV- and weather-resistant paints on every project and carry
-              out the entire job with our own team — including cranes, scaffolding
-              and work at height. Our work is priced transparently per square
-              meter, and every project starts with a
-              <a href={r("contact")} class={inlineLink}>free site visit and quote</a>.
-              Browse the projects we've completed for institutions such as İzmir
-              Metropolitan Municipality and Metro İzmir in our
-              <a href={r("gallery")} class={inlineLink}>gallery</a>, and read about
-              our craft on our <a href={r("blog")} class={inlineLink}>blog</a>.
-            </p>
-          )}
+          <p class="leading-relaxed text-neutral-600">
+            <Rich text={content.seoP2} lang={lang} linkClass={inlineLink} />
+          </p>
         </div>
       </div>
     </div>
@@ -421,11 +496,7 @@ const inlineLink = "font-semibold text-accent hover:text-accent-bright";
       <SpraySplat class="h-14 w-14 rotate-45 text-spray-yellow/35" />
     </div>
     <div class="relative mx-auto max-w-3xl px-5" data-reveal>
-      {lang === "tr" ? (
-        <h2 class="font-display text-4xl md:text-6xl">Bir <span class="text-spray-gradient">fikrin</span> mi var?</h2>
-      ) : (
-        <h2 class="font-display text-4xl md:text-6xl">Got an <span class="text-spray-gradient">idea</span>?</h2>
-      )}
+      <h2 class="font-display text-4xl md:text-6xl"><Rich text={content.ctaTitle} lang={lang} /></h2>
       <p class="mt-5 text-lg text-neutral-300">{content.ctaText}</p>
       <a href={r("contact")} class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-bright">
         {content.ctaButton}
@@ -441,7 +512,7 @@ const inlineLink = "font-semibold text-accent hover:text-accent-bright";
     aria-modal="true"
     aria-label={t.lightbox}
   >
-    <button id="feat-close" aria-label={t.close} class="absolute right-4 top-4 p-2 text-white/80 hover:text-white">
+    <button id="feat-close" aria-label={t.close} class="absolute end-4 top-4 p-2 text-white/80 hover:text-white">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
     </button>
     <img id="feat-img" src="" alt="" class="mx-auto max-h-[85vh] w-auto rounded-lg object-contain" />
