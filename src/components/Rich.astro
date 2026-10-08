@@ -1,0 +1,29 @@
+---
+// Çeviri metinlerinde küçük işaretleme, böylece her dilin metni tek string kalır:
+//   [etiket](rota)  → o dildeki sayfaya iç bağlantı (rota: src/i18n routes anahtarı)
+//   [etiket](/yol/) → dile bağlı olmayan sayfaya bağlantı (Türkçe hizmet açılış sayfaları)
+//   **metin**       → <strong>
+//   *metin*         → sprey gradyanlı vurgu
+import { routes, type Lang, type RouteKey } from "../i18n";
+
+interface Props {
+  text: string;
+  lang: Lang;
+  linkClass?: string;
+  /** [etiket](/yol/) bağlantılarının sınıfı; verilmezse linkClass */
+  pathLinkClass?: string;
+}
+const { text, lang, linkClass, pathLinkClass = linkClass } = Astro.props;
+
+const parts = text.split(/(\[[^\]]+\]\((?:[a-z]+|\/[a-z0-9\/-]*)\)|\*\*[^*]+\*\*|\*[^*]+\*)/).filter(Boolean);
+---
+
+{parts.map((part) => {
+  const link = part.match(/^\[([^\]]+)\]\(([a-z]+|\/[a-z0-9\/-]*)\)$/);
+  if (link && link[2].startsWith("/")) return <a href={link[2]} class={pathLinkClass}>{link[1]}</a>;
+  // Metin içi iletişim bağlantıları "ücretsiz teklif" çağrısı: GA4 cta_click (click-tracking)
+  if (link) return <a href={routes[link[2] as RouteKey][lang]} class={linkClass} data-cta={link[2] === "contact" ? "teklif_al" : undefined}>{link[1]}</a>;
+  if (part.startsWith("**")) return <strong>{part.slice(2, -2)}</strong>;
+  if (part.startsWith("*")) return <span class="text-spray-gradient">{part.slice(1, -1)}</span>;
+  return part;
+})}

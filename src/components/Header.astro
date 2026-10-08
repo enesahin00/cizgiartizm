@@ -1,30 +1,41 @@
 ---
+import LangSwitch from "./LangSwitch.astro";
+import { navRoutes, routes, ui, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+  langLinks: Record<Lang, string>;
+}
+const { lang, langLinks } = Astro.props;
+const t = ui[lang];
 const currentPath = Astro.url.pathname;
 
-const links = [
-  { href: "/", label: "Anasayfa" },
-  { href: "/hizmetler/", label: "Hizmetler" },
-  { href: "/galeri/", label: "Galeri" },
-  { href: "/blog/", label: "Blog" },
-  { href: "/iletisim/", label: "İletişim" },
-];
+const links = navRoutes.map((key) => ({ href: routes[key][lang], label: t.nav[key] }));
+const home = routes.home[lang];
+const contact = routes.contact[lang];
 
 const isActive = (href: string) =>
-  href === "/" ? currentPath === "/" : currentPath.startsWith(href);
+  href === home ? currentPath === home || currentPath === home.replace(/\/$/, "") : currentPath.startsWith(href);
 ---
 
 <header class="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-    <a href="/" class="font-display text-xl tracking-tight text-neutral-900">
-      ÇİZGİ<span class="text-accent">ARTİZM</span>
-    </a>
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-2 px-5 py-4 sm:gap-4">
+    <!-- Mobilde dil seçimi logonun hemen sağında; masaüstünde menünün sonunda. 320px'te
+         logo + bayraklı 4 kutu + menü sığsın diye: 360px altında logo bir kademe küçük
+         (Arapça sayfada logo Cairo ile daha geniş), menü butonunun iç boşluğu kenara taşar. -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href={home} class="font-display text-lg tracking-tight text-neutral-900 min-[360px]:text-xl">
+        ÇİZGİ<span class="text-accent">ARTİZM</span>
+      </a>
+      <LangSwitch lang={lang} links={langLinks} class="md:hidden" />
+    </div>
 
-    <nav class="hidden items-center gap-8 md:flex">
+    <nav class="hidden items-center gap-4 md:flex lg:gap-8">
       {links.map((l) => (
         <a
           href={l.href}
           class:list={[
-            "text-sm font-medium transition-colors",
+            "whitespace-nowrap text-sm font-medium transition-colors",
             isActive(l.href)
               ? "text-neutral-900 font-semibold underline underline-offset-4 decoration-2 decoration-accent"
               : "text-neutral-600 hover:text-neutral-900",
@@ -33,19 +44,22 @@ const isActive = (href: string) =>
           {l.label}
         </a>
       ))}
-      <a
-        href="/iletisim/"
-        data-cta="teklif_al"
-        class="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-bright"
-      >
-        Teklif Al
-      </a>
+      <div class="flex items-center gap-2 lg:gap-3">
+        <a
+          href={contact}
+          data-cta="teklif_al"
+          class="whitespace-nowrap rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-bright lg:px-5"
+        >
+          {t.quote}
+        </a>
+        <LangSwitch lang={lang} links={langLinks} />
+      </div>
     </nav>
 
     <!-- Mobil menü -->
     <details id="mobile-menu" class="md:hidden">
-      <summary class="cursor-pointer list-none p-2 text-neutral-900">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <summary class="-me-2 cursor-pointer list-none p-2 text-neutral-900" aria-label={t.menu}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
         </svg>
       </summary>
@@ -61,7 +75,7 @@ const isActive = (href: string) =>
             {l.label}
           </a>
         ))}
-        <a href="/iletisim/" data-cta="teklif_al" class="mt-2 block rounded-full bg-accent px-5 py-2 text-center text-sm font-semibold text-white">Teklif Al</a>
+        <a href={contact} data-cta="teklif_al" class="mt-2 block rounded-full bg-accent px-5 py-2 text-center text-sm font-semibold text-white">{t.quote}</a>
       </div>
     </details>
   </div>

@@ -1,0 +1,298 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import { Image, getImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { gallery, categories } from "../data/gallery";
+import { ui, type Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang];
+
+const content = {
+  tr: {
+    metaTitle: "Galeri — Çizgi Artizm | Duvar Resmi, Graffiti, Portre & Su Deposu",
+    metaDescription:
+      "Çizgi Artizm'in gerçekleştirdiği duvar resmi, graffiti, portre ve su deposu maskot projelerinden seçmeler. İzmir, Bursa, Çanakkale ve daha fazlası.",
+    label: "Portföy",
+    title: "Galeri",
+    watermark: "GALERİ",
+    intro: "Bina cephelerinden iç mekanlara, portrelerden maskotlara — tamamladığımız bazı projeler.",
+    all: "Tümü",
+    viewer: "Galeri görüntüleyici",
+    prev: "Önceki",
+    next: "Sonraki",
+    // Paylaşılabilir filtre adresi; eski WordPress yönlendirmeleri bu adı kullanır.
+    filterParam: "kategori",
+  },
+  en: {
+    metaTitle: "Gallery — Çizgi Artizm | Murals, Graffiti, Portraits & Water Tanks",
+    metaDescription:
+      "A selection of mural, graffiti, portrait and water tank mascot projects by Çizgi Artizm. İzmir, Bursa, Çanakkale and more.",
+    label: "Portfolio",
+    title: "Gallery",
+    watermark: "GALLERY",
+    intro: "From building facades to interiors, from portraits to mascots — a selection of our completed projects.",
+    all: "All",
+    viewer: "Gallery viewer",
+    prev: "Previous",
+    next: "Next",
+    filterParam: "category",
+  },
+  es: {
+    metaTitle: "Galería — Çizgi Artizm | Murales, grafiti, retratos y depósitos de agua",
+    metaDescription:
+      "Una selección de murales, grafitis, retratos y depósitos de agua con mascotas realizados por Çizgi Artizm. Esmirna, Bursa, Çanakkale y más.",
+    label: "Portafolio",
+    title: "Galería",
+    watermark: "GALERÍA",
+    intro: "De fachadas a interiores, de retratos a mascotas: una selección de los proyectos que hemos realizado.",
+    all: "Todos",
+    viewer: "Visor de la galería",
+    prev: "Anterior",
+    next: "Siguiente",
+    filterParam: "categoria",
+  },
+  ar: {
+    metaTitle: "معرض الأعمال — Çizgi Artizm | جداريات وجرافيتي وبورتريه وخزانات مياه",
+    metaDescription:
+      "مختارات من مشاريع Çizgi Artizm في الجداريات والجرافيتي والبورتريه ورسم الشخصيات الكرتونية على خزانات المياه، في إزمير وبورصة وجناق قلعة وغيرها.",
+    label: "أعمالنا",
+    title: "معرض الأعمال",
+    watermark: "المعرض",
+    intro: "من واجهات المباني إلى المساحات الداخلية، ومن البورتريه إلى الشخصيات الكرتونية — مختارات من المشاريع التي أنجزناها.",
+    all: "الكل",
+    viewer: "عارض معرض الأعمال",
+    prev: "السابق",
+    next: "التالي",
+    filterParam: "category",
+  },
+}[lang];
+
+const allImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{png,jpeg,jpg}",
+  { eager: true }
+);
+
+const getImg = (filename: string): ImageMetadata => {
+  const mod = allImages[`/src/assets/images/${filename}`];
+  if (!mod) throw new Error(`Galeri görseli bulunamadı: ${filename}`);
+  return mod.default;
+};
+
+// Lightbox için: orijinal (çoğu 2MB+) yerine optimize edilmiş, hash'li bir WebP üret.
+// Böylece büyütünce hızlı açılır ve "kırık/mavi görsel" durumu olmaz.
+const items = await Promise.all(
+  gallery.map(async (item) => {
+    const meta = getImg(item.src);
+    const big = await getImage({ src: meta, width: 1400, format: "webp", quality: 78 });
+    return { ...item, title: item.title[lang], alt: item.alt[lang], meta, full: big.src };
+  })
+);
+
+const counts = Object.fromEntries(
+  categories.map((c) => [c.id, gallery.filter((g) => g.category === c.id).length])
+);
+
+const headerImg = getImg("barista-kiz-kahve-bufesi-boyama.jpg");
+---
+
+<Layout lang={lang} route="gallery" title={content.metaTitle} description={content.metaDescription}>
+  <PageHero label={content.label} title={content.title} watermark={content.watermark} image={headerImg}>
+    <p class="max-w-xl text-lg text-neutral-300 drop-shadow">
+      {content.intro}
+    </p>
+  </PageHero>
+
+  <!-- Kategori filtreleri -->
+  <section class="py-12">
+    <div class="mx-auto max-w-6xl px-5">
+      <div class="mb-8 flex flex-wrap gap-2.5" data-reveal data-filter-param={content.filterParam}>
+        <button
+          type="button"
+          data-filter="all"
+          aria-pressed="true"
+          class="rounded-full border border-accent bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors"
+        >
+          {content.all} <span class="opacity-70">({gallery.length})</span>
+        </button>
+        {categories.map((c) => (
+          <button
+            type="button"
+            data-filter={c.id}
+            aria-pressed="false"
+            class="rounded-full border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-700 transition-colors hover:border-accent hover:text-accent"
+          >
+            {c.label[lang]} <span class="opacity-60">({counts[c.id]})</span>
+          </button>
+        ))}
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4" id="grid">
+        {items.map((item, i) => (
+          <button
+            type="button"
+            class:list={[
+              "gallery-item group relative block aspect-square w-full cursor-zoom-in overflow-hidden rounded-lg bg-neutral-100",
+              i >= 8 && "cv-auto",
+            ]}
+            data-index={i}
+            data-full={item.full}
+            data-caption={item.title}
+            data-category={item.category}
+          >
+            <Image
+              src={item.meta}
+              alt={item.alt}
+              width={600}
+              height={600}
+              loading={i < 4 ? "eager" : "lazy"}
+              class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              data-fade={i >= 4 ? "" : undefined}
+            />
+            <!-- Hover karartma -->
+            <div class="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20"></div>
+            <span class="sr-only">{item.title}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div
+    id="lightbox"
+    class="lightbox fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label={content.viewer}
+  >
+    <button id="lb-close" aria-label={t.close} class="absolute end-4 top-4 p-2 text-white/80 hover:text-white">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <button id="lb-prev" aria-label={content.prev} class="absolute start-2 p-2 text-white/70 hover:text-white md:start-6">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="rtl:-scale-x-100"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <figure class="max-h-[90vh] max-w-5xl text-center">
+      <img id="lb-img" src="" alt="" class="mx-auto max-h-[80vh] w-auto rounded-lg object-contain" />
+      <figcaption id="lb-caption" class="mt-3 text-sm text-white/80"></figcaption>
+    </figure>
+    <button id="lb-next" aria-label={content.next} class="absolute end-2 p-2 text-white/70 hover:text-white md:end-6">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="rtl:-scale-x-100"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+</Layout>
+
+<script>
+  const items = Array.from(document.querySelectorAll<HTMLElement>(".gallery-item"));
+  const lightbox = document.getElementById("lightbox")!;
+  const lbImg = document.getElementById("lb-img") as HTMLImageElement;
+  const lbCaption = document.getElementById("lb-caption")!;
+  const lbClose = document.getElementById("lb-close") as HTMLButtonElement;
+  let current: HTMLElement | null = null;
+  let lastTrigger: HTMLElement | null = null;
+
+  // ── Lightbox (filtre uygulanınca yalnız görünür öğeler arasında gezinir) ──
+  const visibleItems = () => items.filter((el) => !el.classList.contains("hidden"));
+
+  // src değişince tarayıcı yeni görsel inene kadar eskisini gösterir; yüklenene
+  // kadar gizli tut. complete, bekleyen bir yükleme varken false döner — geç gelen
+  // eski load olayı görseli erken açmaz.
+  const reveal = () => {
+    if (lbImg.complete) lbImg.classList.remove("is-loading");
+  };
+  lbImg.addEventListener("load", reveal);
+  lbImg.addEventListener("error", reveal);
+
+  function display(el: HTMLElement) {
+    current = el;
+    lbImg.classList.add("is-loading");
+    lbImg.src = el.dataset.full ?? "";
+    reveal();
+    lbImg.alt = el.querySelector("img")?.alt ?? "";
+    lbCaption.textContent = el.dataset.caption ?? "";
+  }
+
+  function openLightbox(el: HTMLElement) {
+    const wasOpen = !lightbox.classList.contains("hidden");
+    display(el);
+    lightbox.classList.remove("hidden");
+    lightbox.classList.add("flex");
+    document.body.style.overflow = "hidden";
+    if (!wasOpen) {
+      lastTrigger = el;
+      lbClose.focus();
+    }
+  }
+
+  function step(dir: number) {
+    if (!current) return;
+    const vis = visibleItems();
+    if (!vis.length) return;
+    const idx = vis.indexOf(current);
+    display(vis[(idx + dir + vis.length) % vis.length]);
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add("hidden");
+    lightbox.classList.remove("flex");
+    document.body.style.overflow = "";
+    lastTrigger?.focus();
+  }
+
+  items.forEach((el) => el.addEventListener("click", () => openLightbox(el)));
+  lbClose.addEventListener("click", closeLightbox);
+  document.getElementById("lb-prev")!.addEventListener("click", () => step(-1));
+  document.getElementById("lb-next")!.addEventListener("click", () => step(1));
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.classList.contains("hidden")) return;
+    if (e.key === "Escape") closeLightbox();
+    // Sağdan sola sayfada "sonraki" soldadır
+    const back = document.documentElement.dir === "rtl" ? "ArrowRight" : "ArrowLeft";
+    if (e.key === back) step(-1);
+    else if (e.key === "ArrowLeft" || e.key === "ArrowRight") step(1);
+  });
+
+  // ── Kategori filtresi (URL ?kategori= / ?category= ile paylaşılabilir) ──
+  const filterParam =
+    document.querySelector<HTMLElement>("[data-filter-param]")?.dataset.filterParam ?? "kategori";
+  const filterBtns = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter]"));
+  const activeCls = ["bg-accent", "text-white", "border-accent"];
+  const idleCls = ["border-neutral-300", "text-neutral-700", "hover:border-accent", "hover:text-accent"];
+
+  function applyFilter(cat: string, updateUrl = true) {
+    items.forEach((el) =>
+      el.classList.toggle("hidden", cat !== "all" && el.dataset.category !== cat)
+    );
+    filterBtns.forEach((b) => {
+      const on = b.dataset.filter === cat;
+      b.setAttribute("aria-pressed", String(on));
+      activeCls.forEach((c) => b.classList.toggle(c, on));
+      idleCls.forEach((c) => b.classList.toggle(c, !on));
+    });
+    if (updateUrl) {
+      const url = new URL(location.href);
+      if (cat === "all") url.searchParams.delete(filterParam);
+      else url.searchParams.set(filterParam, cat);
+      history.replaceState(null, "", url);
+    }
+  }
+
+  filterBtns.forEach((b) =>
+    b.addEventListener("click", () => applyFilter(b.dataset.filter ?? "all"))
+  );
+
+  // Otomatik dil yönlendirmesi sorguyu olduğu gibi taşır; diğer dillerin adı da geçerli.
+  const params = new URLSearchParams(location.search);
+  const initial = [filterParam, "kategori", "category", "categoria"].map((k) => params.get(k)).find(Boolean);
+  if (initial && filterBtns.some((b) => b.dataset.filter === initial)) {
+    applyFilter(initial, false);
+  }
+</script>

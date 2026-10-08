@@ -4,16 +4,24 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { getImage } from "astro:assets";
 import type { ImageMetadata } from "astro";
+import { langs, routes, ui, type Alternates, type Lang, type RouteKey } from "../i18n";
 
 interface Props {
+  lang?: Lang;
+  /** Sabit sayfalar: dil karşılığı routes tablosundan gelir. */
+  route?: RouteKey;
+  /** Blog yazısı gibi dinamik sayfalar: karşılıkları doğrudan verilir. */
+  alternates?: Alternates;
   title?: string;
   description?: string;
   image?: string;
 }
 
+const { lang = "tr", route, alternates } = Astro.props;
+const t = ui[lang];
 const {
-  title = "Çizgi Artizm — Duvar Resmi & Graffiti Sanatı",
-  description = "Türkiye genelinde profesyonel duvar resmi, graffiti, portre çizim ve araç airbrush boyama. Çizgi Artizm ile mekanlarınızı sanata çevirin.",
+  title = t.defaultTitle,
+  description = t.defaultDescription,
   image = "/images/zeus-poseidon-bina-cephesi-grafitti.jpg",
 } = Astro.props;
 
@@ -33,27 +41,107 @@ const ogImage = ogAsset
   ? (await getImage({ src: ogAsset, width: ogWidth, format: "jpeg", quality: 80 })).src
   : image;
 const ogImageUrl = new URL(ogImage, Astro.site).toString();
+
+// Çevirisi olan sayfalarda hreflang; dil kutucukları çevirisi olmayan dilde o
+// dilin ana sayfasına gider.
+const translations: Alternates = alternates ?? (route ? routes[route] : {});
+const langLinks = Object.fromEntries(
+  langs.map((l) => [l, translations[l] ?? routes.home[l]])
+) as Record<Lang, string>;
+const absolute = (path: string) => new URL(path.endsWith("/") ? path : `${path}/`, Astro.site);
+const hreflangs = langs.every((l) => translations[l])
+  ? langs.map((l) => ({ hreflang: ui[l].htmlLang, href: absolute(translations[l]!) }))
+  : [];
+// x-default: hiçbir sürümle eşleşmeyen dilde İngilizce (saat dilimi kuralıyla aynı:
+// Türkiye dışı ziyaretçi İngilizce görür).
+const xDefault = hreflangs.find((h) => h.hreflang === ui.en.htmlLang);
+// Otomatik dil yönlendirmesinin hedefleri: öbür dillerdeki karşılıklar
+// (data-alt-<dil>). Sondaki "/" ile, yoksa GitHub Pages bir 301 daha ekler.
+const langAlts = Object.fromEntries(
+  hreflangs.length > 0
+    ? langs.filter((l) => l !== lang).map((l) => [`data-alt-${l}`, absolute(translations[l]!).pathname])
+    : []
+);
 ---
 
 <!doctype html>
-<html lang="tr">
+<html lang={t.htmlLang} dir={t.dir} {...langAlts}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Varsayılan dil: dışarıdan gelen ziyaretçi, cihaz saat dilimi Türkiye ise
+         Türkçe, değilse İngilizce sürüme yönlenir. Ağ isteği yok; parse'tan önce,
+         Google etiketinden önce çalışır. Kurallar:
+         - botlar ve otomasyon yönlendirilmez (Google Türkçe sayfaları görmeye devam etsin)
+         - reklam tıklaması (gclid/gbraid/wbraid/msclkid/utm_*) ve arama motorundan gelen
+           yönlendirilmez: reklamın hedef sayfası ve Google'ın hreflang ile seçtiği sonuç
+           ziyaretçinin dilidir (İstanbul'daki cihaza İngilizce reklam, Dubai'deki cihaza
+           Arapça reklam olduğu gibi açılır)
+         - saat dilimi yalnız TR/EN sayfalarında karar verir; ES/AR sayfasına doğrudan
+           gelen kalır, bu diller yalnız seçimle açılır
+         - site içi gezinmede yönlendirme yok; dil kutucuğuyla geçiş seçim olarak saklanır
+           ve sonraki girişlerde saat diliminin önüne geçer (seçilen dil ES/AR olabilir).
+           Otomatik yönlendirmenin vardığı sayfa da site içinden gelmiş görünür; o sayfa
+           langAuto ile tanınır, seçim olarak saklanmaz
+         - oturum başına en fazla bir yönlendirme (depolama kapalıysa kullanıcı kilitlenmesin)
+         - sorgu ve hash korunur (Google Ads gclid kaybolmasın)
+         Dil önekleri src/i18n langs ile aynı olmalı: /en/, /es/, /ar/ -->
+    <script is:inline>
+      (function () {
+        var html = document.documentElement, lang = html.lang;
+        if (navigator.webdriver || /bot|crawl|spider|slurp|google|bing|yandex|baidu|lighthouse|headless|preview/i.test(navigator.userAgent)) return;
+        function get(s, k) { try { return window[s].getItem(k); } catch (e) { return null; } }
+        function set(s, k, v) { try { window[s].setItem(k, v); } catch (e) {} }
+        try {
+          if (get("sessionStorage", "langAuto") === location.pathname) {
+            set("sessionStorage", "langAuto", "");
+            return;
+          }
+          var ref = document.referrer ? new URL(document.referrer) : null;
+          if (ref && ref.origin === location.origin) {
+            var from = ref.pathname.match(/^\/(en|es|ar)(\/|$)/);
+            if ((from ? from[1] : "tr") !== lang) set("localStorage", "lang", lang);
+            return;
+          }
+          if (/[?&](gclid|gbraid|wbraid|msclkid|utm_[a-z]+)=/i.test(location.search)) return;
+          if (ref && /(^|\.)(google|bing|yahoo|yandex|duckduckgo|baidu|ecosia|naver|seznam|qwant)\./i.test(ref.hostname)) return;
+          if (get("sessionStorage", "langRedirected")) return;
+          var want = get("localStorage", "lang");
+          if (!want) {
+            if (lang !== "tr" && lang !== "en") return;
+            var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            if (!tz) return;
+            want = /^(Europe|Asia)\/Istanbul$|^Turkey$/.test(tz) ? "tr" : "en";
+          }
+          var alt = want !== lang && html.getAttribute("data-alt-" + want);
+          if (alt) {
+            set("sessionStorage", "langRedirected", "1");
+            set("sessionStorage", "langAuto", alt);
+            window.__langRedirect = true;
+            location.replace(alt + location.search + location.hash);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <!-- Reveal stilleri yalnız JS varken devreye girsin (no-JS'te her şey görünür) -->
     <script is:inline>document.documentElement.classList.add("js");</script>
     <!-- Google etiketi (GA4 + Google Ads) — eski WordPress sitesindeki kimliklerle aynı,
-         reklam dönüşüm takibi kopmasın. İzinli alan adları astro.config.mjs CSP'de. -->
+         reklam dönüşüm takibi kopmasın. İzinli alan adları astro.config.mjs CSP'de.
+         Dil yönlendirmesi başladıysa bu sayfa için görüntüleme gönderilmez (çift sayım). -->
     <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7N3EN1HBTS"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag("js", new Date());
-      gtag("config", "G-7N3EN1HBTS");
-      gtag("config", "AW-16646268606");
+      if (!window.__langRedirect) {
+        gtag("js", new Date());
+        gtag("config", "G-7N3EN1HBTS");
+        gtag("config", "AW-16646268606");
+      }
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
+    {hreflangs.map((h) => <link rel="alternate" hreflang={h.hreflang} href={h.href} />)}
+    {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault.href} />}
     <title>{title}</title>
     <meta name="description" content={description} />
 
@@ -64,7 +152,8 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
     <meta property="og:image" content={ogImageUrl} />
     {ogWidth && <meta property="og:image:width" content={String(ogWidth)} />}
     {ogHeight && <meta property="og:image:height" content={String(ogHeight)} />}
-    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:locale" content={t.ogLocale} />
+    {langs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ui[l].ogLocale} />)}
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- LocalBusiness yapısal verisi -->
@@ -82,29 +171,28 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
         "@type": "PostalAddress",
         "addressCountry": "TR",
       },
-      "areaServed": "TR",
       "priceRange": "₺₺",
-      "knowsAbout": ["Graffiti", "Duvar Resmi", "Mural", "Airbrush", "Portre Çizim"],
+      "knowsAbout": t.knowsAbout,
       "sameAs": ["https://www.instagram.com/cizgiartizm/"],
     })} />
 
     <slot name="head" />
   </head>
   <body>
-    <Header />
+    <Header lang={lang} langLinks={langLinks} />
     <main>
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
 
     <!-- Yüzen WhatsApp butonu -->
     <a
       href="https://wa.me/905396183767"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="WhatsApp ile yazın"
+      aria-label={t.whatsapp}
       data-track-location="floating"
-      class="fixed bottom-5 right-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-1 ring-black/5 transition-transform hover:scale-110"
+      class="fixed bottom-5 end-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg ring-1 ring-black/5 transition-transform hover:scale-110"
     >
       <span
         aria-hidden="true"

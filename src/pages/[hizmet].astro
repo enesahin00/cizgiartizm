@@ -11,7 +11,7 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import { gallery } from "../data/gallery";
 import { serviceLandings, type ServiceLanding } from "../data/serviceLandings";
-import { getCollection } from "astro:content";
+import { getPosts, postPath } from "../i18n/blog";
 
 export function getStaticPaths() {
   return serviceLandings.map((s) => ({ params: { hizmet: s.slug }, props: { s } }));
@@ -30,16 +30,15 @@ const getImg = (file: string): ImageMetadata => {
 };
 
 // Yalnız galeride kayıtlı gerçek işler; başlık ve alt metin oradan gelir
+// (açılış sayfaları Türkçe: galerideki çok dilli metnin Türkçesi)
 const works = s.works.map((file) => {
   const item = gallery.find((g) => g.src === file);
   if (!item) throw new Error(`${s.slug}: galeride olmayan iş görseli: ${file}`);
-  return { ...item, meta: getImg(file) };
+  return { title: item.title.tr, alt: item.alt.tr, meta: getImg(file) };
 });
 
-// Bu hizmete bağlı vaka çalışmaları (blog frontmatter'ında proje.hizmet)
-const caseStudies = (await getCollection("blog"))
-  .filter((p) => p.data.proje?.hizmet === s.slug)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+// Bu hizmete bağlı vaka çalışmaları (Türkçe blog yazılarının frontmatter'ında proje.hizmet)
+const caseStudies = (await getPosts("tr")).filter((p) => p.data.proje?.hizmet === s.slug);
 
 const isPricing = s.slug === "duvar-resmi-fiyatlari";
 const others = serviceLandings.filter((o) => o.slug !== s.slug);
@@ -170,7 +169,7 @@ const schema = JSON.stringify({
           <ul class="mt-8 grid gap-4 md:grid-cols-2">
             {caseStudies.map((p) => (
               <li data-reveal>
-                <a href={`/blog/${p.id}/`} class="group block h-full rounded-2xl border border-neutral-200 p-6 transition-colors hover:border-accent/50">
+                <a href={postPath(p)} class="group block h-full rounded-2xl border border-neutral-200 p-6 transition-colors hover:border-accent/50">
                   <p class="text-xs font-semibold uppercase tracking-wider text-accent">
                     {[p.data.proje?.musteri, p.data.proje?.konum].filter(Boolean).join(" · ")}
                   </p>

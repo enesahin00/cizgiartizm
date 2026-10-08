@@ -29,6 +29,8 @@ const blog = defineCollection({
     image: z.string().optional(),
     externalUrl: z.string().url().optional(),
     proje: proje.optional(),
+    // Yalnız İngilizce yazılarda (src/content/blog/en): Türkçe aslının id'si
+    translationOf: z.string().optional(),
   }),
 });
 

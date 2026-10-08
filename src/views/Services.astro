@@ -1,0 +1,318 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHero from "../components/PageHero.astro";
+import SprayStroke from "../components/SprayStroke.astro";
+import SpraySplat from "../components/SpraySplat.astro";
+import Rich from "../components/Rich.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { routes, type Lang } from "../i18n";
+import { serviceLandings } from "../data/serviceLandings";
+
+import imgZeus from "../assets/images/zeus-poseidon-bina-cephesi-grafitti.jpg";
+import imgKadin from "../assets/images/renkli-kadin-portesi-grafitti.jpg";
+import imgMickey from "../assets/images/mickey-mouse-minibus-airbrush.jpg";
+import headerBg from "../assets/images/beyaz-kaplan-duvar-resmi.jpg";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const content = {
+  tr: {
+    metaTitle: "Hizmetlerimiz — Çizgi Artizm | Graffiti, Portre & Airbrush",
+    metaDescription:
+      "Graffiti duvar resmi, kişiye özel portre çizim ve araç & yat airbrush boyama. Profesyonel ekip, dayanıklı malzeme, ücretsiz keşif ve fiyat teklifi.",
+    label: "Hizmetlerimiz",
+    title: "Ne Yapıyoruz",
+    watermark: "HİZMET",
+    intro: "Fikirden uygulamaya, mekanlarınızı ve yüzeylerinizi sanata çeviriyoruz.",
+    services: [
+      {
+        title: "Graffiti & Duvar Resmi",
+        desc: "Bina cepheleri, iç mekan duvarları, beton, ahşap ve metal yüzeyler — her ölçekte sanatsal graffiti ve duvar resmi uyguluyoruz. Hava koşullarına dayanıklı, uzun ömürlü malzemeler kullanıyoruz.",
+        points: ["Bina cephesi ve dev muraller", "Ofis, kafe ve iç mekan duvarları", "Trafo binaları ve kamusal alanlar", "UV ve hava koşullarına dayanıklı boyalar"],
+      },
+      {
+        title: "Kişiye Özel Portre Çizim",
+        desc: "Fotoğrafınızdan özgün portreler üretiyoruz. İster duvara, ister tuvale; gerçekçi ve etkileyici portre çalışmaları.",
+        points: ["Fotoğraftan özgün portre", "Duvar veya tuval üzerine", "Hediyelik ve koleksiyonluk eserler", "Karakalem ve renkli teknikler"],
+      },
+      {
+        title: "Araç & Yat Airbrush Boyama",
+        desc: "Otomobil, motosiklet, karavan ve teknelere airbrush tekniğiyle özel tasarım uyguluyoruz. Denizel yüzeyler için su geçirmez, dayanıklı boyalar kullanıyoruz.",
+        points: ["Otomobil, motosiklet ve karavan", "Tekne ve yat için su geçirmez boya", "Tamamen özgün tasarımlar", "Profesyonel airbrush tekniği"],
+      },
+    ],
+    processWatermark: "SÜREÇ",
+    processTitle: "Nasıl Çalışıyoruz",
+    steps: [
+      { t: "Danışmanlık & Planlama", d: "Mekanı, hayalinizi ve bütçeyi birlikte değerlendirip yol haritasını çıkarıyoruz." },
+      { t: "Tasarım Geliştirme", d: "Size özel taslakları hazırlıyor, onayınızı alana kadar üzerinde çalışıyoruz." },
+      { t: "Uygulama & Teslimat", d: "Profesyonel ekip ve dayanıklı malzemelerle tasarımı sahada hayata geçiriyoruz." },
+      { t: "Son Değerlendirme", d: "Birlikte gözden geçirip projeyi eksiksiz teslim ediyoruz." },
+    ],
+    pricingTitle: "Fiyatlandırma",
+    pricingText:
+      "Çalışmalarımız metrekare bazlı hesaplanır. Fiyat; projenin ölçeğine, tasarımın karmaşıklığına ve kullanılacak malzemeye göre değişir. Her proje için **ücretsiz keşif ve fiyat teklifi** sunuyoruz.",
+    pricingButton: "Ücretsiz Teklif Al",
+  },
+  en: {
+    metaTitle: "Our Services — Çizgi Artizm | Graffiti, Portraits & Airbrush",
+    metaDescription:
+      "Graffiti murals, custom portrait drawing and vehicle & yacht airbrush painting. Professional team, durable materials, free site visit and quote.",
+    label: "Our Services",
+    title: "What We Do",
+    watermark: "SERVICES",
+    intro: "From idea to execution, we turn your spaces and surfaces into art.",
+    services: [
+      {
+        title: "Graffiti & Murals",
+        desc: "Building facades, interior walls, concrete, wood and metal surfaces — we create artistic graffiti and murals at every scale, using weather-resistant, long-lasting materials.",
+        points: ["Building facades and giant murals", "Office, café and interior walls", "Transformer buildings and public spaces", "UV- and weather-resistant paints"],
+      },
+      {
+        title: "Custom Portrait Drawing",
+        desc: "We create original portraits from your photos. On a wall or on canvas — realistic, striking portrait work.",
+        points: ["Original portraits from photos", "On walls or canvas", "Gift-worthy, collectible pieces", "Charcoal and color techniques"],
+      },
+      {
+        title: "Vehicle & Yacht Airbrush Painting",
+        desc: "We apply custom airbrush designs to cars, motorcycles, caravans and boats, using waterproof, durable paints for marine surfaces.",
+        points: ["Cars, motorcycles and caravans", "Waterproof paint for boats and yachts", "Completely original designs", "Professional airbrush technique"],
+      },
+    ],
+    processWatermark: "PROCESS",
+    processTitle: "How We Work",
+    steps: [
+      { t: "Consulting & Planning", d: "We assess the space, your vision and your budget together and map out the plan." },
+      { t: "Design Development", d: "We prepare custom sketches and keep refining them until you approve." },
+      { t: "Execution & Delivery", d: "We bring the design to life on site with a professional team and durable materials." },
+      { t: "Final Review", d: "We review the work together and hand over the completed project." },
+    ],
+    pricingTitle: "Pricing",
+    pricingText:
+      "Our work is priced per square meter. The price depends on the scale of the project, the complexity of the design and the materials used. We offer a **free site visit and quote** for every project.",
+    pricingButton: "Get a Free Quote",
+  },
+  es: {
+    metaTitle: "Nuestros servicios — Çizgi Artizm | Grafiti, retratos y aerografía",
+    metaDescription:
+      "Murales de grafiti, retratos personalizados y aerografía para vehículos y yates. Equipo profesional, materiales duraderos, visita y presupuesto gratuitos.",
+    label: "Nuestros servicios",
+    title: "Qué hacemos",
+    watermark: "SERVICIOS",
+    intro: "De la idea a la ejecución, convertimos sus espacios y superficies en arte.",
+    services: [
+      {
+        title: "Grafiti y murales",
+        desc: "Fachadas de edificios, paredes interiores y superficies de hormigón, madera y metal: realizamos grafitis y murales artísticos a cualquier escala, con materiales duraderos y resistentes a la intemperie.",
+        points: ["Fachadas y murales de gran formato", "Paredes de oficinas, cafeterías e interiores", "Casetas eléctricas y espacios públicos", "Pinturas resistentes a los rayos UV y a la intemperie"],
+      },
+      {
+        title: "Retratos personalizados",
+        desc: "Creamos retratos originales a partir de sus fotografías. En pared o en lienzo, retratos realistas y llamativos.",
+        points: ["Retratos originales a partir de fotos", "Sobre pared o lienzo", "Piezas para regalar y coleccionar", "Técnicas a carboncillo y a color"],
+      },
+      {
+        title: "Aerografía para vehículos y yates",
+        desc: "Aplicamos diseños exclusivos con aerógrafo en coches, motos, caravanas y embarcaciones, con pinturas impermeables y duraderas para superficies marinas.",
+        points: ["Coches, motos y caravanas", "Pintura impermeable para barcos y yates", "Diseños totalmente originales", "Técnica profesional de aerografía"],
+      },
+    ],
+    processWatermark: "PROCESO",
+    processTitle: "Cómo trabajamos",
+    steps: [
+      { t: "Asesoramiento y planificación", d: "Valoramos juntos el espacio, su idea y su presupuesto, y trazamos el plan de trabajo." },
+      { t: "Desarrollo del diseño", d: "Preparamos bocetos a medida y los ajustamos hasta que cuenten con su aprobación." },
+      { t: "Ejecución y entrega", d: "Hacemos realidad el diseño in situ con un equipo profesional y materiales duraderos." },
+      { t: "Revisión final", d: "Revisamos juntos el trabajo y entregamos el proyecto terminado." },
+    ],
+    pricingTitle: "Precios",
+    pricingText:
+      "Nuestros trabajos se presupuestan por metro cuadrado. El precio depende de la escala del proyecto, la complejidad del diseño y los materiales que se utilicen. Ofrecemos **visita y presupuesto gratuitos** para cada proyecto.",
+    pricingButton: "Pedir presupuesto gratuito",
+  },
+  ar: {
+    metaTitle: "خدماتنا — Çizgi Artizm | الجرافيتي والبورتريه والإيربرش",
+    metaDescription:
+      "جداريات الجرافيتي ولوحات البورتريه حسب الطلب والرسم بتقنية الإيربرش على المركبات واليخوت. فريق محترف ومواد متينة ومعاينة مجانية وعرض سعر.",
+    label: "خدماتنا",
+    title: "ماذا نقدّم",
+    watermark: "خدماتنا",
+    intro: "من الفكرة إلى التنفيذ، نحوّل مساحاتك وأسطحك إلى أعمال فنية.",
+    services: [
+      {
+        title: "الجرافيتي والجداريات",
+        desc: "واجهات المباني والجدران الداخلية وأسطح الخرسانة والخشب والمعادن — ننفّذ أعمال الجرافيتي والجداريات الفنية بجميع الأحجام، ونستخدم مواد متينة تدوم طويلاً وتقاوم العوامل الجوية.",
+        points: ["واجهات المباني والجداريات الضخمة", "جدران المكاتب والمقاهي والمساحات الداخلية", "مباني المحولات الكهربائية والأماكن العامة", "دهانات مقاومة للأشعة فوق البنفسجية والعوامل الجوية"],
+      },
+      {
+        title: "رسم البورتريه حسب الطلب",
+        desc: "نرسم لوحات بورتريه أصلية من صورك، على الجدار أو على القماش، بأسلوب واقعي ومؤثر.",
+        points: ["بورتريه أصلي من صورتك", "على الجدار أو على القماش", "قطع فنية للإهداء والاقتناء", "رسم بالفحم وبالألوان"],
+      },
+      {
+        title: "الرسم بالإيربرش على المركبات واليخوت",
+        desc: "ننفّذ تصاميم حصرية بتقنية الإيربرش على السيارات والدراجات النارية والكرفانات والقوارب، بدهانات متينة مقاومة للماء مخصّصة للأسطح البحرية.",
+        points: ["السيارات والدراجات النارية والكرفانات", "دهانات مقاومة للماء للقوارب واليخوت", "تصاميم أصلية بالكامل", "تقنية إيربرش احترافية"],
+      },
+    ],
+    processWatermark: "مراحل العمل",
+    processTitle: "كيف نعمل",
+    steps: [
+      { t: "الاستشارة والتخطيط", d: "ندرس معك المساحة وتصوّرك والميزانية، ونضع خطة العمل." },
+      { t: "تطوير التصميم", d: "نعدّ لك مسودات خاصة ونواصل تطويرها حتى تحصل على موافقتك." },
+      { t: "التنفيذ والتسليم", d: "ننفّذ التصميم في الموقع بفريق محترف ومواد متينة." },
+      { t: "المراجعة النهائية", d: "نراجع العمل معك ونسلّم المشروع مكتملاً." },
+    ],
+    pricingTitle: "الأسعار",
+    pricingText:
+      "تُحسب أسعار أعمالنا حسب المتر المربع، ويختلف السعر بحسب حجم المشروع ومدى تعقيد التصميم والمواد المستخدمة. ونقدّم لكل مشروع **معاينة مجانية وعرض سعر**.",
+    pricingButton: "اطلب عرض سعر مجاني",
+  },
+}[lang];
+
+const imgs: ImageMetadata[] = [imgZeus, imgKadin, imgMickey];
+const services = content.services.map((s, i) => ({ ...s, img: imgs[i] }));
+const steps = content.steps.map((s, i) => ({ ...s, n: `0${i + 1}` }));
+
+// Sektöre göre açılış sayfaları yalnız Türkçe; öbür dillerde bölüm ve fiyat
+// bağlantısı gösterilmez (yabancı ziyaretçi Türkçe sayfaya düşmesin). Fiyat
+// sayfası Fiyatlandırma bölümünden bağlanır.
+const sectorPages = lang === "tr" ? serviceLandings.filter((l) => l.slug !== "duvar-resmi-fiyatlari") : [];
+const landingImages = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/images/*.{png,jpeg,jpg}",
+  { eager: true }
+);
+const landingImg = (file: string) => landingImages[`/src/assets/images/${file}`].default;
+---
+
+<Layout lang={lang} route="services" title={content.metaTitle} description={content.metaDescription}>
+  <PageHero label={content.label} title={content.title} watermark={content.watermark} image={headerBg}>
+    <p class="max-w-2xl text-lg text-neutral-300 drop-shadow">
+      {content.intro}
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      {services.map((s) => (
+        <span class="rounded-full border border-white/30 bg-white/5 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur-sm">
+          {s.title}
+        </span>
+      ))}
+    </div>
+  </PageHero>
+
+  <!-- Hizmet detayları -->
+  <section class="overflow-hidden py-16 md:py-20">
+    <div class="mx-auto max-w-6xl space-y-24 px-5">
+      {services.map((s, i) => (
+        <div class={`grid items-center gap-12 md:grid-cols-2 ${i % 2 === 1 ? "md:[&>div:first-child]:order-2" : ""}`} data-reveal>
+          <!-- Poster çerçeveli görsel -->
+          <div class="relative">
+            <div class={`absolute -inset-2 rounded-2xl bg-accent/10 ${i % 2 === 1 ? "-rotate-2" : "rotate-2"}`} aria-hidden="true"></div>
+            <div class={`relative overflow-hidden rounded-2xl shadow-xl ${i % 2 === 1 ? "rotate-1" : "-rotate-1"} transition-transform duration-300 hover:rotate-0`}>
+              <Image src={s.img} alt={s.title} loading={i === 0 ? "eager" : "lazy"} class="aspect-[4/3] w-full object-cover" data-fade={i === 0 ? undefined : ""} />
+            </div>
+          </div>
+          <div>
+            <p class="text-outline text-outline-accent select-none font-display text-6xl leading-none" aria-hidden="true">0{i + 1}</p>
+            <h2 class="mt-3 font-display text-2xl text-neutral-900 md:text-4xl">{s.title}</h2>
+            <SprayStroke class="mt-3 text-accent" />
+            <p class="mt-4 text-neutral-600">{s.desc}</p>
+            <ul class="mt-6 space-y-2.5">
+              {s.points.map((p) => (
+                <li class="flex items-start gap-3 text-sm text-neutral-700">
+                  <span class="mt-1 h-2 w-2 flex-shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
+                  {p}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Alanınıza göre hizmetler (yalnız TR) -->
+  {sectorPages.length > 0 && (
+    <section class="border-t border-neutral-200 bg-neutral-50 py-16 md:py-20">
+      <div class="mx-auto max-w-6xl px-5">
+        <div data-reveal>
+          <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">Alanınıza Göre Hizmetler</h2>
+          <SprayStroke class="mt-3 text-accent" />
+          <p class="mt-4 max-w-2xl text-neutral-600">
+            Okuldan fabrikaya, kafeden trafo binasına; her mekanın ihtiyacı farklı.
+            Alanınızı seçin, o alandaki işlerimizi ve süreci inceleyin.
+          </p>
+        </div>
+        <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {sectorPages.map((l, i) => (
+            <a
+              href={`/${l.slug}/`}
+              class:list={["group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-200 transition duration-300 hover:-translate-y-1 hover:shadow-lg hover:ring-accent/40", i % 4 > 0 && `reveal-delay-${i % 4}`]}
+              data-reveal
+            >
+              <div class="aspect-[4/3] overflow-hidden">
+                <Image src={landingImg(l.heroImage)} alt="" width={500} class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" data-fade />
+              </div>
+              <div class="p-5">
+                <h3 class="font-bold text-neutral-900 transition-colors group-hover:text-accent">{l.name} →</h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-neutral-600">{l.cardText}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Süreç -->
+  <section class="relative overflow-hidden bg-neutral-950 py-20 text-white">
+    <div class="grain" aria-hidden="true"></div>
+    <span
+      aria-hidden="true"
+      class="text-outline text-outline-dark pointer-events-none absolute -bottom-8 left-0 select-none whitespace-nowrap font-display text-[18vw] leading-none"
+    >{content.processWatermark}</span>
+    <div class="relative mx-auto max-w-6xl px-5">
+      <div data-reveal>
+        <h2 class="font-display text-3xl md:text-5xl">{content.processTitle}</h2>
+        <SprayStroke class="mt-3 text-accent-bright" />
+      </div>
+      <div class="mt-12 grid gap-8 md:grid-cols-4">
+        {steps.map((s, i) => (
+          <div class:list={["group border-t border-neutral-800 pt-5 transition-colors hover:border-accent-bright", i > 0 && `reveal-delay-${i}`]} data-reveal>
+            <p class="font-display text-4xl text-accent-bright">{s.n}</p>
+            <h3 class="mt-3 text-lg font-bold">{s.t}</h3>
+            <p class="mt-2 text-sm text-neutral-400">{s.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Fiyatlandırma -->
+  <section class="relative overflow-hidden py-20">
+    <div class="float-slow absolute right-[10%] top-[16%] hidden md:block" aria-hidden="true">
+      <SpraySplat class="h-12 w-12 rotate-12 text-spray-yellow/50" />
+    </div>
+    <div class="float-slower absolute bottom-[18%] left-[8%] hidden md:block" aria-hidden="true">
+      <SpraySplat class="h-9 w-9 -rotate-45 text-spray-cyan/40" />
+    </div>
+    <div class="mx-auto max-w-3xl px-5 text-center" data-reveal>
+      <h2 class="font-display text-3xl text-neutral-900 md:text-5xl">{content.pricingTitle}</h2>
+      <SprayStroke class="mx-auto mt-3 text-accent" />
+      <p class="mt-5 text-lg text-neutral-600">
+        <Rich text={content.pricingText} lang={lang} />
+      </p>
+      {lang === "tr" && (
+        <p class="mt-3">
+          <a href="/duvar-resmi-fiyatlari/" class="text-sm font-semibold text-accent underline decoration-accent/30 underline-offset-4 hover:text-accent-bright">Fiyatı neler belirler?</a>
+        </p>
+      )}
+      <a href={routes.contact[lang]} data-cta="teklif_al" class="mt-8 inline-block rounded-full bg-accent px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/30 transition-colors hover:bg-accent-bright">
+        {content.pricingButton}
+      </a>
+    </div>
+  </section>
+</Layout>

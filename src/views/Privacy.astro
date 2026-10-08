@@ -1,0 +1,278 @@
+---
+import Layout from "../layouts/Layout.astro";
+import type { Lang } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+// Bölüm: düz paragraf (p), madde listesi (items: [araç adı, açıklama]) ve
+// listeden sonra dış bağlantılı paragraf (after: metin ya da [bağlantı metni, adres]).
+type Section = {
+  h: string;
+  p?: string;
+  items?: [string, string][];
+  after?: (string | [string, string])[];
+};
+
+const gaOptOut = "https://tools.google.com/dlpage/gaoptout";
+const adCenter = "https://myadcenter.google.com/";
+
+type PrivacyContent = {
+  metaTitle: string;
+  metaDescription: string;
+  title: string;
+  updated: string;
+  sections: Section[];
+  contactTitle: string;
+  contactBefore: string;
+  contactAfter: string;
+};
+
+const all = {
+  tr: {
+    metaTitle: "Gizlilik Politikası — Çizgi Artizm",
+    metaDescription:
+      "Çizgi Artizm gizlilik politikası: web sitemizde kişisel verilerin toplanması, kullanım amaçları, üçüncü taraf hizmetler ve verilerinizin korunması hakkında detaylı bilgilendirme.",
+    title: "Gizlilik Politikası",
+    updated: "Son güncelleme: Ekim 2026",
+    sections: [
+      {
+        h: "Topladığımız Bilgiler",
+        p: "İletişim formu ve reklam kanalları aracılığıyla; adınız, e-posta adresiniz ve telefon numaranız gibi bizimle paylaştığınız bilgileri toplayabiliriz. Bu bilgiler yalnızca talebinize yanıt vermek ve hizmet sunmak amacıyla kullanılır.",
+      },
+      {
+        h: "Bilgilerin Kullanımı",
+        p: "Topladığımız kişisel veriler; tekliflerin hazırlanması, projelerin yürütülmesi ve sizinle iletişim kurulması için kullanılır. Verileriniz üçüncü taraflarla pazarlama amacıyla paylaşılmaz.",
+      },
+      {
+        h: "İletişim Formu",
+        p: "İletişim formuna yazdığınız ad, e-posta ve mesaj, form hizmeti sağlayıcımız Web3Forms aracılığıyla e-posta adresimize iletilir. WhatsApp, telefon veya e-posta ile yazdığınızda ise bilgileriniz yalnızca ilgili kanalda bize ulaşır.",
+      },
+      {
+        h: "Çerezler ve Ölçüm Araçları",
+        p: "Sitemizin nasıl kullanıldığını anlamak ve reklamlarımızın sonuçlarını ölçmek için aşağıdaki hizmetleri kullanıyoruz. Bu hizmetler tarayıcınıza çerez yerleştirebilir.",
+        items: [
+          ["Google Analytics 4", "hangi sayfaların ziyaret edildiğini, ziyaretçilerin siteye hangi kanaldan geldiğini ve WhatsApp, telefon, e-posta, teklif formu gibi iletişim butonlarına tıklanıp tıklanmadığını ölçer."],
+          ["Google Ads", "reklamlarımızdan gelen ziyaretlerin bizimle iletişime geçip geçmediğini (dönüşüm) ölçer ve sitemizi ziyaret edenlere Google'ın reklam ağında reklamlarımızın gösterilmesini (yeniden pazarlama) sağlar."],
+          ["Microsoft Clarity", "sayfadaki tıklamaları, fare hareketlerini ve kaydırma derinliğini anonim oturum kayıtları ve ısı haritaları olarak tutar. Form alanlarına yazdığınız bilgiler bu kayıtlarda maskelenir."],
+        ],
+        after: [
+          "Çerezleri tarayıcı ayarlarınızdan silebilir veya engelleyebilirsiniz. Google Analytics ölçümünü ",
+          ["Google Analytics Devre Dışı Bırakma Eklentisi", gaOptOut],
+          " ile, kişiselleştirilmiş Google reklamlarını ",
+          ["Reklam Merkezim", adCenter],
+          " sayfasından kapatabilirsiniz. Microsoft'un veri işleme esasları için ",
+          ["Microsoft Gizlilik Bildirimi", "https://privacy.microsoft.com/tr-tr/privacystatement"],
+          "'ne bakabilirsiniz.",
+        ],
+      },
+      {
+        h: "Veri Güvenliği",
+        p: "Kişisel verilerinizin güvenliğini sağlamak için makul teknik ve idari önlemleri alıyoruz. Verileriniz yetkisiz erişime karşı korunur.",
+      },
+      {
+        h: "Haklarınız",
+        p: "6698 sayılı Kişisel Verilerin Korunması Kanunu'nun 11. maddesi kapsamında; kişisel verilerinizin işlenip işlenmediğini öğrenme, düzeltilmesini veya silinmesini isteme gibi haklarınızı kullanmak için aşağıdaki e-posta adresinden bize başvurabilirsiniz.",
+      },
+    ],
+    contactTitle: "İletişim",
+    contactBefore: "Gizlilik politikamızla ilgili sorularınız için",
+    contactAfter: "adresinden bize ulaşabilirsiniz.",
+  },
+  en: {
+    metaTitle: "Privacy Policy — Çizgi Artizm",
+    metaDescription:
+      "Çizgi Artizm privacy policy: how personal data is collected on our website, what it is used for, third-party services and how your data is protected.",
+    title: "Privacy Policy",
+    updated: "Last updated: October 2026",
+    sections: [
+      {
+        h: "Information We Collect",
+        p: "Through our contact form and advertising channels, we may collect information you share with us, such as your name, email address and phone number. This information is used only to respond to your request and to provide our services.",
+      },
+      {
+        h: "How We Use Information",
+        p: "The personal data we collect is used to prepare quotes, carry out projects and communicate with you. Your data is never shared with third parties for marketing purposes.",
+      },
+      {
+        h: "Contact Form",
+        p: "The name, email address and message you enter in the contact form are delivered to our email address through our form service provider, Web3Forms. When you write to us via WhatsApp, phone or email, your information reaches us only through that channel.",
+      },
+      {
+        h: "Cookies and Analytics Tools",
+        p: "To understand how our website is used and to measure the results of our advertising, we use the services below. These services may place cookies in your browser.",
+        items: [
+          ["Google Analytics 4", "measures which pages are visited, which channel visitors arrive from, and whether contact buttons such as WhatsApp, phone, email and the quote form are clicked."],
+          ["Google Ads", "measures whether visits from our ads lead to contacting us (conversions) and allows our ads to be shown on Google's advertising network to people who have visited our website (remarketing)."],
+          ["Microsoft Clarity", "records clicks, mouse movements and scroll depth on our pages as anonymous session recordings and heatmaps. Information you type into form fields is masked in these recordings."],
+        ],
+        after: [
+          "You can delete or block cookies in your browser settings. You can opt out of Google Analytics measurement with the ",
+          ["Google Analytics Opt-out Browser Add-on", gaOptOut],
+          " and turn off personalized Google ads on the ",
+          ["My Ad Center", adCenter],
+          " page. For how Microsoft processes data, see the ",
+          ["Microsoft Privacy Statement", "https://privacy.microsoft.com/privacystatement"],
+          ".",
+        ],
+      },
+      {
+        h: "Data Security",
+        p: "We take reasonable technical and administrative measures to keep your personal data secure. Your data is protected against unauthorized access.",
+      },
+      {
+        h: "Your Rights",
+        p: "Under Article 11 of the Turkish Personal Data Protection Law No. 6698 (KVKK), you can contact us at the email address below to exercise your rights, such as learning whether your personal data is processed and requesting that it be corrected or deleted.",
+      },
+    ],
+    contactTitle: "Contact",
+    contactBefore: "If you have any questions about our privacy policy, you can reach us at",
+    contactAfter: "",
+  },
+  es: {
+    metaTitle: "Política de privacidad — Çizgi Artizm",
+    metaDescription:
+      "Política de privacidad de Çizgi Artizm: cómo recopilamos datos personales en nuestro sitio web, para qué los utilizamos, servicios de terceros y cómo protegemos sus datos.",
+    title: "Política de privacidad",
+    updated: "Última actualización: octubre de 2026",
+    sections: [
+      {
+        h: "Información que recopilamos",
+        p: "A través del formulario de contacto y de los canales publicitarios, podemos recopilar la información que usted comparte con nosotros, como su nombre, su dirección de correo electrónico y su número de teléfono. Esta información se utiliza únicamente para responder a su solicitud y prestar nuestros servicios.",
+      },
+      {
+        h: "Uso de la información",
+        p: "Los datos personales que recopilamos se utilizan para preparar presupuestos, llevar a cabo los proyectos y comunicarnos con usted. Sus datos no se comparten con terceros con fines comerciales.",
+      },
+      {
+        h: "Formulario de contacto",
+        p: "El nombre, la dirección de correo electrónico y el mensaje que escriba en el formulario de contacto se envían a nuestra dirección de correo electrónico a través de Web3Forms, nuestro proveedor del servicio de formularios. Si nos escribe por WhatsApp, por teléfono o por correo electrónico, sus datos nos llegan únicamente a través de ese canal.",
+      },
+      {
+        h: "Cookies y herramientas de medición",
+        p: "Para entender cómo se utiliza nuestro sitio web y medir los resultados de nuestra publicidad, utilizamos los siguientes servicios. Estos servicios pueden instalar cookies en su navegador.",
+        items: [
+          ["Google Analytics 4", "mide qué páginas se visitan, desde qué canal llegan los visitantes y si se hace clic en los botones de contacto, como WhatsApp, teléfono, correo electrónico o el formulario de presupuesto."],
+          ["Google Ads", "mide si las visitas procedentes de nuestros anuncios terminan en un contacto con nosotros (conversiones) y permite mostrar nuestros anuncios en la red publicitaria de Google a quienes han visitado nuestro sitio web (remarketing)."],
+          ["Microsoft Clarity", "registra los clics, los movimientos del ratón y la profundidad de desplazamiento en nuestras páginas como grabaciones de sesión anónimas y mapas de calor. La información que escriba en los campos de los formularios se enmascara en estas grabaciones."],
+        ],
+        after: [
+          "Puede eliminar o bloquear las cookies desde la configuración de su navegador. Puede desactivar la medición de Google Analytics con el ",
+          ["complemento de inhabilitación para navegadores de Google Analytics", gaOptOut],
+          " y desactivar los anuncios personalizados de Google en la página ",
+          ["Mi Centro de Anuncios", adCenter],
+          ". Para saber cómo trata Microsoft los datos, consulte la ",
+          ["Declaración de privacidad de Microsoft", "https://privacy.microsoft.com/privacystatement"],
+          ".",
+        ],
+      },
+      {
+        h: "Seguridad de los datos",
+        p: "Adoptamos medidas técnicas y administrativas razonables para garantizar la seguridad de sus datos personales. Sus datos están protegidos frente a accesos no autorizados.",
+      },
+      {
+        h: "Sus derechos",
+        p: "De acuerdo con el artículo 11 de la Ley turca n.º 6698 de Protección de Datos Personales (KVKK), puede escribirnos a la dirección de correo electrónico que figura a continuación para ejercer sus derechos, como saber si se tratan sus datos personales o solicitar su rectificación o supresión.",
+      },
+    ],
+    contactTitle: "Contacto",
+    contactBefore: "Si tiene alguna pregunta sobre nuestra política de privacidad, puede escribirnos a",
+    contactAfter: "",
+  },
+  ar: {
+    metaTitle: "سياسة الخصوصية — Çizgi Artizm",
+    metaDescription:
+      "سياسة الخصوصية لدى Çizgi Artizm: كيف نجمع البيانات الشخصية عبر موقعنا الإلكتروني، وأغراض استخدامها، وخدمات الجهات الخارجية، وكيف نحمي بياناتك.",
+    title: "سياسة الخصوصية",
+    updated: "آخر تحديث: أكتوبر 2026",
+    sections: [
+      {
+        h: "المعلومات التي نجمعها",
+        p: "قد نجمع، عبر نموذج التواصل والقنوات الإعلانية، المعلومات التي تشاركها معنا مثل اسمك وعنوان بريدك الإلكتروني ورقم هاتفك. ولا تُستخدم هذه المعلومات إلا للرد على طلبك وتقديم خدماتنا.",
+      },
+      {
+        h: "استخدام المعلومات",
+        p: "نستخدم البيانات الشخصية التي نجمعها لإعداد عروض الأسعار وتنفيذ المشاريع والتواصل معك. ولا نشارك بياناتك مع أي جهات خارجية لأغراض تسويقية.",
+      },
+      {
+        h: "نموذج التواصل",
+        p: "يُرسَل الاسم والبريد الإلكتروني والرسالة التي تكتبها في نموذج التواصل إلى بريدنا الإلكتروني عبر Web3Forms، مزوّد خدمة النماذج لدينا. أما إذا راسلتنا عبر واتساب أو الهاتف أو البريد الإلكتروني، فلا تصلنا بياناتك إلا عبر تلك القناة.",
+      },
+      {
+        h: "ملفات تعريف الارتباط وأدوات القياس",
+        p: "نستخدم الخدمات التالية لفهم كيفية استخدام موقعنا وقياس نتائج إعلاناتنا، وقد تضع هذه الخدمات ملفات تعريف ارتباط في متصفحك.",
+        items: [
+          ["Google Analytics 4", "يقيس الصفحات التي تتم زيارتها، والقناة التي يصل منها الزوار إلى الموقع، وما إذا كانوا ينقرون على أزرار التواصل مثل واتساب والهاتف والبريد الإلكتروني ونموذج طلب عرض السعر."],
+          ["Google Ads", "يقيس ما إذا كانت الزيارات القادمة من إعلاناتنا تنتهي بالتواصل معنا (التحويلات)، ويتيح عرض إعلاناتنا على شبكة Google الإعلانية لمن سبق لهم زيارة موقعنا (إعادة التسويق)."],
+          ["Microsoft Clarity", "يسجّل النقرات وحركة مؤشر الفأرة ومدى التمرير في صفحاتنا على شكل تسجيلات جلسات مجهولة الهوية وخرائط حرارية، مع إخفاء المعلومات التي تكتبها في حقول النماذج في هذه التسجيلات."],
+        ],
+        after: [
+          "يمكنك حذف ملفات تعريف الارتباط أو حظرها من إعدادات المتصفح. ويمكنك إيقاف قياس Google Analytics عبر ",
+          ["إضافة المتصفح لإيقاف Google Analytics", gaOptOut],
+          "، وإيقاف إعلانات Google المخصّصة من صفحة ",
+          ["مركز الإعلانات الخاص بي", adCenter],
+          ". وللاطلاع على كيفية معالجة Microsoft للبيانات، راجع ",
+          ["بيان الخصوصية من Microsoft", "https://privacy.microsoft.com/privacystatement"],
+          ".",
+        ],
+      },
+      {
+        h: "أمن البيانات",
+        p: "نتّخذ تدابير تقنية وإدارية معقولة لضمان أمن بياناتك الشخصية وحمايتها من الوصول غير المصرّح به.",
+      },
+      {
+        h: "حقوقك",
+        p: "بموجب المادة 11 من قانون حماية البيانات الشخصية التركي رقم 6698 (KVKK)، يمكنك مراسلتنا على البريد الإلكتروني أدناه لممارسة حقوقك، مثل معرفة ما إذا كانت بياناتك الشخصية تُعالَج، وطلب تصحيحها أو حذفها.",
+      },
+    ],
+    contactTitle: "تواصل معنا",
+    contactBefore: "لأي استفسار حول سياسة الخصوصية، يمكنك مراسلتنا على",
+    contactAfter: "",
+  },
+} satisfies Record<Lang, PrivacyContent>;
+const content: PrivacyContent = all[lang];
+
+const extLink = "font-semibold text-neutral-900 hover:underline";
+---
+
+<Layout lang={lang} route="privacy" title={content.metaTitle} description={content.metaDescription}>
+  <section class="mx-auto max-w-3xl px-5 py-16">
+    <h1 class="font-display text-3xl text-neutral-900 md:text-5xl">{content.title}</h1>
+    <p class="mt-4 text-sm text-neutral-500">{content.updated}</p>
+
+    <div class="mt-10 space-y-8 text-neutral-700">
+      {content.sections.map((s) => (
+        <div>
+          <h2 class="text-xl font-bold text-neutral-900">{s.h}</h2>
+          {s.p && <p class="mt-3">{s.p}</p>}
+          {s.items && (
+            <ul class="mt-4 list-disc space-y-3 ps-5">
+              {s.items.map(([name, text]) => (
+                <li><strong>{name}:</strong> {text}</li>
+              ))}
+            </ul>
+          )}
+          {s.after && (
+            <p class="mt-4">
+              {s.after.map((part) =>
+                typeof part === "string"
+                  ? part
+                  : <a href={part[1]} class={extLink} target="_blank" rel="noopener noreferrer">{part[0]}</a>
+              )}
+            </p>
+          )}
+        </div>
+      ))}
+
+      <div>
+        <h2 class="text-xl font-bold text-neutral-900">{content.contactTitle}</h2>
+        <p class="mt-3">
+          {content.contactBefore}
+          <a href="mailto:cizgiartizm@gmail.com" class="font-semibold text-neutral-900 hover:underline">cizgiartizm@gmail.com</a>{content.contactAfter ? ` ${content.contactAfter}` : "."}
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
