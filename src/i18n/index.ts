@@ -35,7 +35,7 @@ export const ui = {
     dateLocale: "tr-TR",
     defaultTitle: "Çizgi Artizm — Duvar Resmi & Graffiti Sanatı",
     defaultDescription:
-      "Türkiye genelinde profesyonel duvar resmi, graffiti, portre çizim ve araç airbrush boyama. Çizgi Artizm ile mekanlarınızı sanata çevirin.",
+      "Dünyanın her yerinde profesyonel duvar resmi, graffiti, portre çizim ve araç airbrush boyama. Çizgi Artizm ile mekanlarınızı sanata çevirin.",
     knowsAbout: ["Graffiti", "Duvar Resmi", "Mural", "Airbrush", "Portre Çizim"],
     nav: {
       home: "Anasayfa",
@@ -49,7 +49,7 @@ export const ui = {
     menu: "Menü",
     whatsapp: "WhatsApp ile yazın",
     footer: {
-      tagline: "Duvar resmi, graffiti, portre çizim ve araç airbrush boyama. Türkiye geneli hizmet.",
+      tagline: "Duvar resmi, graffiti, portre çizim ve araç airbrush boyama. Dünya genelinde hizmet.",
       contact: "İletişim",
       pages: "Sayfalar",
       rights: "Tüm hakları saklıdır.",
@@ -67,7 +67,7 @@ export const ui = {
     dateLocale: "en-US",
     defaultTitle: "Çizgi Artizm — Mural & Graffiti Art",
     defaultDescription:
-      "Professional murals, graffiti, portrait drawing and vehicle airbrush painting across Türkiye. Turn your spaces into art with Çizgi Artizm.",
+      "Professional murals, graffiti, portrait drawing and vehicle airbrush painting worldwide. Turn your spaces into art with Çizgi Artizm.",
     knowsAbout: ["Graffiti", "Murals", "Street Art", "Airbrush", "Portrait Drawing"],
     nav: {
       home: "Home",
@@ -81,7 +81,7 @@ export const ui = {
     menu: "Menu",
     whatsapp: "Message us on WhatsApp",
     footer: {
-      tagline: "Murals, graffiti, portrait drawing and vehicle airbrush painting. Serving all of Türkiye.",
+      tagline: "Murals, graffiti, portrait drawing and vehicle airbrush painting. Serving clients worldwide.",
       contact: "Contact",
       pages: "Pages",
       rights: "All rights reserved.",
@@ -99,7 +99,7 @@ export const ui = {
     dateLocale: "es-ES",
     defaultTitle: "Çizgi Artizm — Murales y arte grafiti",
     defaultDescription:
-      "Murales, grafiti, retratos y aerografía para vehículos realizados por profesionales en toda Turquía. Convierta sus espacios en arte con Çizgi Artizm.",
+      "Murales, grafiti, retratos y aerografía para vehículos realizados por profesionales en todo el mundo. Convierta sus espacios en arte con Çizgi Artizm.",
     knowsAbout: ["Grafiti", "Murales", "Arte urbano", "Aerografía", "Retratos"],
     nav: {
       home: "Inicio",
@@ -113,7 +113,7 @@ export const ui = {
     menu: "Menú",
     whatsapp: "Escríbanos por WhatsApp",
     footer: {
-      tagline: "Murales, grafiti, retratos y aerografía para vehículos. Servicio en toda Turquía.",
+      tagline: "Murales, grafiti, retratos y aerografía para vehículos. Servicio en todo el mundo.",
       contact: "Contacto",
       pages: "Páginas",
       rights: "Todos los derechos reservados.",
@@ -133,7 +133,7 @@ export const ui = {
     dateLocale: "ar-AE",
     defaultTitle: "Çizgi Artizm — فن الجداريات والجرافيتي",
     defaultDescription:
-      "رسم جداريات وجرافيتي ولوحات بورتريه ورسم بتقنية الإيربرش على المركبات بأيدي فريق محترف في جميع أنحاء تركيا. حوّل مساحتك إلى عمل فني مع Çizgi Artizm.",
+      "رسم جداريات وجرافيتي ولوحات بورتريه ورسم بتقنية الإيربرش على المركبات بأيدي فريق محترف في جميع أنحاء العالم. حوّل مساحتك إلى عمل فني مع Çizgi Artizm.",
     knowsAbout: ["الجرافيتي", "الجداريات", "فن الشارع", "الإيربرش", "رسم البورتريه"],
     nav: {
       home: "الرئيسية",
@@ -147,7 +147,7 @@ export const ui = {
     menu: "القائمة",
     whatsapp: "راسلنا عبر واتساب",
     footer: {
-      tagline: "رسم الجداريات والجرافيتي ولوحات البورتريه والإيربرش على المركبات. نخدم جميع أنحاء تركيا.",
+      tagline: "رسم الجداريات والجرافيتي ولوحات البورتريه والإيربرش على المركبات. نخدم عملاءنا حول العالم.",
       contact: "تواصل معنا",
       pages: "الصفحات",
       rights: "جميع الحقوق محفوظة.",

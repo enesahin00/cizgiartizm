@@ -19,10 +19,12 @@ const isActive = (href: string) =>
 ---
 
 <header class="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4">
-    <!-- Mobilde dil seçimi logonun hemen sağında; masaüstünde menünün sonunda -->
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-2 px-5 py-4 sm:gap-4">
+    <!-- Mobilde dil seçimi logonun hemen sağında; masaüstünde menünün sonunda. 320px'te
+         logo + bayraklı 4 kutu + menü sığsın diye: 360px altında logo bir kademe küçük
+         (Arapça sayfada logo Cairo ile daha geniş), menü butonunun iç boşluğu kenara taşar. -->
     <div class="flex items-center gap-2 sm:gap-3">
-      <a href={home} class="font-display text-xl tracking-tight text-neutral-900">
+      <a href={home} class="font-display text-lg tracking-tight text-neutral-900 min-[360px]:text-xl">
         ÇİZGİ<span class="text-accent">ARTİZM</span>
       </a>
       <LangSwitch lang={lang} links={langLinks} class="md:hidden" />
@@ -55,7 +57,7 @@ const isActive = (href: string) =>
 
     <!-- Mobil menü -->
     <details id="mobile-menu" class="md:hidden">
-      <summary class="cursor-pointer list-none p-2 text-neutral-900" aria-label={t.menu}>
+      <summary class="-me-2 cursor-pointer list-none p-2 text-neutral-900" aria-label={t.menu}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" />
         </svg>

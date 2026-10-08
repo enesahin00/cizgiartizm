@@ -69,6 +69,13 @@ body {
 :lang(ar) * {
   letter-spacing: normal !important;
 }
+/* Dil kutusundaki "عربي" her sayfada görünür; Cairo'yla yazılsa 31 KB'lık font
+   TR/EN/ES sayfalarına da iner. Kutu sistem fontunda kalır (Segoe UI, SF Arabic,
+   Noto Sans Arabic Arapça içerir). */
+.lang-switch a:lang(ar),
+.lang-switch a:lang(ar) * {
+  font-family: system-ui, "Segoe UI", Tahoma, sans-serif;
+}
 
 /* Bölüm arkalarındaki dev kontur yazılar (grafiti/poster dokusu).
    CSP inline style attribute'a izin vermediği için varyantlar class olarak. */
