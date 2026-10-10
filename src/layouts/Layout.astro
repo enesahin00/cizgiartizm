@@ -136,16 +136,17 @@ const langAlts = Object.fromEntries(
     </script>
     <!-- Reveal stilleri yalnız JS varken devreye girsin (no-JS'te her şey görünür) -->
     <script is:inline>document.documentElement.classList.add("js");</script>
-    <!-- Google etiketi (GA4 + Google Ads) — eski WordPress sitesindeki kimliklerle aynı,
-         reklam dönüşüm takibi kopmasın. İzinli alan adları astro.config.mjs CSP'de.
+    <!-- Google etiketi (GA4 + Google Ads). GA4 mülkü site sahibinin yeni hesabı
+         (G-7HL68PN1C0); Google Ads kimliği eski WordPress sitesindekiyle aynı, reklam
+         dönüşüm takibi kopmasın. İzinli alan adları astro.config.mjs CSP'de.
          Dil yönlendirmesi başladıysa bu sayfa için görüntüleme gönderilmez (çift sayım). -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7N3EN1HBTS"></script>
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7HL68PN1C0"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       if (!window.__langRedirect) {
         gtag("js", new Date());
-        gtag("config", "G-7N3EN1HBTS");
+        gtag("config", "G-7HL68PN1C0");
         gtag("config", "AW-16646268606");
       }
     </script>
