@@ -15,4 +15,4 @@ export const ADS_CONVERSIONS: Record<string, string> = {
 
 // Microsoft Clarity proje kimliği (clarity.microsoft.com > proje > Settings >
 // Setup ekranındaki 10 karakterlik kod). Boşken Clarity hiç yüklenmez.
-export const CLARITY_PROJECT_ID = "";
+export const CLARITY_PROJECT_ID = "yvac46ydo9";
